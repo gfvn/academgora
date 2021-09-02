@@ -21,4 +21,21 @@ dev_dependencies:
 
 flutter:
 
-uses-material-design: true
+  uses-material-design: true
+  assets:
+    - assets/main/
+    - assets/auth/
+    - assets/registration_to_instructor/
+    - assets/instructors_list/
+    - assets/registration_parameters/
+    - assets/reg_final/
+    - assets/account/
+    - assets/all_instructors/
+    - assets/instructor_profile/
+    - assets/instructor_profile/social_network_icons/
+    - assets/info_screens/
+    - assets/info_screens/call_us/
+    - assets/info_screens/prices/
+    - assets/info_screens/about_us/
+    - assets/info_screens/chill_zone/
+    - assets/instructor_set_time/

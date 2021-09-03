@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
-
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -28,10 +27,10 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
         body: Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/account/0_bg.png"),
-                fit: BoxFit.cover,
-              ),
-            )));
+      image: DecorationImage(
+        image: AssetImage("assets/auth/1_background.png"),
+        fit: BoxFit.cover,
+      ),
+    )));
   }
 }

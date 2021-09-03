@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		2F48E2A338C5226929E3B2F1 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EA4DA6EBC87CAE20BD2A77 /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		83044CEA83C15934CD6754DC /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EA4DA6EBC87CAE20BD2A77 /* Pods_Runner.framework */; };
 		977C628A26E20EB8008DEDD2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 977C628926E20EB8008DEDD2 /* GoogleService-Info.plist */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F48E2A338C5226929E3B2F1 /* Pods_Runner.framework in Frameworks */,
+				83044CEA83C15934CD6754DC /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +124,6 @@
 				1ECC67499406D51D4622E346 /* Pods-Runner.release.xcconfig */,
 				0BEB5112482392326A62405C /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

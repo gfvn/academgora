@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -14,23 +16,76 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
 
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return const SomethingWentWrong();
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return const MyAwesomeApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return const Loading();
+      },
+    );
+  }
+}
+
+class SomethingWentWrong extends StatelessWidget {
+  const SomethingWentWrong({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            decoration: const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage("assets/auth/1_background.png"),
-        fit: BoxFit.cover,
-      ),
-    )));
+          alignment: Alignment.center,
+          child: const Text("Произошла ошибка инициализации сервисов Firebase. Попробуйте перезайти в приложение.", style: TextStyle(fontSize: 18),),
+          ));
   }
 }
+
+class Loading extends StatelessWidget {
+  const Loading({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+          alignment: Alignment.center,
+          height: 30,
+          width: 30,
+          child: const CircularProgressIndicator(),
+          ));
+  }
+}
+
+class MyAwesomeApp extends StatelessWidget {
+  const MyAwesomeApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+          alignment: Alignment.center,
+          child: const Text("Все хорошо :)", style: TextStyle(fontSize: 18),),
+        ));
+  }
+}
+
+

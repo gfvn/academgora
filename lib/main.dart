@@ -1,5 +1,9 @@
+import 'package:academ_gora_release/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +26,6 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
-
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   SplashScreen({Key? key}) : super(key: key);
@@ -40,7 +43,7 @@ class SplashScreen extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return const MyAwesomeApp();
+          return FirebaseAuth.instance.currentUser != null ? const MainScreen() : const AuthScreen();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -52,40 +55,45 @@ class SplashScreen extends StatelessWidget {
 
 class SomethingWentWrong extends StatelessWidget {
   const SomethingWentWrong({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          alignment: Alignment.center,
-          child: const Text("Произошла ошибка инициализации сервисов Firebase. Попробуйте перезайти в приложение.", style: TextStyle(fontSize: 18),),
-          ));
+      alignment: Alignment.center,
+      child: const Text(
+        "Произошла ошибка инициализации сервисов Firebase. Попробуйте перезайти в приложение.",
+        style: TextStyle(fontSize: 18),
+      ),
+    ));
   }
 }
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          alignment: Alignment.center,
-          height: 30,
-          width: 30,
-          child: const CircularProgressIndicator(),
-          ));
+      alignment: Alignment.center,
+      height: 30,
+      width: 30,
+      child: const CircularProgressIndicator(),
+    ));
   }
 }
 
-class MyAwesomeApp extends StatelessWidget {
-  const MyAwesomeApp({Key? key}) : super(key: key);
+class AuthLoadingPage extends StatelessWidget {
+
+  const AuthLoadingPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          alignment: Alignment.center,
-          child: const Text("Все хорошо :)", style: TextStyle(fontSize: 18),),
-        ));
+      alignment: Alignment.center,
+      child: const CircularProgressIndicator(),
+    ));
   }
 }
-
-

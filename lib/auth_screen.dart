@@ -21,7 +21,14 @@ class _AuthScreenState extends State<AuthScreen> {
                 onPressed: () {
                   _auth();
                 }),
-            MaterialButton(child: const Text("Logout"), onPressed: () {}),
+            MaterialButton(child: const Text("Logout"), onPressed: () {
+              FlutterAuthUi.signOut().then((value) =>
+                  () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (c) => const AuthScreen()), (
+                    route) => false);
+              });
+            }),
           ],
         ),
       ),
@@ -52,5 +59,6 @@ class _AuthScreenState extends State<AuthScreen> {
         androidMinimumVersion: '',
       ),
     );
+    print(result);
   }
 }

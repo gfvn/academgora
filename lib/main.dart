@@ -43,7 +43,8 @@ class SplashScreen extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return FirebaseAuth.instance.currentUser != null ? const MainScreen() : const AuthScreen();
+          var user = FirebaseAuth.instance.currentUser;
+          return user != null ? const MainScreen() : const AuthScreen();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

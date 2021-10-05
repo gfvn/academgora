@@ -22,7 +22,7 @@ dev_dependencies:
   firebase_core: ^1.6.0
   shared_preferences: ^2.0.7
   flutter_auth_ui: ^2.3.2
-
+  firebase_database: 7.1.1
 flutter:
 
   uses-material-design: true

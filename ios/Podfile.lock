@@ -21,6 +21,9 @@ PODS:
   - FBSDKLoginKit/Login (11.2.1):
     - FBSDKCoreKit (~> 11.2.1)
     - FBSDKCoreKit_Basics (~> 11.2.1)
+  - Firebase/AppCheck (8.7.0):
+    - Firebase/CoreOnly
+    - FirebaseAppCheck (~> 8.7.0-beta)
   - Firebase/Auth (8.7.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.7.0)
@@ -32,6 +35,10 @@ PODS:
   - Firebase/Storage (8.7.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 8.7.0)
+  - firebase_app_check (0.0.2-2):
+    - Firebase/AppCheck (= 8.7.0)
+    - firebase_core
+    - Flutter
   - firebase_auth (3.1.2):
     - Firebase/Auth (= 8.7.0)
     - firebase_core
@@ -51,6 +58,10 @@ PODS:
     - FirebaseAuth (~> 8.0)
     - FirebaseAuthUI
     - FirebaseCore
+  - FirebaseAppCheck (8.7.0-beta):
+    - FirebaseCore (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - PromisesObjC (< 3.0, >= 1.2)
   - FirebaseAuth (8.7.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -166,6 +177,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - firebase_app_check (from `.symlinks/plugins/firebase_app_check/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
@@ -186,6 +198,7 @@ SPEC REPOS:
     - FBSDKLoginKit
     - Firebase
     - FirebaseAnonymousAuthUI
+    - FirebaseAppCheck
     - FirebaseAuth
     - FirebaseAuthUI
     - FirebaseCore
@@ -208,6 +221,8 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  firebase_app_check:
+    :path: ".symlinks/plugins/firebase_app_check/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -236,11 +251,13 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 73ebe3a27eb688ac5b5aa7e99f68992993042115
   FBSDKLoginKit: 2e76831ef08d356b8f9150ea51cce865074ea304
   Firebase: bc9325d5ee2041524bac78a5213d0e530c651309
+  firebase_app_check: c6f2dfe80313d95cb6b9731c53dfc78a8cf79665
   firebase_auth: 3193124aa14a62b8abec3fd069df73ef378d2c5b
   firebase_core: f5ac1f2726a2bd0468cea0161eddeea3d83d7e3e
   firebase_database: afeac59ff1fbd052ff574f2bec2e10d48377ddc5
   firebase_storage: 04a381404ffddf5d3d39bf4bdfc517e4a354dfe9
   FirebaseAnonymousAuthUI: dc0d806fb53268e79fa64ae8ffd8e1adfc242244
+  FirebaseAppCheck: 1165576c9ad15d10d96637d9b2f678ed35dd9985
   FirebaseAuth: 2e7d029977648c67a5d51a263d4cbab76d34cf12
   FirebaseAuthUI: e75ef9d6cfcd8f1ba8bee2b360493a9947533f6c
   FirebaseCore: f4804c1d3f4bbbefc88904d15653038f2c99ddf7

@@ -4,12 +4,16 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1759830448/android.firebase_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/-1759830448/android.firebase_auth.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1996432586/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/1996432586/android.firebase_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1079772078/android.firebase_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/-1079772078/android.firebase_auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/199481227/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/199481227/android.firebase_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/2075293544/android.firebase_database.iml" filepath="$PROJECT_DIR$/.idea/modules/2075293544/android.firebase_database.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-979042661/android.flutter_auth_ui.iml" filepath="$PROJECT_DIR$/.idea/modules/-979042661/android.flutter_auth_ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1169919498/android.firebase_storage.iml" filepath="$PROJECT_DIR$/.idea/modules/-1169919498/android.firebase_storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-968539557/android.flutter_auth_ui.iml" filepath="$PROJECT_DIR$/.idea/modules/-968539557/android.flutter_auth_ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1424933636/android.flutter_email_sender.iml" filepath="$PROJECT_DIR$/.idea/modules/1424933636/android.flutter_email_sender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1811903589/android.flutter_phone_direct_caller.iml" filepath="$PROJECT_DIR$/.idea/modules/-1811903589/android.flutter_phone_direct_caller.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1331350104/android.flutter_plugin_android_lifecycle.iml" filepath="$PROJECT_DIR$/.idea/modules/1331350104/android.flutter_plugin_android_lifecycle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-356947287/android.shared_preferences.iml" filepath="$PROJECT_DIR$/.idea/modules/-356947287/android.shared_preferences.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1354209193/android.url_launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/-1354209193/android.url_launcher.iml" />
     </modules>
   </component>
 </project>

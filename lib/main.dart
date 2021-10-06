@@ -6,9 +6,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'controller/firebase_requests_controller.dart';
-import 'data_keepers/Instructors_keeper.dart';
+import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 late double screenHeight;
 late double screenWidth;
@@ -16,6 +17,7 @@ late double screenWidth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await FirebaseAppCheck.instance.activate();
   runApp(const MyApp());
 }
 

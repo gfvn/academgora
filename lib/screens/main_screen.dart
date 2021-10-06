@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/screens/registration_to_workout/registration_first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -299,7 +300,7 @@ class _MainScreenState extends State<MainScreen> {
       height: screenHeight * 0.1,
       margin: EdgeInsets.only(top: screenHeight * 0.05),
       child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: Colors.lightBlue,
         child: InkWell(
             onTap: _openRegistrationToInstructorScreen,
@@ -327,10 +328,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _openRegistrationToInstructorScreen() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (c) => RegistrationFirstScreen()));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        .push(MaterialPageRoute(builder: (c) => const RegistrationFirstScreen()));
   }
 
   Widget _infoButtons() {
@@ -340,7 +339,7 @@ class _MainScreenState extends State<MainScreen> {
         height: 25,
         margin: const EdgeInsets.only(top: 25),
         child: Material(
-          borderRadius: BorderRadius.all(const Radius.circular(35)),
+          borderRadius: const BorderRadius.all(const Radius.circular(35)),
           color: Colors.white,
           child: InkWell(
               onTap: () {

@@ -29,6 +29,9 @@ PODS:
   - Firebase/Database (8.7.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 8.7.0)
+  - Firebase/Storage (8.7.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 8.7.0)
   - firebase_auth (3.1.2):
     - Firebase/Auth (= 8.7.0)
     - firebase_core
@@ -38,6 +41,10 @@ PODS:
     - Flutter
   - firebase_database (7.1.1):
     - Firebase/Database (= 8.7.0)
+    - firebase_core
+    - Flutter
+  - firebase_storage (10.0.4):
+    - Firebase/Storage (= 8.7.0)
     - firebase_core
     - Flutter
   - FirebaseAnonymousAuthUI (12.0.0):
@@ -86,6 +93,9 @@ PODS:
   - FirebasePhoneAuthUI (12.0.0):
     - FirebaseAuth
     - FirebaseAuthUI
+  - FirebaseStorage (8.7.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - FirebaseUI/Anonymous (12.0.2):
     - FirebaseAnonymousAuthUI (~> 12.0)
   - FirebaseUI/Auth (12.0.2):
@@ -109,6 +119,10 @@ PODS:
     - FirebaseUI/Google (~> 12.0)
     - FirebaseUI/OAuth (~> 12.0)
     - FirebaseUI/Phone (~> 12.0)
+    - Flutter
+  - flutter_email_sender (0.0.1):
+    - Flutter
+  - flutter_phone_direct_caller (0.0.1):
     - Flutter
   - GoogleDataTransport (9.1.0):
     - GoogleUtilities/Environment (~> 7.2)
@@ -148,14 +162,20 @@ PODS:
   - PromisesObjC (2.0.0)
   - shared_preferences (0.0.1):
     - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
+  - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_auth_ui (from `.symlinks/plugins/flutter_auth_ui/ios`)
+  - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
+  - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
   trunk:
@@ -176,6 +196,7 @@ SPEC REPOS:
     - FirebaseGoogleAuthUI
     - FirebaseOAuthUI
     - FirebasePhoneAuthUI
+    - FirebaseStorage
     - FirebaseUI
     - GoogleDataTransport
     - GoogleSignIn
@@ -193,12 +214,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
+  firebase_storage:
+    :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
   flutter_auth_ui:
     :path: ".symlinks/plugins/flutter_auth_ui/ios"
+  flutter_email_sender:
+    :path: ".symlinks/plugins/flutter_email_sender/ios"
+  flutter_phone_direct_caller:
+    :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
@@ -210,6 +239,7 @@ SPEC CHECKSUMS:
   firebase_auth: 3193124aa14a62b8abec3fd069df73ef378d2c5b
   firebase_core: f5ac1f2726a2bd0468cea0161eddeea3d83d7e3e
   firebase_database: afeac59ff1fbd052ff574f2bec2e10d48377ddc5
+  firebase_storage: 04a381404ffddf5d3d39bf4bdfc517e4a354dfe9
   FirebaseAnonymousAuthUI: dc0d806fb53268e79fa64ae8ffd8e1adfc242244
   FirebaseAuth: 2e7d029977648c67a5d51a263d4cbab76d34cf12
   FirebaseAuthUI: e75ef9d6cfcd8f1ba8bee2b360493a9947533f6c
@@ -221,9 +251,12 @@ SPEC CHECKSUMS:
   FirebaseGoogleAuthUI: 6981c0c3c054367f9ccd730fbcf483504deb0a68
   FirebaseOAuthUI: 8dc3d0270781133b10b2666d1163cd298501f453
   FirebasePhoneAuthUI: d84be4a096ddc19f9aace4a6ebcf80fe334f466b
+  FirebaseStorage: 2e6e58fe31fb0061fdce3f156d0ebc964e9de6ba
   FirebaseUI: b04b32ead3a6dcd5a50829e14b8f3f6d044d5d62
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_auth_ui: 4e3a33f1916590de4bd1fc13d052e20baecbc412
+  flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
+  flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
@@ -233,6 +266,7 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

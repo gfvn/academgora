@@ -1,12 +1,12 @@
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
 import 'package:academ_gora_release/controller/times_controller.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../../user_role.dart';
 import '../extension.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_parameters/human_info_widget.dart';

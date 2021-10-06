@@ -1,10 +1,12 @@
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/screens/account/administrator_profile/administrator_profile_screen.dart';
+import 'package:academ_gora_release/screens/account/instructor_profile/instructor_workouts_screen.dart';
 import 'package:academ_gora_release/screens/account/user_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
-import '../../user_role.dart';
 import '../extension.dart';
 import '../main_screen.dart';
 
@@ -91,15 +93,11 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
       } else if (userRole == UserRole.instructor) {
-        // Navigator.of(context).push(
-        //     MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen()));
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen()));
       } else {
-        // Navigator.of(context).push(
-        //     MaterialPageRoute(builder: (c) => AdministratorProfileScreen()));
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (c) => AdministratorProfileScreen()));
       }
     });
   }

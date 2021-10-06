@@ -2,6 +2,7 @@ import 'package:academ_gora_release/controller/firebase_requests_controller.dart
 import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_to_instructor/date_widget.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
 import '../../../main.dart';
-import '../../../user_role.dart';
 import 'months.dart';
 
 class SetWorkoutTimeScreen extends StatefulWidget {

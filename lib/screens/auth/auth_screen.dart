@@ -1,13 +1,13 @@
 import 'package:academ_gora_release/controller/auth_controller.dart';
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
 import 'package:academ_gora_release/data_keepers/user_workouts_keeper.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 
 import '../../main.dart';
-import '../../user_role.dart';
 import '../extension.dart';
 import '../main_screen.dart';
 

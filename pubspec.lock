@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  expand_tap_area:
+    dependency: "direct dev"
+    description:
+      name: expand_tap_area
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   expandable:
     dependency: "direct dev"
     description:

@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,11 +6,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../main.dart';
-import '../user_role.dart';
 import 'account/administrator_profile/administrator_profile_screen.dart';
 import 'account/instructor_profile/instructor_workouts_screen.dart';
 import 'account/user_account_screen.dart';
 import 'extension.dart';
+import 'info_screens/about_us_screen.dart';
+import 'info_screens/call_us_screen.dart';
+import 'info_screens/chill_zone_screen.dart';
+import 'info_screens/price_screen.dart';
+import 'info_screens/regime_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -273,24 +278,18 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _openPriceScreen() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (c) => PriceScreen()));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        .push(MaterialPageRoute(builder: (c) => PriceScreen()));
   }
 
   void _openChillZoneScreen() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (c) => ChillZoneScreen()));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        .push(MaterialPageRoute(builder: (c) => ChillZoneScreen()));
   }
 
   void _openRegimeScreen() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (c) => RegimeScreen()));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        .push(MaterialPageRoute(builder: (c) => RegimeScreen()));
   }
 
   Widget _registrationToInstructorButton() {
@@ -342,10 +341,8 @@ class _MainScreenState extends State<MainScreen> {
           color: Colors.white,
           child: InkWell(
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (c) => AboutUsScreen()));
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+                    .push(MaterialPageRoute(builder: (c) => AboutUsScreen()));
               },
               child: const Center(
                 child: Text(
@@ -367,10 +364,8 @@ class _MainScreenState extends State<MainScreen> {
           color: Colors.white,
           child: InkWell(
               onTap: () {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (c) => CallUsScreen()));
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+                    .push(MaterialPageRoute(builder: (c) => CallUsScreen()));
               },
               child: const Center(
                 child: Text(

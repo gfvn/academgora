@@ -1,8 +1,7 @@
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../user_role.dart';
 
 class AuthController {
   final dbRef = FirebaseDatabase.instance.reference();

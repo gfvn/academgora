@@ -2,13 +2,13 @@ import 'package:academ_gora_release/controller/firebase_requests_controller.dart
 import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/helpers_widgets/workout_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
-import '../../../user_role.dart';
 import '../../extension.dart';
 import '../update_workout_screen.dart';
 import '../user_account_screen.dart';

@@ -2,6 +2,7 @@ import 'package:academ_gora_release/controller/firebase_requests_controller.dart
 import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_workouts_keeper.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 
 import '../../main.dart';
-import '../../user_role.dart';
 import '../extension.dart';
 import '../main_screen.dart';
 import 'helpers_widgets/workout_widget.dart';

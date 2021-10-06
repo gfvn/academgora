@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/reg_parameters/human_info_widget.dart';
@@ -14,7 +15,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../../user_role.dart';
 import '../extension.dart';
 
 class UpdateWorkoutScreen extends StatefulWidget {

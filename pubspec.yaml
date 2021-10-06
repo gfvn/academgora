@@ -23,6 +23,13 @@ dev_dependencies:
   shared_preferences: ^2.0.7
   flutter_auth_ui: ^2.3.2
   firebase_database: 7.1.1
+  firebase_storage: ^10.0.4
+  flutter_calendar_carousel: ^2.0.3
+  carousel_slider: ^4.0.0
+  url_launcher: ^6.0.10
+  flutter_email_sender: ^5.0.2
+  flutter_phone_direct_caller: ^2.0.0
+
 flutter:
 
   uses-material-design: true

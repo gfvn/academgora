@@ -2,9 +2,12 @@ import 'package:academ_gora_release/screens/registration_to_workout/registration
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../main.dart';
 import '../user_role.dart';
+import 'account/administrator_profile/administrator_profile_screen.dart';
+import 'account/instructor_profile/instructor_workouts_screen.dart';
 import 'account/user_account_screen.dart';
 import 'extension.dart';
 
@@ -118,15 +121,11 @@ class _MainScreenState extends State<MainScreen> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
       } else if (userRole == UserRole.instructor) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
-        // Navigator.of(context).push(
-        //     MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen(instructorPhoneNumber: FirebaseAuth.instance.currentUser!.phoneNumber!)));
       } else {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
-        // Navigator.of(context).push(
-        //     MaterialPageRoute(builder: (c) => AdministratorProfileScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()));
       }
     });
   }

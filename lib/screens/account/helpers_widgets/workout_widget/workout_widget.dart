@@ -1,16 +1,14 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/helpers_widgets/workout_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:academ_gora_release/screens/account/helpers_widgets/workout_widget/cancel_workout.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../update_workout_screen.dart';
+import 'cancel_workout_impl.dart';
 
 class WorkoutWidget extends StatefulWidget {
   final Workout workout;
@@ -22,16 +20,20 @@ class WorkoutWidget extends StatefulWidget {
 }
 
 class _WorkoutWidgetState extends State<WorkoutWidget> {
-  final FirebaseRequestsController _firebaseRequestsController =
-      FirebaseRequestsController();
-  final TimesController _timesController = TimesController();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   Instructor? _instructor;
+  late CancelWorkout _cancelWorkout;
+
+  @override
+  void initState() {
+    super.initState();
+    _instructor = _instructorsKeeper
+        .findInstructorByPhoneNumber(widget.workout.instructorPhoneNumber!);
+    _cancelWorkout = CancelWorkoutImplementation(_instructor!, widget.workout);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _instructor = _instructorsKeeper
-        .findInstructorByPhoneNumber(widget.workout.instructorPhoneNumber!);
     return Container(
       width: screenWidth * 0.9,
       decoration: const BoxDecoration(
@@ -147,7 +149,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
-                _cancelWorkout();
+                _cancelWorkout.cancelWorkout();
                 Navigator.of(context).pop();
               },
             ),
@@ -161,29 +163,6 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
         );
       },
     );
-  }
-
-  void _cancelWorkout() {
-    _deleteWorkoutFromUser();
-    _deleteWorkoutFromInstructor();
-  }
-
-  void _deleteWorkoutFromUser() {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-    _firebaseRequestsController
-        .delete("${UserRole.user}/$userId/Занятия/${widget.workout.id}");
-  }
-
-  void _deleteWorkoutFromInstructor() {
-    _firebaseRequestsController
-        .delete(
-            "${UserRole.instructor}/${_instructor!.id}/Занятия/Занятие ${widget.workout.id}")
-        .then((_) {
-      _firebaseRequestsController.update(
-          "${UserRole.instructor}/${_instructor!.id}/График работы/${widget.workout.date}",
-          _timesController.setTimesStatus(widget.workout.from!,
-              widget.workout.workoutDuration!, "не открыто"));
-    });
   }
 
   Widget _infoTextColumn() {

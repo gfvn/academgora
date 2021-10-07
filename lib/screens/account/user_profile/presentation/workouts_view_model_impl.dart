@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/user_profile/data/firebase_workouts_controller.dart';
 import 'package:academ_gora_release/screens/account/user_profile/data/firebase_workouts_controller_impl.dart';
-import 'package:academ_gora_release/screens/account/user_profile/data/workouts_keeper.dart';
+import 'package:academ_gora_release/screens/account/user_profile/data/workouts_state_keeper.dart';
 import 'package:academ_gora_release/screens/account/user_profile/presentation/workouts_view_model.dart';
 
 class WorkoutsViewModelImpl implements WorkoutsViewModel, WorkoutsDataListener{

@@ -10,16 +10,16 @@ import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../../main_screen.dart';
-import '../../helpers_widgets/workout_widget.dart';
+import '../../helpers_widgets/workout_widget/workout_widget.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);
 
   @override
-  UserAccountScreenState createState() => UserAccountScreenState();
+  _UserAccountScreenState createState() => _UserAccountScreenState();
 }
 
-class UserAccountScreenState extends State<UserAccountScreen> {
+class _UserAccountScreenState extends State<UserAccountScreen> {
   final WorkoutsViewModel _workoutsViewModel = WorkoutsViewModelImpl();
 
   @override
@@ -156,8 +156,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           WorkoutWidget(
-                              workout: workouts[index],
-                              userAccountScreenState: this),
+                              workout: workouts[index],),
                           index != workouts.length - 1
                               ? const SizedBox(
                                   height: 30,

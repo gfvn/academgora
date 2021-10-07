@@ -8,18 +8,14 @@ import 'package:academ_gora_release/screens/account/helpers_widgets/workout_info
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../main.dart';
-import '../../extension.dart';
-import '../update_workout_screen.dart';
-import '../user_profile/presentation/user_account_screen.dart';
+import '../../../../main.dart';
+import '../../../extension.dart';
+import '../../update_workout_screen.dart';
 
 class WorkoutWidget extends StatefulWidget {
   final Workout workout;
-  final UserAccountScreenState userAccountScreenState;
 
-  const WorkoutWidget(
-      {Key? key, required this.workout, required this.userAccountScreenState})
-      : super(key: key);
+  const WorkoutWidget({Key? key, required this.workout}) : super(key: key);
 
   @override
   _WorkoutWidgetState createState() => _WorkoutWidgetState();
@@ -150,10 +146,10 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 'Да',
                 style: TextStyle(fontSize: 18),
               ),
-              onPressed: (){
+              onPressed: () {
                 _cancelWorkout();
                 Navigator.of(context).pop();
-                },
+              },
             ),
             TextButton(
               child: const Text('Нет', style: TextStyle(fontSize: 18)),
@@ -169,19 +165,13 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   void _cancelWorkout() {
     _deleteWorkoutFromUser();
+    _deleteWorkoutFromInstructor();
   }
 
   void _deleteWorkoutFromUser() {
-    UserRole.getUserRole().then((userRole) {
-      if (userRole == UserRole.user) {
-        String userId = FirebaseAuth.instance.currentUser!.uid;
-        _firebaseRequestsController
-            .delete("$userRole/$userId/Занятия/${widget.workout.id}")
-            .then((_) {
-          widget.userAccountScreenState.setState(() {});
-        });
-      }
-    }).then((value) => _deleteWorkoutFromInstructor());
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    _firebaseRequestsController
+        .delete("${UserRole.user}/$userId/Занятия/${widget.workout.id}");
   }
 
   void _deleteWorkoutFromInstructor() {
@@ -189,11 +179,10 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
         .delete(
             "${UserRole.instructor}/${_instructor!.id}/Занятия/Занятие ${widget.workout.id}")
         .then((_) {
-      _firebaseRequestsController
-          .update(
-              "${UserRole.instructor}/${_instructor!.id}/График работы/${widget.workout.date}",
-              _timesController.setTimesStatus(widget.workout.from!,
-                  widget.workout.workoutDuration!, "не открыто"));
+      _firebaseRequestsController.update(
+          "${UserRole.instructor}/${_instructor!.id}/График работы/${widget.workout.date}",
+          _timesController.setTimesStatus(widget.workout.from!,
+              widget.workout.workoutDuration!, "не открыто"));
     });
   }
 
@@ -257,7 +246,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
             ),
             child: Text(
               widget.workout.instructorPhoneNumber!,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(color: Colors.white, fontSize: 12),
             )));
   }
 

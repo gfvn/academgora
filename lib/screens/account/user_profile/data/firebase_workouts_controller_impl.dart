@@ -2,7 +2,7 @@ import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/user_profile/data/firebase_workouts_controller.dart';
-import 'package:academ_gora_release/screens/account/user_profile/data/workouts_keeper.dart';
+import 'package:academ_gora_release/screens/account/user_profile/data/workouts_state_keeper.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

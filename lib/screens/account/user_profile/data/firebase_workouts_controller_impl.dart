@@ -33,7 +33,9 @@ class FirebaseWorkoutsControllerImplementation
   Future<Map> _getWorkoutsFromFirebaseForCurrentUser() async {
     DataSnapshot dataSnapshot =
         await FirebaseDatabase.instance.reference().child(_path).once();
-    return dataSnapshot.value as Map<dynamic, dynamic>;
+    return dataSnapshot.value == null
+        ? {}
+        : dataSnapshot.value as Map<dynamic, dynamic>;
   }
 
   List<Workout> _parseFirebaseResponseToWorkoutsList(Map? workouts) {

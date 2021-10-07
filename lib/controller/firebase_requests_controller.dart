@@ -50,7 +50,9 @@ class FirebaseRequestsController {
   Future<Map> get(String path) async {
     DataSnapshot dataSnapshot =
         await FirebaseDatabase.instance.reference().child(path).once();
-    return dataSnapshot.value as Map<dynamic, dynamic>;
+    return dataSnapshot.value == null
+        ? {}
+        : dataSnapshot.value as Map<dynamic, dynamic>;
   }
 
   Future<String> getDownloadUrlFromFirebaseStorage(String path) async {
@@ -59,7 +61,7 @@ class FirebaseRequestsController {
     return url;
   }
 
-  Future<void> uploadFileToFirebaseStorage(String path, File file)async{
+  Future<void> uploadFileToFirebaseStorage(String path, File file) async {
     await FirebaseStorage.instance.ref().child(path).putFile(file);
   }
 

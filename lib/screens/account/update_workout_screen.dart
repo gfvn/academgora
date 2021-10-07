@@ -6,7 +6,7 @@ import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/reg_parameters/human_info_widget.dart';
 import 'package:academ_gora_release/screens/account/reg_parameters/select_level_of_skating_widget.dart';
 import 'package:academ_gora_release/screens/account/reg_parameters/select_people_count_widget.dart';
-import 'package:academ_gora_release/screens/account/user_account_screen.dart';
+import 'package:academ_gora_release/screens/account/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_parameters/info_text.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_parameters_screen.dart';

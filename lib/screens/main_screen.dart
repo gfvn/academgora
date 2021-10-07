@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 import 'account/administrator_profile/administrator_profile_screen.dart';
 import 'account/instructor_profile/instructor_workouts_screen.dart';
-import 'account/user_account_screen.dart';
+import 'account/user_profile/presentation/user_account_screen.dart';
 import 'extension.dart';
 import 'info_screens/about_us_screen.dart';
 import 'info_screens/call_us_screen.dart';

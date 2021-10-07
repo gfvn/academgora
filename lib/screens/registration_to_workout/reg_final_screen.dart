@@ -2,7 +2,7 @@ import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/account/instructor_profile/instructor_workouts_screen.dart';
-import 'package:academ_gora_release/screens/account/user_account_screen.dart';
+import 'package:academ_gora_release/screens/account/user_profile/presentation/user_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

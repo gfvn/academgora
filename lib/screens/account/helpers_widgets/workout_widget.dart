@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import '../../../main.dart';
 import '../../extension.dart';
 import '../update_workout_screen.dart';
-import '../user_account_screen.dart';
+import '../user_profile/presentation/user_account_screen.dart';
 
 class WorkoutWidget extends StatefulWidget {
   final Workout workout;

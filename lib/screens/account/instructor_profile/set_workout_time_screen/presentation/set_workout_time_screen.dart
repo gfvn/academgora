@@ -1,9 +1,10 @@
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
 import 'package:academ_gora_release/controller/times_controller.dart';
-import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model.dart';
+import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model_impl.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_to_instructor/date_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,8 +13,8 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
-import '../../../main.dart';
-import 'months.dart';
+import '../../../../../main.dart';
+import '../../months.dart';
 
 class SetWorkoutTimeScreen extends StatefulWidget {
   final String? phoneNumber;
@@ -25,6 +26,9 @@ class SetWorkoutTimeScreen extends StatefulWidget {
 }
 
 class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
+  final InstructorDataViewModel _instructorDataViewModel =
+      InstructorDataViewModelImpl();
+
   DateTime _selectedDate = DateTime.now();
 
   List<String> _openedTimesPerDay = [];
@@ -35,40 +39,48 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   String? _selectedTimeStatus;
 
-  final FirebaseRequestsController _firebaseController = FirebaseRequestsController();
+  final FirebaseRequestsController _firebaseController =
+      FirebaseRequestsController();
   final TimesController _timesController = TimesController();
   List<Workout> _workoutsPerDay = [];
-
-  final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   Instructor? _currentInstructor;
 
   @override
+  void initState() {
+    super.initState();
+    _instructorDataViewModel.getInstructorData(widget.phoneNumber);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (widget.phoneNumber == null) {
-      _currentInstructor = _instructorsKeeper.findInstructorByPhoneNumber(
-          FirebaseAuth.instance.currentUser!.phoneNumber!);
-    } else {
-      _currentInstructor = _instructorsKeeper
-          .findInstructorByPhoneNumber(widget.phoneNumber!);
-    }
-    _getOpenedTimesPerDay();
-    _getOpenedTimesPerMonth();
-    _getAllWorkoutsPerDay();
     return Scaffold(
-        body: Container(
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          _titleRow(),
-          horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
-          _calendar(),
-          _indicatorsRow(),
-          horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 15, 15),
-          _dateTimePickerWidget(),
-          _changeStatusButtons()
-        ],
-      ),
-    ));
+        body: Container(alignment: Alignment.center, child: _body()));
+  }
+
+  Widget _body() {
+    return StreamBuilder(
+        stream: _instructorDataViewModel.instructorData,
+        builder: (ctx, snap) {
+          if (!snap.hasData) {
+            return Container();
+          } else {
+            _currentInstructor = snap.data as Instructor;
+            _getOpenedTimesPerDay();
+            _getOpenedTimesPerMonth();
+            _getAllWorkoutsPerDay();
+            return Column(
+              children: [
+                _titleRow(),
+                horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
+                _calendar(),
+                _indicatorsRow(),
+                horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 15, 15),
+                _dateTimePickerWidget(),
+                _changeStatusButtons()
+              ],
+            );
+          }
+        });
   }
 
   Widget _titleRow() {
@@ -135,13 +147,12 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _indicatorsRow() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _indicator("запись открыта", "assets/instructor_set_time/e5.png"),
-          _indicator("записи нет", "assets/instructor_set_time/e6.png"),
-        ],
-      );
-
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _indicator("запись открыта", "assets/instructor_set_time/e5.png"),
+        _indicator("записи нет", "assets/instructor_set_time/e6.png"),
+      ],
+    );
   }
 
   Widget _indicator(String text, String iconPath) {
@@ -319,9 +330,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   void _setSelectedView(String time) {
     DateTime now = DateTime.now();
-    if (_selectedDate.year >= now.year &&
-        _selectedDate.month >= now.month &&
-        _selectedDate.day >= now.day) {
+    if (_selectedDate.isAfter(now) || _selectedDate == now) {
       setState(() {
         if (_selectedTimeStatus == TimeStatus.OPENED) {
           _sendOnce(time, "открыто");
@@ -354,7 +363,6 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
           if (!_checkChangeTimePossibility(time)) {
             _deleteWorkout(time);
           }
-          setState(() {});
         });
       }
     });
@@ -465,17 +473,14 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         }
       });
     }
-    setState(() {});
   }
 
   void _getOpenedTimesPerMonth() {
     if (_currentInstructor!.schedule != null) {
-      setState(() {
-        _fillMarkedDateMap(_getDatesWithOpenedRegistration(
-            _currentInstructor!.schedule!,
-            UserRole.instructor,
-            FirebaseAuth.instance.currentUser!.uid));
-      });
+      _fillMarkedDateMap(_getDatesWithOpenedRegistration(
+          _currentInstructor!.schedule!,
+          UserRole.instructor,
+          FirebaseAuth.instance.currentUser!.uid));
     }
   }
 
@@ -488,9 +493,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       String formattedDate =
           "${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(0, 2)}";
       DateTime dateTime = DateTime.parse(formattedDate);
-      if (dateTime.year <= now.year &&
-          dateTime.month <= now.month &&
-          dateTime.day < now.day) {
+      if (dateTime.isBefore(now)) {
         _firebaseController.delete("$userRole/$userId/График работы/$date");
       } else {
         (value as Map<dynamic, dynamic>).forEach((key, value) {
@@ -516,17 +519,14 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   Widget _markedDateIcon(DateTime dateTime) {
-    return Container(
-      child: Center(
-        child: Text(
-          dateTime.day.toString(),
-          style: TextStyle(
-              color: _compareDateWithSelected(dateTime)
-                  ? Colors.white
-                  : Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 14),
-        ),
+    return Center(
+      child: Text(
+        dateTime.day.toString(),
+        style: TextStyle(
+            color:
+                _compareDateWithSelected(dateTime) ? Colors.white : Colors.blue,
+            fontWeight: FontWeight.bold,
+            fontSize: 14),
       ),
     );
   }
@@ -552,8 +552,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   Widget _changeStatusButtons() {
-    return Container(
-        child: Column(
+    return Column(
       children: [
         _changeStatusButton(TimeStatus.OPENED, "открыта предварительная запись",
             "assets/instructor_set_time/e5.png"),
@@ -566,7 +565,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             "предварительная запись не открыта",
             "assets/instructor_set_time/e15.png"),
       ],
-    ));
+    );
   }
 
   Widget _changeStatusButton(String timeStatus, String text, String iconPath) {
@@ -584,7 +583,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
               Container(
                 height: 8,
                 width: 8,
-                margin: EdgeInsets.only(right: 5),
+                margin: const EdgeInsets.only(right: 5),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(iconPath),

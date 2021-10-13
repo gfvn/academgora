@@ -55,7 +55,7 @@ class FirebaseWorkoutsControllerImplementation
   }
 
   void _saveWorkoutsToKeeper(List<Workout> workouts) {
-    WorkoutsKeeper().saveWorkouts(workouts);
+    _workoutsKeeper.saveWorkouts(workouts);
   }
 
   void _subscribeToServerChanges() {

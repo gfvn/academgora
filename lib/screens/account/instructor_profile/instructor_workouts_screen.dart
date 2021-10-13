@@ -4,7 +4,7 @@ import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen.dart';
+import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
 import 'package:academ_gora_release/screens/account/instructor_profile/workout_data_widget.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_to_instructor/date_widget.dart';
@@ -291,16 +291,15 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   Widget _markedDateIcon(DateTime dateTime) {
     return Center(
-        child: Text(
-          dateTime.day.toString(),
-          style: TextStyle(
-              color: _compareDateWithSelected(dateTime)
-                  ? Colors.white
-                  : Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 14),
-        ),
-      );
+      child: Text(
+        dateTime.day.toString(),
+        style: TextStyle(
+            color:
+                _compareDateWithSelected(dateTime) ? Colors.white : Colors.blue,
+            fontWeight: FontWeight.bold,
+            fontSize: 14),
+      ),
+    );
   }
 
   bool _compareDateWithSelected(DateTime dateTime) {
@@ -325,7 +324,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
     List<Workout>? workouts = [];
     if (widget.instructorPhoneNumber != null) {
       workouts = _instructorsKeeper
-          .findInstructorByPhoneNumber(widget.instructorPhoneNumber!)!.workouts!;
+          .findInstructorByPhoneNumber(widget.instructorPhoneNumber!)!
+          .workouts!;
     } else {
       workouts = _instructorsKeeper
           .findInstructorByPhoneNumber(
@@ -399,9 +399,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   void _logout() async {
     FlutterAuthUi.signOut();
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (c) => const AuthScreen()),
-            (route) => false);
+        MaterialPageRoute(builder: (c) => const AuthScreen()),
+        (route) => false);
   }
 
   void _openRedactProfileScreen() {

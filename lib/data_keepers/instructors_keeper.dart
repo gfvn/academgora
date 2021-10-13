@@ -15,24 +15,24 @@ class InstructorsKeeper {
   }
 
   void _updateListeners() {
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       element.setState(() {});
-    });
+    }
   }
 
   void addListener(State listener) {
     bool contains = false;
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       if (element.runtimeType == listener.runtimeType) contains = true;
-    });
+    }
     if (!contains) _listeners.add(listener);
   }
 
   void removeListener(State listener) {
     bool contains = false;
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       if (element.runtimeType == listener.runtimeType) contains = true;
-    });
+    }
     if (contains) _listeners.remove(listener);
   }
 
@@ -46,19 +46,19 @@ class InstructorsKeeper {
 
   List<Instructor> findInstructorsByKindOfSport(String kindOfSport) {
     List<Instructor> filtered = [];
-    instructorsList.forEach((element) {
+    for (var element in instructorsList) {
       if (element.kindOfSport == kindOfSport) filtered.add(element);
-    });
+    }
     return filtered;
   }
 
   Instructor? findInstructorByPhoneNumber(String phoneNumber) {
     Instructor? instructor;
-    instructorsList.forEach((element) {
+    for (var element in instructorsList) {
       if (element.phone == phoneNumber) {
         instructor = element;
       }
-    });
+    }
     return instructor;
   }
 

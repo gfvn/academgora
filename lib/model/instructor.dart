@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
 import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_to_instructor/date_widget.dart';
 
 class Instructor {
   String? id;
@@ -28,22 +29,18 @@ class Instructor {
 
   static Map<dynamic, dynamic> _parseDates(
       Map<dynamic, dynamic> schedule, String instructorId) {
-    if (schedule == null)
+    if (schedule == null) {
       return {};
-    else {
+    } else {
       var parsedMap = {};
       schedule.forEach((date, value) {
         String formattedDate =
             "${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(0, 2)}";
         DateTime dateTime = DateTime.parse(formattedDate);
         DateTime now = DateTime.now();
-        if (dateTime.year < now.year)
+        if (now.isAfterDate(dateTime)) {
           _deleteOldDate(instructorId, date);
-        else if (dateTime.month < now.month)
-          _deleteOldDate(instructorId, date);
-        else if (dateTime.day < now.day - 1)
-          _deleteOldDate(instructorId, date);
-        else {
+        } else {
           parsedMap.putIfAbsent(date, () => value);
         }
       });
@@ -58,10 +55,11 @@ class Instructor {
 
   static List<Workout> _parseWorkouts(Map data) {
     List<Workout> workouts = [];
-    if (data != null && data.length > 0)
+    if (data != null && data.length > 0) {
       data.forEach((key, value) {
         workouts.add(Workout.fromJson((key as String).split(" ")[1], value));
       });
+    }
     return workouts;
   }
 

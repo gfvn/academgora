@@ -87,7 +87,7 @@ class _DateWidgetState extends State<DateWidget> {
       child: Container(
           height: 13,
           width: 13,
-          margin: EdgeInsets.only(left: 5, right: 5),
+          margin: const EdgeInsets.only(left: 5, right: 5),
           child: Image.asset("assets/registration_to_instructor/5_e8.png")),
       onTap: _clearDateFieldButton,
     );
@@ -111,7 +111,8 @@ class _DateWidgetState extends State<DateWidget> {
             builder: (c, setState) => AlertDialog(
                     actions: [
                       TextButton(
-                          child: Text('OK'), onPressed: _applyAndCloseDialog),
+                          child: const Text('OK'),
+                          onPressed: _applyAndCloseDialog),
                     ],
                     content: CalendarCarousel<Event>(
                       headerTextStyle: TextStyle(
@@ -122,10 +123,10 @@ class _DateWidgetState extends State<DateWidget> {
                       height: 270,
                       todayBorderColor: Colors.transparent,
                       todayButtonColor: Colors.transparent,
-                      todayTextStyle: TextStyle(color: Colors.blueAccent),
+                      todayTextStyle: const TextStyle(color: Colors.blueAccent),
                       onDayPressed: (DateTime date, List<Event> events) {
                         DateTime now = DateTime.now();
-                        if (date.isAfter(now) || date.isSameDate(now)) {
+                        if (date.isAfter(now) || date == now) {
                           setState(() {
                             {
                               DateTime newDateTime = DateTime(
@@ -143,7 +144,8 @@ class _DateWidgetState extends State<DateWidget> {
                       },
                       selectedDateTime: _selectedDate,
                       targetDateTime: _selectedDate,
-                      selectedDayTextStyle: TextStyle(color: Colors.white),
+                      selectedDayTextStyle:
+                          const TextStyle(color: Colors.white),
                     )));
       },
     );
@@ -159,9 +161,10 @@ class _DateWidgetState extends State<DateWidget> {
 }
 
 extension DateOnlyCompare on DateTime {
+  bool isAfterDate(DateTime other) {
+    return other.year < year && other.month < month && other.day < day;
+  }
   bool isSameDate(DateTime other) {
-    return year == other.year &&
-        month == other.month &&
-        day == other.day;
+    return other.year == year && other.month == month && other.day == day;
   }
 }

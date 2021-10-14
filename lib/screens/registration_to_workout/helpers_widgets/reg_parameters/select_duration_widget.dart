@@ -35,13 +35,13 @@ class _SelectDurationWidgetState extends State<SelectDurationWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _peoplesCountWidget(),
+        _workoutDurationTitle(),
         _countButtons(),
       ],
     );
   }
 
-  Widget _peoplesCountWidget() {
+  Widget _workoutDurationTitle() {
     return Container(
         margin: EdgeInsets.only(left: screenWidth * 0.03),
         child: const Text(

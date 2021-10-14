@@ -71,12 +71,12 @@ class RegistrationParametersScreenState
                     SizedBox(
                         height: screenHeight * 0.19,
                         child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.all(3),
                             itemCount: peopleCount,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
-                                margin: EdgeInsets.only(left: 25),
+                                margin: const EdgeInsets.only(left: 25),
                                 child: HumanInfoWidget(
                                     index + 1, textEditingControllers, this),
                               );
@@ -205,7 +205,7 @@ class RegistrationParametersScreenState
               width: 170,
               height: screenHeight * 0.05,
               child: Material(
-                borderRadius: BorderRadius.all(const Radius.circular(35)),
+                borderRadius: const BorderRadius.all(Radius.circular(35)),
                 color: _continueButtonBackgroundColor(),
                 child: InkWell(
                     onTap: peopleCount != null &&

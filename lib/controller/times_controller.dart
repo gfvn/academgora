@@ -94,7 +94,7 @@ class TimesController {
       Map<dynamic, dynamic> schedule, String from, String status) {
     int fromPriority = _times[from]!;
     if (fromPriority >= 21) {
-      return true;
+      return false;
     } else if (schedule[getTimeByValue(fromPriority)] == 'открыто' &&
         schedule[getTimeByValue(fromPriority + 2)] == 'открыто'
     ) {

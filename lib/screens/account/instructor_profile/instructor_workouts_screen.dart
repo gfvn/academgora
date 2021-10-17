@@ -96,10 +96,10 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
               style: TextStyle(color: Colors.black, fontSize: 18),
             ),
             Container(
-                margin: EdgeInsets.only(left: 5),
+                margin: const EdgeInsets.only(left: 5),
                 height: 20,
                 width: 20,
-                child: Icon(Icons.logout))
+                child: const Icon(Icons.logout))
           ],
         ));
   }

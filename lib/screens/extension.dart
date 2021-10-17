@@ -5,6 +5,18 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../main.dart';
 
+extension DateOnlyCompare on DateTime {
+  bool isAfterDate(DateTime other) {
+    return other.year < year && other.month < month && other.day < day;
+  }
+  bool isSameDate(DateTime other) {
+    return other.year == year && other.month == month && other.day == day;
+  }
+  bool isBeforeDate(DateTime other) {
+    return other.year < year && other.month < month && other.day < day;
+  }
+}
+
 Widget defaultButton(String text, Function()? onPressed,{double width = 200,double height = 45}) {
   return Container(
       margin: const EdgeInsets.all(2),

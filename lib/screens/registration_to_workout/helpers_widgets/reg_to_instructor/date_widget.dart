@@ -159,12 +159,3 @@ class _DateWidgetState extends State<DateWidget> {
     setState(() {});
   }
 }
-
-extension DateOnlyCompare on DateTime {
-  bool isAfterDate(DateTime other) {
-    return other.year < year && other.month < month && other.day < day;
-  }
-  bool isSameDate(DateTime other) {
-    return other.year == year && other.month == month && other.day == day;
-  }
-}

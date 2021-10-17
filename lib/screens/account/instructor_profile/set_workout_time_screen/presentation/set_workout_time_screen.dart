@@ -5,8 +5,8 @@ import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model.dart';
 import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model_impl.dart';
+import 'package:academ_gora_release/screens/extension.dart' as extensions;
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
-import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_to_instructor/date_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -183,7 +183,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _dateTimePickerWidget() {
     return Column(
-      children: [_dateSliderWidget(), _timeWidget()],
+      children: [_dateSliderWidget(), _timesWidget()],
     );
   }
 
@@ -219,7 +219,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   String _getSelectedDate() {
-    return "${_selectedDate.day} ${months[_selectedDate.month - 1]}";
+    return "${_selectedDate.day} ${extensions.months[_selectedDate.month - 1]}";
   }
 
   void _increaseDate() {
@@ -245,7 +245,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     }
   }
 
-  Widget _timeWidget() {
+  Widget _timesWidget() {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
@@ -330,7 +330,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   void _setSelectedView(String time) {
     DateTime now = DateTime.now();
-    if (_selectedDate.isAfter(now) || _selectedDate == now) {
+    if (_selectedDate.isAfterDate(now) || _selectedDate.isSameDate(now)) {
       setState(() {
         if (_selectedTimeStatus == TimeStatus.OPENED) {
           _sendOnce(time, "открыто");
@@ -353,16 +353,18 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
               "$userRole/$userId/График работы/$dateString",
               {time: status}).then((value) => setState(() {}));
         } else {
-          _showWarningDialog();
+          _showWarningCancelDialog();
         }
       }
       if (userRole == UserRole.administrator) {
-        _firebaseController.update(
-            "${UserRole.instructor}/${_currentInstructor!.id}/График работы/$dateString",
-            {time: status}).then((value) {
-          if (!_checkChangeTimePossibility(time)) {
-            _deleteWorkout(time);
-          }
+        _showWarningChangeTimeDialogForAdmin(() {
+          _firebaseController.update(
+              "${UserRole.instructor}/${_currentInstructor!.id}/График работы/$dateString",
+              {time: status}).then((value) {
+            if (!_checkChangeTimePossibility(time)) {
+              _deleteWorkout(time);
+            }
+          });
         });
       }
     });
@@ -402,7 +404,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     });
   }
 
-  void _showWarningDialog() {
+  void _showWarningCancelDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -416,6 +418,42 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             TextButton(
               child: const Text(
                 'ОК',
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showWarningChangeTimeDialogForAdmin(Function onApprove) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+            "Изменить время?",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'ДА',
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                onApprove.call();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'НЕТ',
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
@@ -493,7 +531,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       String formattedDate =
           "${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(0, 2)}";
       DateTime dateTime = DateTime.parse(formattedDate);
-      if (dateTime.isBefore(now)) {
+      if (dateTime.isBeforeDate(now)) {
         _firebaseController.delete("$userRole/$userId/График работы/$date");
       } else {
         (value as Map<dynamic, dynamic>).forEach((key, value) {

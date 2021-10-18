@@ -7,7 +7,7 @@ import '../main.dart';
 
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {
-    return other.year < year && other.month < month && other.day < day;
+    return other.year <= year && other.month <= month && other.day <= day;
   }
   bool isSameDate(DateTime other) {
     return other.year == year && other.month == month && other.day == day;

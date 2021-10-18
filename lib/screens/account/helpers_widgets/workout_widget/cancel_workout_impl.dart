@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
 import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
@@ -7,8 +9,8 @@ import 'package:academ_gora_release/screens/account/helpers_widgets/workout_widg
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CancelWorkoutImplementation implements CancelWorkout {
-
-  final FirebaseRequestsController _firebaseRequestsController = FirebaseRequestsController();
+  final FirebaseRequestsController _firebaseRequestsController =
+      FirebaseRequestsController();
   final TimesController _timesController = TimesController();
   final Instructor _instructor;
   final Workout _workout;
@@ -28,14 +30,10 @@ class CancelWorkoutImplementation implements CancelWorkout {
   }
 
   void _deleteWorkoutFromInstructor() {
-    _firebaseRequestsController
-        .delete(
-        "${UserRole.instructor}/${_instructor.id}/Занятия/Занятие ${_workout
-            .id}");
+    _firebaseRequestsController.delete(
+        "${UserRole.instructor}/${_instructor.id}/Занятия/Занятие ${_workout.id}");
     _firebaseRequestsController.update(
-        "${UserRole.instructor}/${_instructor.id}/График работы/${_workout
-            .date}",
-        _timesController.setTimesStatus(_workout.from!,
-            _workout.workoutDuration!, "открыто"));
+        "${UserRole.instructor}/${_instructor.id}/График работы/${_workout.date}",
+        {_workout.from!: "открыто"});
   }
 }

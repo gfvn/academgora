@@ -14,7 +14,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../main.dart';
-import '../../months.dart';
 
 class SetWorkoutTimeScreen extends StatefulWidget {
   final String? phoneNumber;

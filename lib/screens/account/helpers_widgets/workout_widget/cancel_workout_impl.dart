@@ -11,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 class CancelWorkoutImplementation implements CancelWorkout {
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
-  final TimesController _timesController = TimesController();
   final Instructor _instructor;
   final Workout _workout;
 

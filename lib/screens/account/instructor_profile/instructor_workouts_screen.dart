@@ -353,8 +353,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
         "${workoutDate.substring(4, 8)}-${workoutDate.substring(2, 4)}-${workoutDate.substring(0, 2)}";
     DateTime workoutDateTime = DateTime.parse(formattedDate);
     DateTime now = DateTime.now();
-    if (workoutDateTime.millisecondsSinceEpoch >=
-        now.millisecondsSinceEpoch - (86400000 * 30)) {
+    if (now.isAfterDate(workoutDateTime)) {
       return true;
     } else {
       return false;

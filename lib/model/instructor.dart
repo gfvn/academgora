@@ -28,7 +28,7 @@ class Instructor {
   }
 
   static Map<dynamic, dynamic> _parseDates(
-      Map<dynamic, dynamic> schedule, String instructorId) {
+      Map<dynamic, dynamic>? schedule, String instructorId) {
     if (schedule == null) {
       return {};
     } else {
@@ -53,9 +53,9 @@ class Instructor {
         .delete("Инструкторы/$instructorId/График работы/$dateString");
   }
 
-  static List<Workout> _parseWorkouts(Map data) {
+  static List<Workout> _parseWorkouts(Map? data) {
     List<Workout> workouts = [];
-    if (data != null && data.length > 0) {
+    if (data != null && data.isNotEmpty) {
       data.forEach((key, value) {
         workouts.add(Workout.fromJson((key as String).split(" ")[1], value));
       });

@@ -560,18 +560,11 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       child: Text(
         dateTime.day.toString(),
         style: TextStyle(
-            color:
-                _compareDateWithSelected(dateTime) ? Colors.white : Colors.blue,
+            color: dateTime.isSameDate(_selectedDate) ? Colors.white : Colors.blue,
             fontWeight: FontWeight.bold,
             fontSize: 14),
       ),
     );
-  }
-
-  bool _compareDateWithSelected(DateTime dateTime) {
-    return dateTime.year == _selectedDate.year &&
-        dateTime.month == _selectedDate.month &&
-        dateTime.day == _selectedDate.day;
   }
 
   Color _getTimeButtonColor(String time) {

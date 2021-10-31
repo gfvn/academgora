@@ -7,33 +7,45 @@ import '../main.dart';
 
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {
-    return other.year <= year && other.month <= month && other.day <= day;
+    DateTime now = DateTime.now();
+    return other.year > now.year &&
+        other.month > now.month &&
+        other.day > now.day;
   }
+
   bool isSameDate(DateTime other) {
-    return other.year == year && other.month == month && other.day == day;
+    DateTime now = DateTime.now();
+    return other.year == now.year &&
+        other.month == now.month &&
+        other.day == now.day;
   }
+
   bool isBeforeDate(DateTime other) {
-    return other.year < year && other.month < month && other.day < day;
+    DateTime now = DateTime.now();
+    return other.year < now.year &&
+        other.month < now.month &&
+        other.day < now.day;
   }
 }
 
-Widget defaultButton(String text, Function()? onPressed,{double width = 200,double height = 45}) {
+Widget defaultButton(String text, Function()? onPressed,
+    {double width = 200, double height = 45}) {
   return Container(
       margin: const EdgeInsets.all(2),
       child: ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 18),
-      fixedSize: Size(width, height),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-    ),
-    onPressed: onPressed,
-    child: Text(text),
-  ));
+        style: ElevatedButton.styleFrom(
+          textStyle: const TextStyle(fontSize: 18),
+          fixedSize: Size(width, height),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(text),
+      ));
 }
 
-String whatsAppUrl(String phoneNumber){
+String whatsAppUrl(String phoneNumber) {
   return "https://wa.me/$phoneNumber";
 }
 
@@ -104,31 +116,31 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
     builder: (BuildContext context) {
       return AlertDialog(
           content: SizedBox(
-            height: screenHeight * 0.15,
-            child: Column(
-              children: [
-                const Text("Выйти из аккаунта?"),
-                Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          child: OutlinedButton(
-                              child: const Text('ДА'), onPressed: logoutFunction),
-                        ),
-                        OutlinedButton(
-                          child: const Text('ОТМЕНА'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ))
-              ],
-            ),
-          ));
+        height: screenHeight * 0.15,
+        child: Column(
+          children: [
+            const Text("Выйти из аккаунта?"),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                          child: const Text('ДА'), onPressed: logoutFunction),
+                    ),
+                    OutlinedButton(
+                      child: const Text('ОТМЕНА'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ))
+          ],
+        ),
+      ));
     },
   );
 }

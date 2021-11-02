@@ -8,8 +8,14 @@ import '../main.dart';
 String userCancelledWorkoutForInstructor(String phone) {
   return "user cancelled workout for instructor $phone";
 }
-String userRegisteredForInstructor(String phone, {String date = "", String time = ""}) {
+
+String userRegisteredForInstructor(String phone,
+    {String date = "", String time = ""}) {
   return "user registered on $date and $time for $phone";
+}
+
+String administratorCancelledWorkout(String userPhone) {
+  return "administrator cancelled workout of user $userPhone";
 }
 
 extension DateOnlyCompare on DateTime {

@@ -25,7 +25,6 @@ class SetWorkoutTimeScreen extends StatefulWidget {
 }
 
 class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
-
   final InstructorDataViewModel _instructorDataViewModel =
       InstructorDataViewModelImpl();
 
@@ -378,9 +377,17 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             time, element.from!, element.to!)) {
           workoutId = element.id!;
           _findUserAndDeleteWorkout(element.userPhoneNumber!, workoutId);
+          _sendNotification(element.userPhoneNumber!);
         }
       }
     }
+  }
+
+  void _sendNotification(String userPhone) {
+    _firebaseController.send("Log", {
+      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+          extensions.administratorCancelledWorkout(userPhone)
+    });
   }
 
   void _findUserAndDeleteWorkout(String userPhoneNumber, String workoutId) {
@@ -561,7 +568,8 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       child: Text(
         dateTime.day.toString(),
         style: TextStyle(
-            color: dateTime.isSameDate(_selectedDate) ? Colors.white : Colors.blue,
+            color:
+                dateTime.isSameDate(_selectedDate) ? Colors.white : Colors.blue,
             fontWeight: FontWeight.bold,
             fontSize: 14),
       ),

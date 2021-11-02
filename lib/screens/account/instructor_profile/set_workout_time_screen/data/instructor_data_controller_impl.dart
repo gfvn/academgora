@@ -95,8 +95,6 @@ class InstructorDataControllerImpl implements InstructorDataController {
   }
 
   void _saveInstructorAfterSubscriptionDataChanged(Event event) async {
-    NotificationApi.showNotification(
-        title: "Instructor data changed", body: "Test body", payload: "Some payload info");
     _saveInstructorIntoKeeper();
   }
 }

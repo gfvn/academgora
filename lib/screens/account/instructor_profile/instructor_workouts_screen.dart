@@ -1,4 +1,5 @@
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
+import 'package:academ_gora_release/controller/notification_service.dart';
 import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
@@ -335,12 +336,18 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
     List<Workout> workoutsList = [];
     if (workouts != null) {
       for (var workout in workouts) {
-        if (_compareWorkoutDates(workout.date!)) {
+        if (_workoutAfterOrSameOfNow(workout.date!)) {
           workoutsList.add(workout);
         } else {
           _deleteWorkout(workout.id!);
         }
       }
+    }
+    if (_allWorkouts.length > workoutsList.length) {
+      NotificationApi.showNotification(
+          title: "Гость отменил занятие",
+          body: "",
+          payload: "cancelled_workout");
     }
     setState(() {
       _allWorkouts = workoutsList;
@@ -348,12 +355,12 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
     });
   }
 
-  bool _compareWorkoutDates(String workoutDate) {
+  bool _workoutAfterOrSameOfNow(String workoutDate) {
     String formattedDate =
         "${workoutDate.substring(4, 8)}-${workoutDate.substring(2, 4)}-${workoutDate.substring(0, 2)}";
     DateTime workoutDateTime = DateTime.parse(formattedDate);
     DateTime now = DateTime.now();
-    if (now.isAfterDate(workoutDateTime)) {
+    if (now.isBeforeDate(workoutDateTime) || now.isSameDate(workoutDateTime)) {
       return true;
     } else {
       return false;

@@ -1,4 +1,5 @@
 import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/screens/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -126,7 +127,7 @@ class _DateWidgetState extends State<DateWidget> {
                       todayTextStyle: const TextStyle(color: Colors.blueAccent),
                       onDayPressed: (DateTime date, List<Event> events) {
                         DateTime now = DateTime.now();
-                        if (date.isAfter(now) || date == now) {
+                        if (date.isAfter(now) || date.isSameDate(now)) {
                           setState(() {
                             {
                               DateTime newDateTime = DateTime(

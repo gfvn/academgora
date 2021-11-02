@@ -18,12 +18,10 @@ class WorkoutDataWidget extends StatefulWidget {
 
 class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
   bool isExpanded = false;
-  Icon _expandedIcon = const Icon(Icons.keyboard_arrow_down);
   final ExpandableController _expandableController = ExpandableController();
 
   @override
   Widget build(BuildContext context) {
-    _setExpandedIconListener();
     return _workoutWidget();
   }
 
@@ -129,19 +127,5 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
       default:
         return "";
     }
-  }
-
-  void _setExpandedIconListener() {
-    _expandableController.addListener(() {
-      if (_expandableController.value) {
-        setState(() {
-          _expandedIcon = const Icon(Icons.keyboard_arrow_up);
-        });
-      } else {
-        setState(() {
-          _expandedIcon = const Icon(Icons.keyboard_arrow_down);
-        });
-      }
-    });
   }
 }

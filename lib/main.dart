@@ -1,4 +1,5 @@
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
+import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'controller/firebase_requests_controller.dart';
+import 'controller/notification_service.dart';
 import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
@@ -27,7 +29,8 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  final FirebaseRequestsController _firebaseController = FirebaseRequestsController();
+  final FirebaseRequestsController _firebaseController =
+      FirebaseRequestsController();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   bool? _isUserAuthorized;
@@ -55,6 +58,7 @@ class MyAppState extends State<MyApp> {
     }
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
+    _firebaseController.addListenerForAddAndChangeOperations("Log", showNotification);
   }
 
   @override
@@ -73,6 +77,19 @@ class MyAppState extends State<MyApp> {
             return const SplashScreen();
           }
         }));
+  }
+
+  void showNotification(Event? event) {
+    var value = event!.snapshot.value;
+    if (value ==
+        userCancelledWorkoutForInstructor(
+            FirebaseAuth.instance.currentUser!.phoneNumber!)) {
+      NotificationApi.showNotification(
+          title: "Гость отменил занятие",
+          body: "",
+          payload: "cancelled_workout");
+      _firebaseController.delete("Log");
+    }
   }
 
   void _saveInstructorsIntoKeeper(Event? event) async {

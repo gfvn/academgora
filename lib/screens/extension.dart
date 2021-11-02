@@ -5,6 +5,10 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../main.dart';
 
+String userCancelledWorkoutForInstructor(String phone) {
+  return "user cancelled workout for instructor $phone";
+}
+
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {
     bool isDayAfter =

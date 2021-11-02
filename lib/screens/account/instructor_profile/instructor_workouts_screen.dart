@@ -343,12 +343,6 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
         }
       }
     }
-    if (_allWorkouts.length > workoutsList.length) {
-      NotificationApi.showNotification(
-          title: "Гость отменил занятие",
-          body: "",
-          payload: "cancelled_workout");
-    }
     setState(() {
       _allWorkouts = workoutsList;
       _workoutsPerDay = _sortWorkoutsBySelectedDate(workoutsList);

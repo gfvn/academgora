@@ -39,6 +39,19 @@ class FirebaseRequestsController {
         .listen(function);
   }
 
+  void addListenerForAddAndChangeOperations(String path, Function(Event?) function) {
+    FirebaseDatabase.instance
+        .reference()
+        .child(path)
+        .onChildAdded
+        .listen(function);
+    FirebaseDatabase.instance
+        .reference()
+        .child(path)
+        .onChildChanged
+        .listen(function);
+  }
+
   void send(String path, var map) {
     FirebaseDatabase.instance.reference().child(path).set(map);
   }

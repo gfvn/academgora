@@ -18,8 +18,8 @@ class WorkoutDataWidget extends StatefulWidget {
 
 class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
   bool isExpanded = false;
-  Icon _expandedIcon = Icon(Icons.keyboard_arrow_down);
-  ExpandableController _expandableController = ExpandableController();
+  Icon _expandedIcon = const Icon(Icons.keyboard_arrow_down);
+  final ExpandableController _expandableController = ExpandableController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,48 +28,45 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
   }
 
   Widget _workoutWidget() {
-    return Container(
-        child: ExpandablePanel(
+    return ExpandablePanel(
       header: _header(),
       expanded: _body(),
-      controller: _expandableController, collapsed: _body(),
-    ));
+      controller: _expandableController,
+      collapsed: Container(),
+    );
   }
 
   Widget _header() {
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(bottom: 6),
+        margin: const EdgeInsets.only(bottom: 6),
         height: 30,
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Row(
           children: [
             Container(
-                margin: EdgeInsets.only(left: 5),
+                margin: const EdgeInsets.only(left: 5),
                 child: Text(
                   _parseDate(widget.workout.date!),
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 )),
             Container(
-                margin: EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 15),
                 child: Text(
                   "${widget.workout.from}-${widget.workout.to}",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 )),
-            Container(
-                margin: EdgeInsets.only(left: screenWidth * 0.05),
-                child: _expandedIcon)
           ],
         ));
   }
 
   Widget _body() {
     return Container(
-        margin: EdgeInsets.only(bottom: 5),
+        margin: const EdgeInsets.only(bottom: 5),
         width: screenWidth * 0.6,
-        decoration: BoxDecoration(color: Colors.white70),
+        decoration: const BoxDecoration(color: Colors.white70),
         child: Container(
-            margin: EdgeInsets.only(left: 10),
+            margin: const EdgeInsets.only(left: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -125,13 +122,10 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
     switch (level) {
       case 0:
         return "С нуля";
-        break;
       case 1:
         return "Немного умею";
-        break;
       case 2:
         return "Умею с любой горы, улучшение техники";
-        break;
       default:
         return "";
     }
@@ -141,11 +135,11 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
     _expandableController.addListener(() {
       if (_expandableController.value) {
         setState(() {
-          _expandedIcon = Icon(Icons.keyboard_arrow_up);
+          _expandedIcon = const Icon(Icons.keyboard_arrow_up);
         });
       } else {
         setState(() {
-          _expandedIcon = Icon(Icons.keyboard_arrow_down);
+          _expandedIcon = const Icon(Icons.keyboard_arrow_down);
         });
       }
     });

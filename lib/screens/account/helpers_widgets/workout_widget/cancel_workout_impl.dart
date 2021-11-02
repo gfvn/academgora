@@ -1,7 +1,4 @@
-import 'dart:collection';
-
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';

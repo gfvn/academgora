@@ -58,7 +58,8 @@ class MyAppState extends State<MyApp> {
     }
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
-    _firebaseController.addListenerForAddAndChangeOperations("Log", showNotification);
+    _firebaseController.addListenerForAddAndChangeOperations(
+        "Log", showNotification);
   }
 
   @override
@@ -81,6 +82,7 @@ class MyAppState extends State<MyApp> {
 
   void showNotification(Event? event) {
     var value = event!.snapshot.value;
+
     if (value ==
         userCancelledWorkoutForInstructor(
             FirebaseAuth.instance.currentUser!.phoneNumber!)) {
@@ -88,8 +90,26 @@ class MyAppState extends State<MyApp> {
           title: "Гость отменил занятие",
           body: "",
           payload: "cancelled_workout");
-      _firebaseController.delete("Log");
     }
+
+    if (value.toString().startsWith("user registered") &&
+        value
+            .toString()
+            .contains(FirebaseAuth.instance.currentUser!.phoneNumber!)) {
+      String date = value.toString().split(" ")[3];
+      String parsedDate = date.substring(0, 2) +
+          "." +
+          date.substring(2, 4) +
+          "." +
+          date.substring(4, 8);
+      String time = value.toString().split(" ")[5];
+      NotificationApi.showNotification(
+          title: "Запись на $parsedDate - $time",
+          body: "",
+          payload: "registered_workout");
+    }
+
+    _firebaseController.delete("Log");
   }
 
   void _saveInstructorsIntoKeeper(Event? event) async {

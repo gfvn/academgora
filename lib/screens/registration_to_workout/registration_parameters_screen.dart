@@ -16,6 +16,8 @@ import 'helpers_widgets/reg_parameters/select_level_of_skating_widget.dart';
 import 'helpers_widgets/reg_parameters/select_people_count_widget.dart';
 import 'reg_final_screen.dart';
 
+import 'package:intl/intl.dart';
+
 class RegistrationParametersScreen extends StatefulWidget {
   const RegistrationParametersScreen({Key? key}) : super(key: key);
 
@@ -148,7 +150,7 @@ class RegistrationParametersScreenState
           Container(
             width: screenWidth * 0.85,
             height: screenHeight * 0.05,
-            margin: EdgeInsets.only(left: 5),
+            margin: const EdgeInsets.only(left: 5),
             child: TextField(
               controller: _commentController,
               maxLines: 10,
@@ -195,11 +197,10 @@ class RegistrationParametersScreenState
             GestureDetector(
               onTap: _onBackPressed,
               child: const Icon(
-                  Icons.chevron_left,
-                  color: Colors.blue,
-                  size: 40,
-                ),
-
+                Icons.chevron_left,
+                color: Colors.blue,
+                size: 40,
+              ),
             ),
             SizedBox(
               width: 170,
@@ -246,7 +247,7 @@ class RegistrationParametersScreenState
 
   void _openRegFinalScreen() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => RegistrationFinalScreen()),
+        MaterialPageRoute(builder: (c) => const RegistrationFinalScreen()),
         (route) => false);
   }
 
@@ -292,6 +293,11 @@ class RegistrationParametersScreenState
         "${UserRole.instructor}/${workoutSingleton.instructorId}/График работы/${workoutSingleton.date}",
         _timesController.setTimesStatus(
             workoutSingleton.from!, duration!, "недоступно"));
+    _firebaseRequestsController.send("Log", {
+      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+          userRegisteredForInstructor(workoutSingleton.instructorPhoneNumber!,
+              date: workoutSingleton.date!, time: workoutSingleton.from!)
+    });
   }
 
   String _getWorkoutTime() {

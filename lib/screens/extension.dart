@@ -7,24 +7,23 @@ import '../main.dart';
 
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {
-    DateTime now = DateTime.now();
-    return other.year > now.year &&
-        other.month > now.month &&
-        other.day > now.day;
+    bool isDayAfter =
+        year == other.year && month == other.month && day > other.day;
+    bool isMonthAfter = year == other.year && month > other.month;
+    bool isYearAfter = year > other.year;
+    return isDayAfter || isMonthAfter || isYearAfter;
   }
 
   bool isSameDate(DateTime other) {
-    DateTime now = DateTime.now();
-    return other.year == now.year &&
-        other.month == now.month &&
-        other.day == now.day;
+    return year == other.year && month == other.month && day == other.day;
   }
 
   bool isBeforeDate(DateTime other) {
-    DateTime now = DateTime.now();
-    return other.year < now.year &&
-        other.month < now.month &&
-        other.day < now.day;
+    bool isDayBefore =
+        year == other.year && month == other.month && day < other.day;
+    bool isMonthBefore = year == other.year && month < other.month;
+    bool isYearBefore = year < other.year;
+    return isDayBefore || isMonthBefore || isYearBefore;
   }
 }
 

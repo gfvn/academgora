@@ -25,6 +25,7 @@ class SetWorkoutTimeScreen extends StatefulWidget {
 }
 
 class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
+
   final InstructorDataViewModel _instructorDataViewModel =
       InstructorDataViewModelImpl();
 

@@ -111,10 +111,12 @@ class MyAppState extends State<MyApp> {
 
     if (value.toString().startsWith("administrator cancelled") &&
         value.contains(FirebaseAuth.instance.currentUser!.phoneNumber!)) {
+      int workoutId = int.parse(value.toString().split(';')[1].split('=')[1]);
       NotificationApi.showNotification(
           title: "Администратор отменил занятие",
           body: "",
           payload: "admin_cancelled_workout");
+      NotificationApi.cancelNotification(workoutId);
     }
 
     _firebaseController.delete("Log");

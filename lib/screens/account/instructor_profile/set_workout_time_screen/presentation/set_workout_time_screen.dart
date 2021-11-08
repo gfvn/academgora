@@ -377,16 +377,16 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             time, element.from!, element.to!)) {
           workoutId = element.id!;
           _findUserAndDeleteWorkout(element.userPhoneNumber!, workoutId);
-          _sendNotification(element.userPhoneNumber!);
+          _sendNotification(element.userPhoneNumber!, workoutId);
         }
       }
     }
   }
 
-  void _sendNotification(String userPhone) {
+  void _sendNotification(String userPhone, String workoutId) {
     _firebaseController.send("Log", {
       DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-          extensions.administratorCancelledWorkout(userPhone)
+          extensions.administratorCancelledWorkout(userPhone, workoutId)
     });
   }
 

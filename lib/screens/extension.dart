@@ -14,8 +14,8 @@ String userRegisteredForInstructor(String phone,
   return "user registered on $date and $time for $phone";
 }
 
-String administratorCancelledWorkout(String userPhone) {
-  return "administrator cancelled workout of user $userPhone";
+String administratorCancelledWorkout(String userPhone, String workoutId) {
+  return "administrator cancelled workout of user $userPhone;workoutId=$workoutId";
 }
 
 extension DateOnlyCompare on DateTime {

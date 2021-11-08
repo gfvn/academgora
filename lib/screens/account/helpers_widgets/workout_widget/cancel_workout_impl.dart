@@ -1,4 +1,5 @@
 import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
+import 'package:academ_gora_release/controller/notification_service.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
@@ -25,6 +26,7 @@ class CancelWorkoutImplementation implements CancelWorkout {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     _firebaseRequestsController
         .delete("${UserRole.user}/$userId/Занятия/${_workout.id}");
+    NotificationApi.cancelNotification(int.parse(_workout.id!));
   }
 
   void _deleteWorkoutFromInstructor() {

@@ -26,7 +26,7 @@ class CancelWorkoutImplementation implements CancelWorkout {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     _firebaseRequestsController
         .delete("${UserRole.user}/$userId/Занятия/${_workout.id}");
-    NotificationApi.cancelNotification(int.parse(_workout.id!));
+    NotificationApi.cancelNotification(int.parse(_workout.id!.substring(0,7)));
   }
 
   void _deleteWorkoutFromInstructor() {

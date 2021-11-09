@@ -248,14 +248,18 @@ class RegistrationParametersScreenState
   }
 
   void _scheduleNotification() {
-    String workoutDate = workoutSingleton.date!;
-    int year = int.parse(workoutDate.substring(4, 8));
-    int month = int.parse(workoutDate.substring(2, 4));
-    int day = int.parse(workoutDate.substring(0, 2));
-    int hour = int.parse(_timesController.times[workoutSingleton.from!]) - 2;
-    DateTime dateTime = DateTime(year, month, day, hour);
-    NotificationApi.scheduleNotification(
-        dateTime, int.parse(workoutSingleton.id!));
+    UserRole.getUserRole().then((userRole) {
+      if (userRole == UserRole.user) {
+        String workoutDate = workoutSingleton.date!;
+        int year = int.parse(workoutDate.substring(4, 8));
+        int month = int.parse(workoutDate.substring(2, 4));
+        int day = int.parse(workoutDate.substring(0, 2));
+        int hour = int.parse(workoutSingleton.from!.split(":")[0]) - 2;
+        DateTime dateTime = DateTime(year, month, day, hour);
+        NotificationApi.scheduleNotification(
+            dateTime, int.parse(workoutSingleton.id!.substring(0,7)));
+      }
+    });
   }
 
   void _openRegFinalScreen() {

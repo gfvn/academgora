@@ -195,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.6"
+  flutter_background_service:
+    dependency: "direct dev"
+    description:
+      name: flutter_background_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   flutter_calendar_carousel:
     dependency: "direct dev"
     description:

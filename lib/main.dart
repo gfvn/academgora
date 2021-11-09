@@ -11,6 +11,7 @@ import 'controller/notification_service.dart';
 import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
 late double screenHeight;
 late double screenWidth;
@@ -18,7 +19,54 @@ late double screenWidth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FlutterBackgroundService.initialize(onStart);
   runApp(const MyApp());
+}
+
+void onStart() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final service = FlutterBackgroundService();
+  service.setForegroundMode(true);
+  Firebase.initializeApp().then((value){
+    FirebaseRequestsController()
+        .addListenerForAddAndChangeOperations("Log", showNotification);
+  });
+}
+
+void showNotification(Event? event) {
+  var value = event!.snapshot.value;
+  var currentUserPhone = FirebaseAuth.instance.currentUser!.phoneNumber!;
+  if (value == userCancelledWorkoutForInstructor(currentUserPhone)) {
+    NotificationApi.showNotification(
+        title: "Гость отменил занятие", body: "", payload: "cancelled_workout");
+  }
+
+  if (value.toString().startsWith("user registered") &&
+      value.toString().contains(currentUserPhone)) {
+    String date = value.toString().split(" ")[3];
+    String parsedDate = date.substring(0, 2) +
+        "." +
+        date.substring(2, 4) +
+        "." +
+        date.substring(4, 8);
+    String time = value.toString().split(" ")[5];
+    NotificationApi.showNotification(
+        title: "Запись на $parsedDate - $time",
+        body: "",
+        payload: "registered_workout");
+  }
+
+  if (value.toString().startsWith("administrator cancelled") &&
+      value.contains(currentUserPhone)) {
+    int notificationId =
+        int.parse(value.toString().split(';')[1].split('=')[1].substring(0, 7));
+    NotificationApi.showNotification(
+        title: "Администратор отменил занятие",
+        body: "",
+        payload: "admin_cancelled_workout");
+    NotificationApi.cancelNotification(notificationId);
+  }
+  FirebaseRequestsController().delete("Log");
 }
 
 class MyApp extends StatefulWidget {
@@ -58,8 +106,6 @@ class MyAppState extends State<MyApp> {
     }
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
-    _firebaseController.addListenerForAddAndChangeOperations(
-        "Log", showNotification);
   }
 
   @override
@@ -78,48 +124,6 @@ class MyAppState extends State<MyApp> {
             return const SplashScreen();
           }
         }));
-  }
-
-  void showNotification(Event? event) {
-    var value = event!.snapshot.value;
-
-    if (value ==
-        userCancelledWorkoutForInstructor(
-            FirebaseAuth.instance.currentUser!.phoneNumber!)) {
-      NotificationApi.showNotification(
-          title: "Гость отменил занятие",
-          body: "",
-          payload: "cancelled_workout");
-    }
-
-    if (value.toString().startsWith("user registered") &&
-        value
-            .toString()
-            .contains(FirebaseAuth.instance.currentUser!.phoneNumber!)) {
-      String date = value.toString().split(" ")[3];
-      String parsedDate = date.substring(0, 2) +
-          "." +
-          date.substring(2, 4) +
-          "." +
-          date.substring(4, 8);
-      String time = value.toString().split(" ")[5];
-      NotificationApi.showNotification(
-          title: "Запись на $parsedDate - $time",
-          body: "",
-          payload: "registered_workout");
-    }
-
-    if (value.toString().startsWith("administrator cancelled") &&
-        value.contains(FirebaseAuth.instance.currentUser!.phoneNumber!)) {
-      int notificationId = int.parse(value.toString().split(';')[1].split('=')[1].substring(0,7));
-      NotificationApi.showNotification(
-          title: "Администратор отменил занятие",
-          body: "",
-          payload: "admin_cancelled_workout");
-      NotificationApi.cancelNotification(notificationId);
-    }
-
-    _firebaseController.delete("Log");
   }
 
   void _saveInstructorsIntoKeeper(Event? event) async {

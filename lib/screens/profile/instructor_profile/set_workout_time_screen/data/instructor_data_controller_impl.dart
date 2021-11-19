@@ -1,9 +1,9 @@
-import 'package:academ_gora_release/controller/notification_service.dart';
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/data/instructor_data_controller.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/data/instructor_state_keeper.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'instructor_data_controller.dart';
+import 'instructor_state_keeper.dart';
 
 class InstructorDataControllerImpl implements InstructorDataController {
   final InstructorStateKeeper _instructorStateKeeper = InstructorStateKeeper();

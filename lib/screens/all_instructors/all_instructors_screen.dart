@@ -1,7 +1,7 @@
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/instructor_photo_widget.dart';
 import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
@@ -67,10 +67,11 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
   Widget _kindOfSportButton(String name) {
     return GestureDetector(
         onTap: () {
-          if (_selectedKindOfSport != name)
+          if (_selectedKindOfSport != name) {
             _checkoutKindOfSport(_selectedKindOfSport == "ГОРНЫЕ ЛЫЖИ"
                 ? "СНОУБОРД"
                 : "ГОРНЫЕ ЛЫЖИ");
+          }
         },
         child: Container(
           width:
@@ -171,7 +172,7 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "НА ГЛАВНУЮ",
                       textAlign: TextAlign.center,
                       style: TextStyle(

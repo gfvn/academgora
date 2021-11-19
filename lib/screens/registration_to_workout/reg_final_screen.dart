@@ -1,8 +1,8 @@
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/administrator_profile/administrator_profile_screen.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/instructor_workouts_screen.dart';
-import 'package:academ_gora_release/screens/account/user_profile/presentation/user_account_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
+import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -94,10 +94,10 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
             .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
       } else if (userRole == UserRole.instructor) {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen()));
+            MaterialPageRoute(builder: (c) => const InstructorWorkoutsScreen()));
       } else {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => AdministratorProfileScreen()));
+            MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()));
       }
     });
   }

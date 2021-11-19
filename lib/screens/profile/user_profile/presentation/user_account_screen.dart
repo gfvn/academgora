@@ -1,8 +1,8 @@
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/user_profile/presentation/workouts_view_model.dart';
-import 'package:academ_gora_release/screens/account/user_profile/presentation/workouts_view_model_impl.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
+import 'package:academ_gora_release/screens/profile/user_profile/presentation/workouts_view_model.dart';
+import 'package:academ_gora_release/screens/profile/user_profile/presentation/workouts_view_model_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
@@ -32,7 +32,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      decoration: screenDecoration("assets/account/0_bg.png"),
+      decoration: screenDecoration("assets/profile/0_bg.png"),
       child: Column(
         children: [
           _topAccountInfo(),
@@ -92,7 +92,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                     margin: const EdgeInsets.only(left: 5),
                     height: 20,
                     width: 20,
-                    child: Image.asset("assets/account/e1.png"))
+                    child: Image.asset("assets/profile/e1.png"))
               ],
             )));
   }

@@ -1,5 +1,5 @@
-import 'package:academ_gora_release/controller/auth_controller.dart';
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
+import 'package:academ_gora_release/api/auth_controller.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/data_keepers/user_workouts_keeper.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';

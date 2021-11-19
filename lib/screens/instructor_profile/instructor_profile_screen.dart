@@ -1,5 +1,5 @@
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/instructor_photo_widget.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 

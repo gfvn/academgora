@@ -45,7 +45,7 @@ flutter:
     - assets/instructors_list/
     - assets/registration_parameters/
     - assets/reg_final/
-    - assets/account/
+    - assets/profile/
     - assets/all_instructors/
     - assets/instructor_profile/
     - assets/instructor_profile/social_network_icons/

@@ -3,10 +3,10 @@ import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/reg_parameters/human_info_widget.dart';
-import 'package:academ_gora_release/screens/account/reg_parameters/select_level_of_skating_widget.dart';
-import 'package:academ_gora_release/screens/account/reg_parameters/select_people_count_widget.dart';
-import 'package:academ_gora_release/screens/account/user_profile/presentation/user_account_screen.dart';
+import 'package:academ_gora_release/screens/profile/reg_parameters/human_info_widget.dart';
+import 'package:academ_gora_release/screens/profile/reg_parameters/select_level_of_skating_widget.dart';
+import 'package:academ_gora_release/screens/profile/reg_parameters/select_people_count_widget.dart';
+import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_parameters/info_text.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_parameters_screen.dart';
@@ -173,25 +173,23 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
 
   Widget _saveButton() {
     return Container(
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               onTap: _onBackPressed,
-              child: Container(
-                child: Icon(
+              child: const Icon(
                   Icons.chevron_left,
                   color: Colors.blue,
                   size: 40,
                 ),
-              ),
             ),
             Container(
               width: 170,
               height: screenHeight * 0.06,
               child: Material(
-                borderRadius: BorderRadius.all(Radius.circular(35)),
+                borderRadius: const BorderRadius.all(Radius.circular(35)),
                 color: _continueButtonBackgroundColor(),
                 child: InkWell(
                     onTap: peopleCount != null &&

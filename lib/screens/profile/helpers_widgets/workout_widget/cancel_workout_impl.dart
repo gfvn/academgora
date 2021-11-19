@@ -1,12 +1,13 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/notification_service.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/common/notification_service.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/helpers_widgets/workout_widget/cancel_workout.dart';
 import 'package:academ_gora_release/screens/extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+
+import 'cancel_workout.dart';
 
 class CancelWorkoutImplementation implements CancelWorkout {
   final FirebaseRequestsController _firebaseRequestsController =

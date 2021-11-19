@@ -1,6 +1,6 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/notification_service.dart';
-import 'package:academ_gora_release/controller/times_controller.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/common/notification_service.dart';
+import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';

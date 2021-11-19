@@ -1,10 +1,8 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/times_controller.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model_impl.dart';
 import 'package:academ_gora_release/screens/extension.dart' as extensions;
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +12,8 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../main.dart';
+import 'instructor_data_view_model.dart';
+import 'instructor_data_view_model_impl.dart';
 
 class SetWorkoutTimeScreen extends StatefulWidget {
   final String? phoneNumber;

@@ -1,13 +1,13 @@
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/account/helpers_widgets/workout_info.dart';
-import 'package:academ_gora_release/screens/account/helpers_widgets/workout_widget/cancel_workout.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../update_workout_screen.dart';
+import '../workout_info.dart';
+import 'cancel_workout.dart';
 import 'cancel_workout_impl.dart';
 
 class WorkoutWidget extends StatefulWidget {
@@ -38,7 +38,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
       width: screenWidth * 0.9,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/account/e2.png"),
+          image: AssetImage("assets/profile/e2.png"),
           fit: BoxFit.cover,
         ),
       ),
@@ -195,7 +195,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 margin: const EdgeInsets.only(left: 45),
                 child: Text(
                   _instructor!.name!,
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 )),
           ],
         ));
@@ -220,7 +220,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               image: DecorationImage(
-                image: AssetImage("assets/account/phone.png"),
+                image: AssetImage("assets/profile/phone.png"),
               ),
             ),
             child: Text(
@@ -242,7 +242,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               image: DecorationImage(
-                image: AssetImage("assets/account/wa.png"),
+                image: AssetImage("assets/profile/wa.png"),
               ),
             ),
             child: const Text(

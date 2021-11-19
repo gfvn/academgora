@@ -1,4 +1,7 @@
 import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
+import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,9 +9,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../main.dart';
-import 'account/administrator_profile/administrator_profile_screen.dart';
-import 'account/instructor_profile/instructor_workouts_screen.dart';
-import 'account/user_profile/presentation/user_account_screen.dart';
 import 'extension.dart';
 import 'info_screens/about_us_screen.dart';
 import 'info_screens/call_us_screen.dart';
@@ -154,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Container(
                 width: screenWidth * 0.1,
                 height: screenWidth * 0.1,
-                margin: EdgeInsets.only(left: 18),
+                margin: const EdgeInsets.only(left: 18),
                 child: Image.asset("assets/main/3_insta.png"))),
         GestureDetector(
             onTap: () {

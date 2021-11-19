@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
@@ -6,8 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-import 'controller/firebase_requests_controller.dart';
-import 'controller/notification_service.dart';
+import 'api/firebase_requests_controller.dart';
+import 'common/notification_service.dart';
 import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
@@ -26,16 +28,18 @@ void main() async {
 void onStart() {
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
-  service.setForegroundMode(true);
+  service.setForegroundMode(false);
   Firebase.initializeApp().then((value){
     FirebaseRequestsController()
-        .addListenerForAddAndChangeOperations("Log", showNotification);
+        .addListenerForAddAndChangeOperations("Log", _showNotification);
   });
 }
 
-void showNotification(Event? event) {
+void _showNotification(Event? event) {
+  FlutterBackgroundService().setForegroundMode(false);
   var value = event!.snapshot.value;
   var currentUserPhone = FirebaseAuth.instance.currentUser!.phoneNumber!;
+
   if (value == userCancelledWorkoutForInstructor(currentUserPhone)) {
     NotificationApi.showNotification(
         title: "Гость отменил занятие", body: "", payload: "cancelled_workout");
@@ -152,7 +156,7 @@ class SplashScreen extends StatelessWidget {
         body: Container(
             decoration: const BoxDecoration(
       image: DecorationImage(
-        image: AssetImage("assets/account/0_bg.png"),
+        image: AssetImage("assets/profile/0_bg.png"),
         fit: BoxFit.cover,
       ),
     )));

@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/controller/times_controller.dart';
+import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
 import 'package:academ_gora_release/model/workout.dart';

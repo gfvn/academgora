@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/data/instructor_data_controller.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/data/instructor_data_controller_impl.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/data/instructor_state_keeper.dart';
-import 'package:academ_gora_release/screens/account/instructor_profile/set_workout_time_screen/presentation/instructor_data_view_model.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_data_controller.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_data_controller_impl.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_state_keeper.dart';
+
+import 'instructor_data_view_model.dart';
 
 class InstructorDataViewModelImpl implements InstructorDataViewModel, InstructorDataListener{
   final _controller = StreamController<Instructor>.broadcast();

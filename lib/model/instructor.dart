@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/extension.dart';
 

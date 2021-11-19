@@ -1,5 +1,5 @@
-import 'package:academ_gora_release/controller/firebase_requests_controller.dart';
-import 'package:academ_gora_release/controller/times_controller.dart';
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';

@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
+import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
@@ -12,7 +13,9 @@ class InstructorWidget extends StatefulWidget {
   final Instructor instructor;
   final InstructorsListScreenState instructorsListScreenState;
 
-  const InstructorWidget(this.instructor, this.instructorsListScreenState, {Key? key}):super(key: key);
+  const InstructorWidget(this.instructor, this.instructorsListScreenState,
+      {Key? key})
+      : super(key: key);
 
   @override
   InstructorWidgetState createState() => InstructorWidgetState();
@@ -34,14 +37,14 @@ class InstructorWidgetState extends State<InstructorWidget> {
   }
 
   Widget _header() {
-    return Container(
+    return SizedBox(
         height: 65,
         child: Row(
           children: [
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (c) => InstructorProfileScreen(instructor)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (c) => InstructorProfileScreen(instructor!)));
               },
               child: InstructorPhotoWidget(
                 instructor!,
@@ -97,8 +100,8 @@ class InstructorWidgetState extends State<InstructorWidget> {
   }
 
   void _openProfile() {
-    // Navigator.of(context).push(
-    //     MaterialPageRoute(builder: (c) => InstructorProfileScreen(instructor)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (c) => InstructorProfileScreen(instructor!)));
   }
 
   @override

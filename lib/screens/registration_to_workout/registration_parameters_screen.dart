@@ -1,5 +1,4 @@
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/common/notification_service.dart';
 import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
@@ -241,24 +240,8 @@ class RegistrationParametersScreenState
     workoutSingleton.levelOfSkating = levelOfSkating;
     _sendWorkoutDataToUser().then((_) {
       _sendWorkoutDataToInstructor().then((_) {
-        _scheduleNotification();
         _openRegFinalScreen();
       });
-    });
-  }
-
-  void _scheduleNotification() {
-    UserRole.getUserRole().then((userRole) {
-      if (userRole == UserRole.user) {
-        String workoutDate = workoutSingleton.date!;
-        int year = int.parse(workoutDate.substring(4, 8));
-        int month = int.parse(workoutDate.substring(2, 4));
-        int day = int.parse(workoutDate.substring(0, 2));
-        int hour = int.parse(workoutSingleton.from!.split(":")[0]) - 2;
-        DateTime dateTime = DateTime(year, month, day, hour);
-        NotificationApi.scheduleNotification(
-            dateTime, int.parse(workoutSingleton.id!.substring(0,7)));
-      }
     });
   }
 

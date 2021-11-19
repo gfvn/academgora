@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
-import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,11 +6,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'api/firebase_requests_controller.dart';
-import 'common/notification_service.dart';
 import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 
 late double screenHeight;
 late double screenWidth;
@@ -21,56 +16,7 @@ late double screenWidth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FlutterBackgroundService.initialize(onStart);
   runApp(const MyApp());
-}
-
-void onStart() {
-  WidgetsFlutterBinding.ensureInitialized();
-  final service = FlutterBackgroundService();
-  service.setForegroundMode(false);
-  Firebase.initializeApp().then((value){
-    FirebaseRequestsController()
-        .addListenerForAddAndChangeOperations("Log", _showNotification);
-  });
-}
-
-void _showNotification(Event? event) {
-  FlutterBackgroundService().setForegroundMode(false);
-  var value = event!.snapshot.value;
-  var currentUserPhone = FirebaseAuth.instance.currentUser!.phoneNumber!;
-
-  if (value == userCancelledWorkoutForInstructor(currentUserPhone)) {
-    NotificationApi.showNotification(
-        title: "Гость отменил занятие", body: "", payload: "cancelled_workout");
-  }
-
-  if (value.toString().startsWith("user registered") &&
-      value.toString().contains(currentUserPhone)) {
-    String date = value.toString().split(" ")[3];
-    String parsedDate = date.substring(0, 2) +
-        "." +
-        date.substring(2, 4) +
-        "." +
-        date.substring(4, 8);
-    String time = value.toString().split(" ")[5];
-    NotificationApi.showNotification(
-        title: "Запись на $parsedDate - $time",
-        body: "",
-        payload: "registered_workout");
-  }
-
-  if (value.toString().startsWith("administrator cancelled") &&
-      value.contains(currentUserPhone)) {
-    int notificationId =
-        int.parse(value.toString().split(';')[1].split('=')[1].substring(0, 7));
-    NotificationApi.showNotification(
-        title: "Администратор отменил занятие",
-        body: "",
-        payload: "admin_cancelled_workout");
-    NotificationApi.cancelNotification(notificationId);
-  }
-  FirebaseRequestsController().delete("Log");
 }
 
 class MyApp extends StatefulWidget {

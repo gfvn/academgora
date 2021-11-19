@@ -12,30 +12,29 @@ class CancelWorkoutImplementation implements CancelWorkout {
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
   final Instructor _instructor;
-  final Workout _workout;
 
-  CancelWorkoutImplementation(this._instructor, this._workout);
+  CancelWorkoutImplementation(this._instructor);
 
   @override
-  void cancelWorkout() {
-    _deleteWorkoutFromUser();
-    _deleteWorkoutFromInstructor();
+  void cancelWorkout(Workout workout) {
+    _deleteWorkoutFromUser(workout);
+    _deleteWorkoutFromInstructor(workout);
   }
 
-  void _deleteWorkoutFromUser() {
+  void _deleteWorkoutFromUser(Workout workout) {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     _firebaseRequestsController
-        .delete("${UserRole.user}/$userId/Занятия/${_workout.id}");
+        .delete("${UserRole.user}/$userId/Занятия/${workout.id}");
   }
 
-  void _deleteWorkoutFromInstructor() {
+  void _deleteWorkoutFromInstructor(Workout workout) {
     _firebaseRequestsController.delete(
-        "${UserRole.instructor}/${_instructor.id}/Занятия/Занятие ${_workout.id}");
+        "${UserRole.instructor}/${_instructor.id}/Занятия/Занятие ${workout.id}");
     _firebaseRequestsController.update(
-        "${UserRole.instructor}/${_instructor.id}/График работы/${_workout.date}",
-        {_workout.from!: "открыто"});
+        "${UserRole.instructor}/${_instructor.id}/График работы/${workout.date}",
+        {workout.from!: "открыто"});
     _firebaseRequestsController.send("Log", {
-      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()): userCancelledWorkoutForInstructor(_workout.instructorPhoneNumber!),
+      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()): userCancelledWorkoutForInstructor(workout.instructorPhoneNumber!),
     });
   }
 }

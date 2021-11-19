@@ -29,7 +29,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
     super.initState();
     _instructor = _instructorsKeeper
         .findInstructorByPhoneNumber(widget.workout.instructorPhoneNumber!);
-    _cancelWorkout = CancelWorkoutImplementation(_instructor!, widget.workout);
+    _cancelWorkout = CancelWorkoutImplementation(_instructor!);
   }
 
   @override
@@ -149,7 +149,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
-                _cancelWorkout.cancelWorkout();
+                _cancelWorkout.cancelWorkout(widget.workout);
                 Navigator.of(context).pop();
               },
             ),

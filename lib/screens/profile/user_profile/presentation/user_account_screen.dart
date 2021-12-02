@@ -7,7 +7,7 @@ import 'package:academ_gora_release/screens/profile/user_profile/presentation/wo
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
-
+import 'dart:developer';
 import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../../main_screen.dart';
@@ -145,34 +145,42 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
 
   Widget _workoutsList() {
     return SizedBox(
-        height: screenHeight * 0.6,
-        child: StreamBuilder(
-          stream: _workoutsViewModel.workoutsList,
-          builder: (context, snap) {
-            return snap.hasData
-                ? ListView.builder(
-                    itemCount: (snap.data as List<Workout>).length,
-                    itemBuilder: (BuildContext context, int index) {
-                      List<Workout> workouts = _sortWorkoutsByDateAndTime(snap.data as List<Workout>);
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          WorkoutWidget(
-                            workout: workouts[index],
-                          ),
-                          index != workouts.length - 1
-                              ? const SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                )
-                              : Container()
-                        ],
-                      );
-                    })
-                : Container();
-          },
-        ));
+      height: screenHeight * 0.6,
+      child: StreamBuilder(
+        stream: _workoutsViewModel.workoutsList,
+        builder: (context, snap) {
+          print("dataaaaa ${snap.data}");
+          return snap.hasData
+              ? ListView.builder(
+                  itemCount: (snap.data as List<Workout>).length,
+                  itemBuilder: (context, index) {
+                    log('beforedata ${snap.data}');
+
+                    List<Workout> workouts = snap.data as List<Workout>;
+                    ///TODO change here
+                    //     _sortWorkoutsByDateAndTime(snap.data as List<Workout>);
+                    log('afterdata $workouts');
+
+                    return Column(
+                      children: [
+                        WorkoutWidget(
+                          workout: workouts[index],
+                        ),
+                        index != workouts.length - 1
+                            ? const SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: Icon(Icons.keyboard_arrow_down),
+                              )
+                            : Container()
+                      ],
+                    );
+                  },
+                )
+              : const Text('nooo');
+        },
+      ),
+    );
   }
 
   List<Workout> _sortWorkoutsByTime(List<Workout> list) {
@@ -217,7 +225,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         if (workout.date == currentWorkoutDate &&
             !workoutsPerDate.contains(workout)) {
           workoutsPerDate.add(workout);
-        } else if(!workoutsPerDate.contains(workout)) {
+        } else if (!workoutsPerDate.contains(workout)) {
           sorted.addAll(_sortWorkoutsByTime(workoutsPerDate));
           workoutsPerDate = [];
           workoutsPerDate.add(workout);

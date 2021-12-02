@@ -4,6 +4,7 @@ import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/extension.dart' as extensions;
+import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -328,21 +329,33 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   void _setSelectedView(String time) {
-    DateTime now = DateTime.now();
-    if (_selectedDate.isAfterDate(now) || _selectedDate.isSameDate(now)) {
-      setState(() {
-        if (_selectedTimeStatus == TimeStatus.OPENED) {
-          _sendOnce(time, "открыто");
-        } else if (_selectedTimeStatus == TimeStatus.NOT_AVAILABLE) {
-          _sendOnce(time, "недоступно");
-        } else if (_selectedTimeStatus == TimeStatus.NOT_OPENED) {
-          _sendOnce(time, "не открыто");
-        }
-      });
-    }
+    UserRole.getUserRole().then((userRole) {
+      DateTime now = DateTime.now();
+      if (_selectedDate.isAfterDate(now) || _selectedDate.isSameDate(now)) {
+        setState(() {
+          if (_selectedTimeStatus == TimeStatus.OPENED) {
+            _sendOnce(time, "открыто");
+          } else if (_selectedTimeStatus == TimeStatus.NOT_AVAILABLE) {
+            if (userRole == UserRole.instructor) {
+              showCancelDialog(context, () {
+                _sendOnce(time, "недоступно");
+                Navigator.pop(context);
+              });
+            }else{
+                              _sendOnce(time, "недоступно");
+
+            }
+
+            // _sendOnce(time, "недоступно");
+          } else if (_selectedTimeStatus == TimeStatus.NOT_OPENED) {
+            _sendOnce(time, "не открыто");
+          }
+        });
+      }
+    });
   }
 
-  void _sendOnce(String time, String status) {
+  void _sendOnce(String time, String status) async {
     UserRole.getUserRole().then((userRole) {
       String userId = FirebaseAuth.instance.currentUser!.uid;
       String dateString = DateFormat('ddMMyyyy').format(_selectedDate);

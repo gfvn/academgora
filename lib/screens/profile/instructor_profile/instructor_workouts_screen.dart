@@ -50,16 +50,19 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
         body: Container(
       width: MediaQuery.of(context).size.width,
       decoration: screenDecoration("assets/instructor_profile/bg.png"),
-      child: Column(
-        children: [
-          _titleRow(),
-          _changeRegistrationTimeButton(),
-          _calendar(),
-          _dateSliderWidget(),
-          _workoutsListWidget(),
-          _redactProfileButton(),
-          _backToMainButton()
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Column(
+          children: [
+            _titleRow(),
+            _changeRegistrationTimeButton(),
+            _calendar(),
+            _dateSliderWidget(),
+            _workoutsListWidget(),
+            _redactProfileButton(),
+            _backToMainButton()
+          ],
+        ),
       ),
     ));
   }
@@ -88,7 +91,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
           showLogoutDialog(context, _logout);
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
               "ВЫЙТИ",

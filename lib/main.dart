@@ -16,6 +16,7 @@ late double screenWidth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  print('staraaart');
   runApp(const MyApp());
 }
 

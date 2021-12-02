@@ -156,3 +156,38 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
     },
   );
 }
+
+void showCancelDialog(BuildContext context, Function()? logoutFunction) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+          content: SizedBox(
+        height: screenHeight * 0.15,
+        child: Column(
+          children: [
+            const Text("Вы точно хотите изменить?"),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                          child: const Text('ДА'), onPressed: logoutFunction),
+                    ),
+                    OutlinedButton(
+                      child: const Text('ОТМЕНА'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ))
+          ],
+        ),
+      ));
+    },
+  );
+}

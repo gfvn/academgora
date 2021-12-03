@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/personal_screen.dart';
@@ -22,10 +23,25 @@ class _AdministratorProfileScreenState
       body: Container(
         decoration: screenDecoration("assets/all_instructors/bg.png"),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              buildButtons(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildButtons(),
+                ],
+              ),
+              Positioned(
+                bottom: 32,
+
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _backToMainScreenButton(),
+                  ],
+                )),
             ],
           ),
         ),
@@ -36,23 +52,57 @@ class _AdministratorProfileScreenState
   Widget buildButtons() {
     return Column(
       children: [
-        button(onTap: () {
-            Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const NewsAddScreen()));
-      
-        }, text: "Новости"),
-        button(onTap: () {
-            Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const InstructorsScreen()));
-      
-        }, text: "Инструкторы"),
-        button(onTap: 
-        () {
-            Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const PersonalScreeen()));
-      
-        }, text: "Персонал"),
+        button(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const NewsAddScreen()));
+            },
+            text: "Новости"),
+        button(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const InstructorsScreen()));
+            },
+            text: "Инструкторы"),
+        button(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const PersonalScreeen()));
+            },
+            text: "Персонал"),
       ],
+    );
+  }
+
+  Widget _backToMainScreenButton() {
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.06,
+      margin: const EdgeInsets.only(top: 18),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.blue,
+        child: InkWell(
+            onTap: () => {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (c) => MainScreen()),
+                      (route) => false)
+                },
+            child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      "НА ГЛАВНУЮ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ]),
+            )),
+      ),
     );
   }
 

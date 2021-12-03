@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +20,6 @@ late double screenWidth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  print('staraaart');
   runApp(const MyApp());
 }
 
@@ -30,8 +33,12 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
+  final UsersKeeper usersKeepers = UsersKeeper();
+
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
+  final AdminKeeper _adminDataKeeper = AdminKeeper();
+
   bool? _isUserAuthorized;
 
   @override
@@ -39,34 +46,47 @@ class MyAppState extends State<MyApp> {
     super.initState();
     _firebaseController.myAppState = this;
     if (FirebaseAuth.instance.currentUser != null) {
-      UserRole.getUserRole().then((userRole) => {
-            if (userRole == UserRole.user)
-              {
-                _firebaseController.addListener(
-                    "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
-                    _saveWorkoutsIntoUserDataKeeper)
-              }
-          });
-      setState(() {
-        _isUserAuthorized = true;
-      });
+      UserRole.getUserRole().then(
+        (userRole) => {
+          if (userRole == UserRole.user)
+            {
+              _firebaseController.addListener(
+                  "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
+                  _saveWorkoutsIntoUserDataKeeper)
+            }
+        },
+      );
+      setState(
+        () {
+          _isUserAuthorized = true;
+        },
+      );
     } else {
-      setState(() {
-        _isUserAuthorized = false;
-      });
+      setState(
+        () {
+          _isUserAuthorized = false;
+        },
+      );
     }
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
+
+    _saveUsersIntoKeeper(null);
+    _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
+
+    _saveAdminsIntoKeeper(null);
+    _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'АкадемГора',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Builder(builder: (context) {
+      title: 'АкадемГора',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Builder(
+        builder: (context) {
           screenHeight = MediaQuery.of(context).size.height;
           screenWidth = MediaQuery.of(context).size.width;
           if (_isUserAuthorized != null) {
@@ -74,12 +94,31 @@ class MyAppState extends State<MyApp> {
           } else {
             return const SplashScreen();
           }
-        }));
+        },
+      ),
+    );
   }
 
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then((value) {
+      log("Инструкторы ${value.toString()}");
       _instructorsKeeper.updateInstructors(value);
+      setState(() {});
+    });
+  }
+
+  void _saveUsersIntoKeeper(Event? event) async {
+    await _firebaseController.get("Пользователи").then((value) {
+      log("Персонал ${value.toString()}");
+      usersKeepers.updateInstructors(value);
+      setState(() {});
+    });
+  }
+
+  void _saveAdminsIntoKeeper(Event? event) async {
+    await _firebaseController.get("Администраторы").then((value) {
+      log("Админи ${value.toString()}");
+      _adminDataKeeper.updateInstructors(value);
       setState(() {});
     });
   }

@@ -156,6 +156,41 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
     },
   );
 }
+void showRoleChangeDialog(BuildContext context, Function()? logoutFunction, String role) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+          content: SizedBox(
+        height: screenHeight * 0.15,
+        child: Column(
+          children: [
+             Text("Точно хотите поменять роль на \n\"$role\" ?", textAlign: TextAlign.center,),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                          child: const Text('ДА'), onPressed: logoutFunction),
+                    ),
+                    OutlinedButton(
+                      child: const Text('ОТМЕНА'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ))
+          ],
+        ),
+      ));
+    },
+  );
+}
+
 
 void showCancelDialog(BuildContext context, Function()? logoutFunction) {
   showDialog<void>(

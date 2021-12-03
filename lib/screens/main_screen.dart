@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
     imageSliders = imgList
         .map(
           (item) => Container(
-            margin: EdgeInsets.all(5.0),
+            margin: const EdgeInsets.all(5.0),
             child: Stack(
               children: <Widget>[
                 Image.asset(item),

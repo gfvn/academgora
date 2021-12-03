@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:academ_gora_release/components/search_widget.dart';
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
@@ -143,14 +142,10 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                     buildRoleText("Инструкторы:"),
                   ],
                 ),
-                Column(
-                  children: List.generate(
-                    filteredInstructorList.length,
-                    (int index) {
-                      return buildInstructor(filteredInstructorList[index]);
-                    },
-                  ),
+                const SizedBox(
+                  height: 8,
                 ),
+                buildInstructorListView(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -161,14 +156,10 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                     buildRoleText("Администраторы:"),
                   ],
                 ),
-                Column(
-                  children: List.generate(
-                    filteredAdminList.length,
-                    (int index) {
-                      return buildAdministrator(filteredAdminList[index]);
-                    },
-                  ),
+                const SizedBox(
+                  height: 8,
                 ),
+                buildAdminListView(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -179,18 +170,171 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                     buildRoleText("Персонали:"),
                   ],
                 ),
-                Column(
-                  children: List.generate(
-                    filteredPersonList.length,
-                    (int index) {
-                      return buildUser(filteredPersonList[index]);
-                    },
-                  ),
+                const SizedBox(
+                  height: 8,
                 ),
+                buildPersonalView()
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildInstructorListView() {
+    return Column(
+      children: List.generate(
+        filteredInstructorList.length,
+        (int index) {
+          return Dismissible(
+              background: Container(
+                color: Colors.blue,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Седелать \nадмин',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              secondaryBackground: Container(
+                color: Colors.green,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Сделать \n юзер',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              key:
+                  ValueKey<String>(filteredInstructorList[index].id.toString()),
+              onDismissed: (DismissDirection direction) {
+                   if (direction == DismissDirection.startToEnd) {
+                  showRoleChangeDialog(
+                      context, makeUserToInstructor, "Администратор");
+                } else {
+                  showRoleChangeDialog(
+                      context, makeUserToInstructor, "Юзер");
+                }
+              },
+              child: buildInstructor(filteredInstructorList[index]));
+        },
+      ),
+    );
+  }
+
+  Widget buildAdminListView() {
+    return Column(
+      children: List.generate(
+        filteredAdminList.length,
+        (int index) {
+          return Dismissible(
+              background: Container(
+                color: Colors.blue,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Седелать \nинструктор',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              secondaryBackground: Container(
+                color: Colors.green,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Сделать \n юзер',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              key: ValueKey<String>(filteredAdminList[index].id.toString()),
+              onDismissed: (DismissDirection direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  showRoleChangeDialog(
+                      context, makeAdminToInstructor,"Инструктор");
+                } else {
+                  showRoleChangeDialog(
+                      context, makeAdminToInstructor, "Юзер");
+                }
+              },
+              child: buildAdministrator(filteredAdminList[index]));
+        },
+      ),
+    );
+  }
+
+  Widget buildPersonalView() {
+    return Column(
+      children: List.generate(
+        filteredPersonList.length,
+        (int index) {
+          return Dismissible(
+              background: Container(
+                color: Colors.blue,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Седелать \nинструктор',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              secondaryBackground: Container(
+                color: Colors.green,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Сделать \nадминистратор',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              key: ValueKey<String>(filteredPersonList[index].id.toString()),
+              onDismissed: (DismissDirection direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  showRoleChangeDialog(
+                      context, makeUserToInstructor, "Инструктор");
+                } else {
+                  showRoleChangeDialog(
+                      context, makeUserToAdmin, "Администратор");
+                }
+              },
+              child: buildUser(filteredPersonList[index]));
+        },
       ),
     );
   }
@@ -233,7 +377,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             ),
           ),
           const SizedBox(
-            height: 5,
+            height: 10,
           ),
           buildLine()
         ],
@@ -271,7 +415,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             ],
           ),
           const SizedBox(
-            height: 5,
+            height: 10,
           ),
           Text(
             user.kindOfSport.toString(),
@@ -290,6 +434,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     return Padding(
       padding: const EdgeInsets.only(
         top: 20,
+        bottom: 8,
         left: 8,
       ),
       child: Column(
@@ -304,7 +449,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             ),
           ),
           const SizedBox(
-            height: 5,
+            height: 10,
           ),
           buildLine()
         ],

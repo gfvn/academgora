@@ -11,7 +11,9 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Container(
+        
+      ),
     );
   }
 }

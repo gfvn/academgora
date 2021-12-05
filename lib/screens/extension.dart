@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/screens/all_instructors/all_instructors_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -156,7 +157,11 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
     },
   );
 }
-void showRoleChangeDialog(BuildContext context, Function()? logoutFunction, String role) {
+
+void showRoleChangeDialog(
+    {required BuildContext context,
+    required Function function,
+    required String role}) {
   showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -165,7 +170,10 @@ void showRoleChangeDialog(BuildContext context, Function()? logoutFunction, Stri
         height: screenHeight * 0.15,
         child: Column(
           children: [
-             Text("Точно хотите поменять роль на \n\"$role\" ?", textAlign: TextAlign.center,),
+            Text(
+              "Точно хотите поменять роль на \n\"$role\" ?",
+              textAlign: TextAlign.center,
+            ),
             Container(
                 margin: const EdgeInsets.only(top: 20),
                 child: Row(
@@ -174,7 +182,11 @@ void showRoleChangeDialog(BuildContext context, Function()? logoutFunction, Stri
                     Container(
                       margin: const EdgeInsets.only(right: 20),
                       child: OutlinedButton(
-                          child: const Text('ДА'), onPressed: logoutFunction),
+                          child: const Text('ДА'),
+                          onPressed: () {
+                            function();
+                            Navigator.of(context).pop();
+                          }),
                     ),
                     OutlinedButton(
                       child: const Text('ОТМЕНА'),
@@ -191,6 +203,50 @@ void showRoleChangeDialog(BuildContext context, Function()? logoutFunction, Stri
   );
 }
 
+Future<String?> showInstructorKindOfSportDialog(
+    {required BuildContext context, required String role}) async {
+  return await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SizedBox(
+          height: screenHeight * 0.15,
+          child: Column(
+            children: [
+              const Text(
+                "Выберите вид спорта",
+                textAlign: TextAlign.center,
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                        child: const Text(KindsOfSport.SKIES),
+                        onPressed: () {
+                          Navigator.of(context).pop(KindsOfSport.SKIES);
+                        },
+                      ),
+                    ),
+                    OutlinedButton(
+                      child: const Text(KindsOfSport.SNOWBOARD),
+                      onPressed: () {
+                        Navigator.of(context).pop(KindsOfSport.SNOWBOARD);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 
 void showCancelDialog(BuildContext context, Function()? logoutFunction) {
   showDialog<void>(

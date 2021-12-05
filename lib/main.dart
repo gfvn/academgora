@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
@@ -38,6 +39,7 @@ class MyAppState extends State<MyApp> {
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
+  final NewsKeeper _newsDataKeeper = NewsKeeper();
 
   bool? _isUserAuthorized;
 
@@ -76,6 +78,9 @@ class MyAppState extends State<MyApp> {
 
     _saveAdminsIntoKeeper(null);
     _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
+
+    _saveNewsrDataKeeper(null);
+    _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
   }
 
   @override
@@ -85,6 +90,7 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: Builder(
         builder: (context) {
           screenHeight = MediaQuery.of(context).size.height;
@@ -101,7 +107,6 @@ class MyAppState extends State<MyApp> {
 
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then((value) {
-      log("Инструкторы ${value.toString()}");
       _instructorsKeeper.updateInstructors(value);
       setState(() {});
     });
@@ -109,7 +114,6 @@ class MyAppState extends State<MyApp> {
 
   void _saveUsersIntoKeeper(Event? event) async {
     await _firebaseController.get("Пользователи").then((value) {
-      log("Персонал ${value.toString()}");
       usersKeepers.updateInstructors(value);
       setState(() {});
     });
@@ -117,7 +121,6 @@ class MyAppState extends State<MyApp> {
 
   void _saveAdminsIntoKeeper(Event? event) async {
     await _firebaseController.get("Администраторы").then((value) {
-      log("Админи ${value.toString()}");
       _adminDataKeeper.updateInstructors(value);
       setState(() {});
     });
@@ -131,6 +134,14 @@ class MyAppState extends State<MyApp> {
       setState(() {});
     });
   }
+
+  void _saveNewsrDataKeeper(Event? event) async {
+    await _firebaseController.getAsList('Новости').then((value) {
+      log("Новости ${value.toString()}");
+      _newsDataKeeper.updateInstructors(value);
+      setState(() {});
+    });
+  }
 }
 
 class SplashScreen extends StatelessWidget {
@@ -139,12 +150,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage("assets/profile/0_bg.png"),
-        fit: BoxFit.cover,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/profile/0_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
-    )));
+    );
   }
 }

@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class NewsAddScreen extends StatefulWidget {
   const NewsAddScreen({Key? key}) : super(key: key);
@@ -15,8 +19,12 @@ class NewsAddScreen extends StatefulWidget {
 
 class _NewsAddScreenState extends State<NewsAddScreen> {
   final picker = ImagePicker();
+  final FirebaseRequestsController _firebaseRequestsController =
+      FirebaseRequestsController();
+  final NewsKeeper _newsDataKeeper = NewsKeeper();
 
   bool _uploadingPhotoToDatabase = false;
+  bool isLoading = false;
   String photoUrl = '';
   File image = File("");
   List<String> numberList = ["1", "2", "3", "4"];
@@ -50,10 +58,18 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
                   height: 16,
                 ),
                 buildDroppButton(),
-                 const SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                buildInstructionText()
+                buildInstructionText(),
+                const SizedBox(
+                  height: 16,
+                ),
+                _saveButton(context),
+                const SizedBox(
+                  height: 32,
+                ),
+                _backToMainScreenButton(context),
               ],
             ),
           ),
@@ -71,23 +87,67 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: Colors.blue,
         child: InkWell(
-            onTap: () {
-              _selectOption(context);
-            },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "Добавить фото",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
+          onTap: () {
+            _selectOption(context);
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Выбрать фото",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _saveButton(BuildContext context) {
+    return Container(
+      width: screenWidth * 0.8,
+      height: screenHeight * 0.08,
+      margin: const EdgeInsets.only(top: 10),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.blue,
+        child: InkWell(
+          onTap: () {
+            _updateDatabase(image, choosedNumber);
+          },
+          child: !isLoading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Опубликовать",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+              : const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
-                  ]),
-            )),
+                  ),
+                ),
+        ),
       ),
     );
   }
@@ -119,11 +179,43 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   void _makePhoto(ImageSource imageSource) async {
     final pickedFile = await picker.pickImage(source: imageSource);
     File photo = File(pickedFile!.path);
-    setState(() {
-      image = photo;
-      _uploadingPhotoToDatabase = true;
-    });
+    setState(
+      () {
+        image = photo;
+        _uploadingPhotoToDatabase = true;
+      },
+    );
     // _updateDatabase(photo);
+  }
+
+  void _updateDatabase(File photo, String id) async {
+    setState(
+      () {
+        isLoading = true;
+      },
+    );
+    String fileName = basename(photo.path);
+    _firebaseRequestsController
+        .uploadFileToFirebaseStorage('news_photos/$fileName', photo)
+        .then(
+      (value) {
+        _firebaseRequestsController
+            .update("Новости/$id", {"Фото": fileName, "Место": id}).then(
+          (value) async {
+            await _firebaseRequestsController.getAsList('Новости').then(
+              (value) {
+                _newsDataKeeper.updateInstructors(value);
+              },
+            );
+            setState(
+              () {
+                isLoading = false;
+              },
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget buildRoleText(String text) {
@@ -135,11 +227,47 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
       ),
     );
   }
-    Widget buildInstructionText() {
+
+  Widget _backToMainScreenButton(BuildContext context) {
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.06,
+      margin: const EdgeInsets.only(top: 18),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.blue,
+        child: InkWell(
+          onTap: () => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const MainScreen()),
+                (route) => false)
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "НА ГЛАВНУЮ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInstructionText() {
     return const Padding(
       padding: EdgeInsets.all(16.0),
       child: Text(
-        "*Это число озночает позицию карртинки в главном экране приложения ", textAlign: TextAlign.center,
+        "Данное число обозначает позицию новости на главном экране приложения.",
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w300,
@@ -156,19 +284,19 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
           child: Image.file(image));
     } else {
       return SizedBox(
-          width: screenWidth * 0.7,
-          height: screenHeight * 0.2,
-          child:
-              const Image(image: AssetImage('assets/all_instructors/123.png')));
+        width: screenWidth * 0.7,
+        height: screenHeight * 0.2,
+        child: const Image(
+          image: AssetImage('assets/all_instructors/123.png'),
+        ),
+      );
     }
   }
 
   Widget buildDroppButton() {
     return Container(
       decoration: BoxDecoration(
-              color: Colors.white,
-
-        borderRadius: BorderRadius.circular(10)),
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: DropdownButton(
@@ -177,13 +305,17 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
           value: choosedNumber,
           focusColor: Colors.white,
           onChanged: (value) {
-            setState(() {
-              choosedNumber = value.toString();
-            });
+            setState(
+              () {
+                choosedNumber = value.toString();
+              },
+            );
           },
-          items: numberList.map((e) {
-            return DropdownMenuItem(value: e, child: Text(e));
-          }).toList(),
+          items: numberList.map(
+            (e) {
+              return DropdownMenuItem(value: e, child: Text(e));
+            },
+          ).toList(),
         ),
       ),
     );

@@ -135,7 +135,7 @@ class _InstructorsScreenState
                 child: Image.asset("assets/all_instructors/2.png"),
               ),
               Text(
-                instructors[which].name!,
+                instructors[which].name??"",
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),

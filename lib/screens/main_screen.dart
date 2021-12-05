@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:academ_gora_release/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/model/news.dart';
 import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/screens/news_photo_widget.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
 import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
@@ -23,77 +28,78 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
+final NewsKeeper _newsKeeper = NewsKeeper();
+
 class _MainScreenState extends State<MainScreen> {
   final List<Widget> buttons = [];
   int _current = 0;
-  late List<Widget> imageSliders;
-
+  List<Widget> imageSliders = [];
+  List<News> newsList = [];
   String phoneNumber = "+73952657066";
-
-  final List<String> imgList = [
-    "assets/main/10_pic1.png",
-    "assets/main/10_pic2.png",
-    "assets/main/10_pic3.png",
-    "assets/main/10_pic4.png"
-  ];
-
-  void _setImageSliders() {
-    imageSliders = imgList
-        .map(
-          (item) => Container(
-            margin: const EdgeInsets.all(5.0),
-            child: Stack(
-              children: <Widget>[
-                Image.asset(item),
-                Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20.0),
-                    child: const Text(
-                      'Время \nкатать',
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-        .toList();
-  }
+  bool _uploadingPhotoToDatabase = false;
+  bool isLoading = false;
+  // final List<String> imgList = [
+  //   "assets/main/10_pic1.png",
+  //   "assets/main/10_pic2.png",
+  //   "assets/main/10_pic3.png",
+  //   "assets/main/10_pic4.png"
+  // ];
 
   @override
   void initState() {
+    // _getNews();
     super.initState();
+  }
+
+  void _getNews() async {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 3000));
+    newsList = _newsKeeper.getAllPersons();
+    log('newslist222 $newsList');
     _setImageSliders();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void _setImageSliders() {
+    imageSliders = newsList.map(
+      (item) {
+        return _newsPhoto(item);
+      },
+    ).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: screenDecoration("assets/main/background.svg"),
-          child: Center(
-              child: Column(
+        decoration: screenDecoration("assets/main/background.svg"),
+        child: Center(
+          child: Column(
             children: [
               _titleAndAccButton(),
               _socialNetworks(),
-              _slider(),
+              // _slider(),
               _buttons(),
               _registrationToInstructorButton(),
               _infoButtons()
             ],
-          ))),
+          ),
+        ),
+      ),
     );
+  }
+
+  Widget _newsPhoto(News news) {
+    if (_uploadingPhotoToDatabase) {
+      return const SizedBox(
+          width: 30, height: 30, child: CircularProgressIndicator());
+    } else {
+      return NewsPhotoImage(news);
+    }
   }
 
   Widget _titleAndAccButton() {
@@ -120,19 +126,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _openAccountScreen() async {
-    await SharedPreferences.getInstance().then((prefs) {
-      String userRole = prefs.getString("userRole")!;
-      if (userRole == UserRole.user) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
-      } else if (userRole == UserRole.instructor) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => InstructorWorkoutsScreen(instructorPhoneNumber: FirebaseAuth.instance.currentUser!.phoneNumber!)));
-      } else {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()));
-      }
-    });
+    await SharedPreferences.getInstance().then(
+      (prefs) {
+        String userRole = prefs.getString("userRole")!;
+        if (userRole == UserRole.user) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        } else if (userRole == UserRole.instructor) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => InstructorWorkoutsScreen(
+                  instructorPhoneNumber:
+                      FirebaseAuth.instance.currentUser!.phoneNumber!)));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const AdministratorProfileScreen()));
+        }
+      },
+    );
   }
 
   Widget _socialNetworks() {
@@ -170,39 +180,51 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _slider() {
-    return Container(
-        margin: EdgeInsets.only(top: screenHeight * 0.03),
-        child: Column(children: [
-          CarouselSlider(
-            items: imageSliders,
-            options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-                aspectRatio: 2.0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                }),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.map((url) {
-              int index = imgList.indexOf(url);
-              return Container(
-                width: 8.0,
-                height: 8.0,
-                margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _current == index
-                      ? const Color.fromRGBO(0, 0, 0, 0.9)
-                      : const Color.fromRGBO(0, 0, 0, 0.4),
+    double? height = screenWidth * 0.7;
+    return 
+         Container(
+            margin: EdgeInsets.only(top: screenHeight * 0.03),
+            child: Column(
+              children: [
+                CarouselSlider(
+                  items: imageSliders,
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 2.0,
+                    onPageChanged: (index, reason) {
+                      setState(
+                        () {
+                          _current = index;
+                        },
+                      );
+                    },
+                  ),
                 ),
-              );
-            }).toList(),
-          ),
-        ]));
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: newsList.map(
+                    (url) {
+                      int index = newsList.indexOf(url);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == index
+                              ? const Color.fromRGBO(0, 0, 0, 0.9)
+                              : const Color.fromRGBO(0, 0, 0, 0.4),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
+              ],
+            ),
+          );
+      
   }
 
   Widget _buttons() {
@@ -218,43 +240,44 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _button(String text, String assetPath) {
     return GestureDetector(
-        onTap: () {
-          _openInfoScreen(text);
-        },
-        child: Center(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(left: 10),
-                alignment: Alignment.center,
-                child: Image.asset(
-                  assetPath,
-                  height: screenHeight * 0.23,
-                  width: screenWidth * 0.3,
-                  fit: BoxFit.cover,
-                ),
+      onTap: () {
+        _openInfoScreen(text);
+      },
+      child: Center(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(left: 10),
+              alignment: Alignment.center,
+              child: Image.asset(
+                assetPath,
+                height: screenHeight * 0.23,
+                width: screenWidth * 0.3,
+                fit: BoxFit.cover,
               ),
-              Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                  decoration: const BoxDecoration(),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 10.0),
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.0,
-                    ),
+            ),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
+                decoration: const BoxDecoration(),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 10.0),
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
                   ),
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _openInfoScreen(String text) {
@@ -326,8 +349,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _openRegistrationToInstructorScreen() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const RegistrationFirstScreen()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (c) => const RegistrationFirstScreen()));
   }
 
   Widget _infoButtons() {

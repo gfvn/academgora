@@ -67,6 +67,11 @@ class FirebaseRequestsController {
         ? {}
         : dataSnapshot.value as Map<dynamic, dynamic>;
   }
+    Future<dynamic> getAsList(String path) async {
+    DataSnapshot dataSnapshot =
+        await FirebaseDatabase.instance.reference().child(path).once();
+    return dataSnapshot.value ?? [];
+  }
 
   Future<String> getDownloadUrlFromFirebaseStorage(String path) async {
     String url =

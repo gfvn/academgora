@@ -19,7 +19,7 @@
     </queries>
    <application
         android:label="academ_gora_release"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/model/news.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,8 +12,7 @@ class NewsPhotoImage extends StatefulWidget {
   final double? height;
   final double? width;
 
-  const NewsPhotoImage(this.currentPhoto,
-      {Key? key, this.width, this.height})
+  const NewsPhotoImage(this.currentPhoto, {Key? key, this.width, this.height})
       : super(key: key);
 
   @override
@@ -36,9 +37,8 @@ class _NewsPhotoImageState extends State<NewsPhotoImage> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
-        borderRadius: BorderRadius.circular(8)
-      ),
+          image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
+          borderRadius: BorderRadius.circular(8)),
     );
   }
 
@@ -58,7 +58,8 @@ class _NewsPhotoImageState extends State<NewsPhotoImage> {
         if (snapshot.connectionState == ConnectionState.done) {
           return snapshot.hasData
               ? _photoWidget(snapshot.data as ImageProvider)
-              : _photoWidget(const AssetImage("assets/instructors_list/e_3.png"));
+              : _photoWidget(
+                  const AssetImage("assets/instructors_list/e_3.png"));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -66,13 +67,14 @@ class _NewsPhotoImageState extends State<NewsPhotoImage> {
                 width: 30, height: 30, child: CircularProgressIndicator()),
           );
         }
-        return _photoWidget(const AssetImage("assets/instructors_list/e_3.png"));
+        return _photoWidget(
+            const AssetImage("assets/instructors_list/e_3.png"));
       },
     );
   }
 
   Future<NetworkImage> _getPhotoFromDb(String imageName) async {
-
+    log("noooooooooooooooo");
     NetworkImage? imageFromDb;
     await _firebaseRequestsController
         .getDownloadUrlFromFirebaseStorage("news_photos/$imageName")

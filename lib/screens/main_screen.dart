@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    // _getNews();
+    _getNews();
     super.initState();
   }
 
@@ -82,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               _titleAndAccButton(),
               _socialNetworks(),
-              // _slider(),
+              _slider(),
               _buttons(),
               _registrationToInstructorButton(),
               _infoButtons()

@@ -7,7 +7,6 @@ import 'package:academ_gora_release/screens/profile/user_profile/presentation/wo
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
-import 'dart:developer';
 import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../../main_screen.dart';
@@ -68,56 +67,60 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
 
   Widget _phoneTextWidget() {
     return Container(
-        margin: const EdgeInsets.only(top: 6),
-        alignment: Alignment.topRight,
-        child: Text(
-          FirebaseAuth.instance.currentUser!.phoneNumber!,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-        ));
+      margin: const EdgeInsets.only(top: 6),
+      alignment: Alignment.topRight,
+      child: Text(
+        FirebaseAuth.instance.currentUser!.phoneNumber!,
+        style: const TextStyle(color: Colors.white, fontSize: 18),
+      ),
+    );
   }
 
   Widget _logoutButton() {
     return GestureDetector(
-        onTap: () {
-          showLogoutDialog(context, _logout);
-        },
-        child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Text(
-                  "ВЫЙТИ",
-                  style: TextStyle(color: Colors.white),
-                ),
-                Container(
-                    margin: const EdgeInsets.only(left: 5),
-                    height: 20,
-                    width: 20,
-                    child: Image.asset("assets/profile/e1.png"))
-              ],
-            )));
+      onTap: () {
+        showLogoutDialog(context, _logout);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Text(
+              "ВЫЙТИ",
+              style: TextStyle(color: Colors.white),
+            ),
+            Container(
+                margin: const EdgeInsets.only(left: 5),
+                height: 20,
+                width: 20,
+                child: Image.asset("assets/profile/e1.png"))
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _backToMainScreenButton() {
     return GestureDetector(
-        onTap: _openMainScreen,
-        child: Container(
-          alignment: Alignment.center,
-          width: screenWidth * 0.5,
-          height: screenHeight * 0.07,
-          margin: EdgeInsets.only(top: screenHeight * 0.01),
-          decoration: const BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.all(Radius.circular(26))),
-          child: Text(
-            "НА ГЛАВНУЮ",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: screenHeight * 0.03,
-                fontWeight: FontWeight.bold),
-          ),
-        ));
+      onTap: _openMainScreen,
+      child: Container(
+        alignment: Alignment.center,
+        width: screenWidth * 0.5,
+        height: screenHeight * 0.07,
+        margin: EdgeInsets.only(top: screenHeight * 0.01),
+        decoration: const BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(26))),
+        child: Text(
+          "НА ГЛАВНУЮ",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: screenHeight * 0.03,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 
   void _logout() async {
@@ -135,12 +138,13 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
 
   Widget _workoutsTitle() {
     return Container(
-        margin: const EdgeInsets.only(top: 20, left: 20, bottom: 10),
-        alignment: Alignment.centerLeft,
-        child: const Text(
-          "мои занятия",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ));
+      margin: const EdgeInsets.only(top: 20, left: 20, bottom: 10),
+      alignment: Alignment.centerLeft,
+      child: const Text(
+        "мои занятия",
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Widget _workoutsList() {
@@ -149,18 +153,14 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
       child: StreamBuilder(
         stream: _workoutsViewModel.workoutsList,
         builder: (context, snap) {
-          print("dataaaaa ${snap.data}");
           return snap.hasData
               ? ListView.builder(
                   itemCount: (snap.data as List<Workout>).length,
                   itemBuilder: (context, index) {
-                    log('beforedata ${snap.data}');
-
                     List<Workout> workouts = snap.data as List<Workout>;
+
                     ///TODO change here
                     //     _sortWorkoutsByDateAndTime(snap.data as List<Workout>);
-                    log('afterdata $workouts');
-
                     return Column(
                       children: [
                         WorkoutWidget(
@@ -170,14 +170,18 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                             ? const SizedBox(
                                 height: 30,
                                 width: 30,
-                                child: Icon(Icons.keyboard_arrow_down),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                ),
                               )
                             : Container()
                       ],
                     );
                   },
                 )
-              : const Text('nooo');
+              : const Text(
+                  'nooo',
+                );
         },
       ),
     );

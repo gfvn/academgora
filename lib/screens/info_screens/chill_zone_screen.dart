@@ -165,7 +165,6 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => MainScreen()), (route) => false);
+    Navigator.pop(context);
   }
 }

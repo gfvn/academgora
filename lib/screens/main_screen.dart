@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   String phoneNumber = "+73952657066";
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
-  List<String> imageUrlLis = [];
+  List<String> imageUrls = [];
 
   @override
   void initState() {
@@ -54,8 +54,8 @@ class _MainScreenState extends State<MainScreen> {
       isLoading = true;
     });
     newsList = _newsKeeper.getAllPersons();
-    log('newslist222 $newsList');
-    await createSliderWidget();
+    imageUrls = _newsKeeper.getNewsUrls();
+    createSliderWidget();
     setState(
       () {
         isLoading = false;
@@ -63,13 +63,13 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Future<void> createSliderWidget() async {
-    for (News news in newsList) {
-      String url = await saveImageUrl(imageName: news.photo.toString());
+  void createSliderWidget() async {
+    for (String news in imageUrls) {
+      String url = news;
       imageSliders.add(
         imageView(
           imageUrl: url.toString(),
-          assetPath: "assets/main/10_pic${news.id}.png",
+          assetPath: "assets/main/10_pic${imageUrls.indexOf(news)+1}.png",
         ),
       );
     }
@@ -84,24 +84,9 @@ class _MainScreenState extends State<MainScreen> {
     // }).toList();
   }
 
-  Future<String> saveImageUrl({required String imageName}) async {
-    String url = "";
-    if (imageName == "") {
-      return url;
-    }
-    await _firebaseRequestsController
-        .getDownloadUrlFromFirebaseStorage("news_photos/$imageName")
-        .then(
-      (downloadUrl) {
-        url = downloadUrl.toString();
-      },
-    );
-    return url;
-  }
-
   Widget imageView({required String imageUrl, required String assetPath}) {
-    double? height = screenWidth * 0.3;
-    double? width = screenWidth * 0.7;
+    double? height = screenWidth * 0.4;
+    double? width = screenWidth * 0.75;
     return imageUrl == "" || imageUrl.isEmpty
         ? buildLocalWidget(
             assetPath: assetPath,
@@ -122,8 +107,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget buildLocalWidget({required String assetPath}) {
-    double? height = screenWidth * 0.3;
-    double? width = screenWidth * 0.7;
+    double? height = screenWidth * 0.5;
+    double? width = screenWidth * 0.8;
     return Container(
       width: width,
       height: height,
@@ -249,7 +234,7 @@ class _MainScreenState extends State<MainScreen> {
               onPageChanged: (index, reason) {
                 setState(
                   () {
-                    _current = index+1;
+                    _current = index + 1;
                   },
                 );
               },

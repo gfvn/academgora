@@ -160,7 +160,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => MainScreen()), (route) => false);
+    Navigator.pop(context);
+;
   }
 }

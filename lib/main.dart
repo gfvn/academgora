@@ -91,6 +91,15 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  Widget _logo() {
+    return Container(
+      margin: EdgeInsets.only(top: screenHeight * 0.06),
+      height: screenHeight * 0.25,
+      width: screenWidth * 0.35,
+      child: Image.asset("assets/info_screens/call_us/4.png"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -109,7 +118,33 @@ class MyAppState extends State<MyApp> {
                   ? const MainScreen()
                   : const AuthScreen();
             } else {
-              return const Scaffold();
+              return Scaffold(
+                body: Stack(
+                  children: [
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _logo(),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Center(
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
           } else {
             return const SplashScreen();

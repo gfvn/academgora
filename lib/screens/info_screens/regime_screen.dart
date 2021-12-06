@@ -107,7 +107,7 @@ class _RegimeScreenState extends State<RegimeScreen> {
         width: screenWidth * 0.8,
         child: SingleChildScrollView(
             child: Flex(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           direction: Axis.vertical,
           children: [
             Text(
@@ -199,7 +199,6 @@ class _RegimeScreenState extends State<RegimeScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => MainScreen()), (route) => false);
+    Navigator.pop(context);
   }
 }

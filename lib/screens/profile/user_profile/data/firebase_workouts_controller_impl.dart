@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
@@ -26,6 +28,7 @@ class FirebaseWorkoutsControllerImplementation
     List<Workout> workouts = _parseFirebaseResponseToWorkoutsList(
         await _getWorkoutsFromFirebaseForCurrentUser());
     List<Workout> oldWorkouts = _getOldWorkouts(workouts);
+    log("olllld $oldWorkouts");
     if (oldWorkouts.isNotEmpty) oldWorkouts.forEach(workouts.remove);
     _deleteOldWorkoutsFromFirebase(oldWorkouts);
     return _sortWorkouts(workouts);
@@ -97,9 +100,12 @@ class FirebaseWorkoutsControllerImplementation
         "${workoutDate.substring(4, 8)}-${workoutDate.substring(2, 4)}-${workoutDate.substring(0, 2)}";
     DateTime workoutDateTime = DateTime.parse(formattedDate);
     DateTime now = DateTime.now();
-    if (workoutDateTime.year >= now.year &&
-        workoutDateTime.day >= now.day &&
-        workoutDateTime.month >= now.month) {
+    if (workoutDateTime.isAfter(now)
+      ///TODO Заменили тут
+      // workoutDateTime.year >= now.year &&
+      //   workoutDateTime.day >= now.day &&
+      //   workoutDateTime.month >= now.month
+        ) {
       return true;
     } else {
       return false;

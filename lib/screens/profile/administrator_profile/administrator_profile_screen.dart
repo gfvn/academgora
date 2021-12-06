@@ -1,8 +1,9 @@
-import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/personal_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 
 import '../../../main.dart';
 import '../../extension.dart';
@@ -34,11 +35,12 @@ class _AdministratorProfileScreenState
               ),
               Positioned(
                   bottom: 32,
-                  child: Row(
+                  child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _backToMainScreenButton(),
+                      _logoutButton()
                     ],
                   )),
             ],
@@ -70,6 +72,45 @@ class _AdministratorProfileScreenState
             },
             text: "Персонал"),
       ],
+    );
+  }
+
+  void _logout() async {
+    FlutterAuthUi.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const AuthScreen()),
+        (route) => false);
+  }
+
+  Widget _logoutButton() {
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.06,
+      margin: const EdgeInsets.only(top: 5),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.red,
+        child: InkWell(
+          onTap: () {
+            showLogoutDialog(context, _logout);
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "ВЫЙТИ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

@@ -138,7 +138,7 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
             children: [
               InstructorPhotoWidget(instructors[which]),
               Text(
-                instructors[which].name!,
+                instructors[which].name??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),

@@ -33,6 +33,7 @@ dev_dependencies:
   image_picker: ^0.8.4+1
   expand_tap_area: ^1.1.0
   flutter_launcher_icons: ^0.9.2
+  cached_network_image: ^3.2.0
 
 # script for uploading app icon: flutter pub run flutter_launcher_icons:main
 flutter_icons:

@@ -1,9 +1,9 @@
 import 'dart:developer';
 
+import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/model/news.dart';
 import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/screens/news_photo_widget.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
 import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../main.dart';
 import 'extension.dart';
@@ -31,19 +32,16 @@ class MainScreen extends StatefulWidget {
 final NewsKeeper _newsKeeper = NewsKeeper();
 
 class _MainScreenState extends State<MainScreen> {
+  final FirebaseRequestsController _firebaseRequestsController =
+      FirebaseRequestsController();
   final List<Widget> buttons = [];
-  int _current = 0;
+  int _current = 1;
   List<Widget> imageSliders = [];
   List<News> newsList = [];
   String phoneNumber = "+73952657066";
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
-  // final List<String> imgList = [
-  //   "assets/main/10_pic1.png",
-  //   "assets/main/10_pic2.png",
-  //   "assets/main/10_pic3.png",
-  //   "assets/main/10_pic4.png"
-  // ];
+  List<String> imageUrlLis = [];
 
   @override
   void initState() {
@@ -55,21 +53,85 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(const Duration(milliseconds: 3000));
     newsList = _newsKeeper.getAllPersons();
     log('newslist222 $newsList');
-    _setImageSliders();
-    setState(() {
-      isLoading = false;
-    });
+    await createSliderWidget();
+    setState(
+      () {
+        isLoading = false;
+      },
+    );
   }
 
-  void _setImageSliders() {
-    imageSliders = newsList.map(
-      (item) {
-        return _newsPhoto(item);
+  Future<void> createSliderWidget() async {
+    for (News news in newsList) {
+      String url = await saveImageUrl(imageName: news.photo.toString());
+      imageSliders.add(
+        imageView(
+          imageUrl: url.toString(),
+          assetPath: "assets/main/10_pic${news.id}.png",
+        ),
+      );
+    }
+    // imageSliders = newsList.map((e) {
+    //   var url = saveImageUrl(imageName: e.photo.toString());
+    //   log("url $url");
+
+    //   return imageView(
+    //     imageUrl: url.toString(),
+    //     assetPath: "assets/main/10_pic${e.id}.png",
+    //   );
+    // }).toList();
+  }
+
+  Future<String> saveImageUrl({required String imageName}) async {
+    String url = "";
+    if (imageName == "") {
+      return url;
+    }
+    await _firebaseRequestsController
+        .getDownloadUrlFromFirebaseStorage("news_photos/$imageName")
+        .then(
+      (downloadUrl) {
+        url = downloadUrl.toString();
       },
-    ).toList();
+    );
+    return url;
+  }
+
+  Widget imageView({required String imageUrl, required String assetPath}) {
+    double? height = screenWidth * 0.3;
+    double? width = screenWidth * 0.7;
+    return imageUrl == "" || imageUrl.isEmpty
+        ? buildLocalWidget(
+            assetPath: assetPath,
+          )
+        : CachedNetworkImage(
+            width: width,
+            height: height,
+            fit: BoxFit.fill,
+
+            // imageUrl: "https://firebasestorage.googleapis.com/v0/b/academgora-6be92.appspot.com/o/news_photos%2Fimage_picker8911253265543154342.png?alt=media&token=06988ffd-d475-43ff-aa25-3f3544c563e0",
+            imageUrl: imageUrl,
+            placeholder: (context, url) {
+              return buildLocalWidget(
+                assetPath: assetPath,
+              );
+            },
+          );
+  }
+
+  Widget buildLocalWidget({required String assetPath}) {
+    double? height = screenWidth * 0.3;
+    double? width = screenWidth * 0.7;
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage(assetPath), fit: BoxFit.fill),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
   }
 
   @override
@@ -78,28 +140,22 @@ class _MainScreenState extends State<MainScreen> {
       body: Container(
         decoration: screenDecoration("assets/main/background.svg"),
         child: Center(
-          child: Column(
-            children: [
-              _titleAndAccButton(),
-              _socialNetworks(),
-              _slider(),
-              _buttons(),
-              _registrationToInstructorButton(),
-              _infoButtons()
-            ],
-          ),
+          child: !isLoading
+              ? Column(
+                  children: [
+                    _titleAndAccButton(),
+                    _socialNetworks(),
+                    _slider(),
+                    _buttons(),
+                    _registrationToInstructorButton(),
+                    _infoButtons()
+                  ],
+                )
+              : const SizedBox(
+                  width: 30, height: 30, child: CircularProgressIndicator()),
         ),
       ),
     );
-  }
-
-  Widget _newsPhoto(News news) {
-    if (_uploadingPhotoToDatabase) {
-      return const SizedBox(
-          width: 30, height: 30, child: CircularProgressIndicator());
-    } else {
-      return NewsPhotoImage(news);
-    }
   }
 
   Widget _titleAndAccButton() {
@@ -180,51 +236,48 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _slider() {
-    double? height = screenWidth * 0.7;
-    return 
-         Container(
-            margin: EdgeInsets.only(top: screenHeight * 0.03),
-            child: Column(
-              children: [
-                CarouselSlider(
-                  items: imageSliders,
-                  options: CarouselOptions(
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    aspectRatio: 2.0,
-                    onPageChanged: (index, reason) {
-                      setState(
-                        () {
-                          _current = index;
-                        },
-                      );
-                    },
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: newsList.map(
-                    (url) {
-                      int index = newsList.indexOf(url);
-                      return Container(
-                        width: 8.0,
-                        height: 8.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 2.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _current == index
-                              ? const Color.fromRGBO(0, 0, 0, 0.9)
-                              : const Color.fromRGBO(0, 0, 0, 0.4),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ),
-              ],
+    return Container(
+      margin: EdgeInsets.only(top: screenHeight * 0.03),
+      child: Column(
+        children: [
+          CarouselSlider(
+            items: imageSliders,
+            options: CarouselOptions(
+              autoPlay: true,
+              enlargeCenterPage: true,
+              aspectRatio: 2.0,
+              onPageChanged: (index, reason) {
+                setState(
+                  () {
+                    _current = index+1;
+                  },
+                );
+              },
             ),
-          );
-      
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: newsList.map(
+              (url) {
+                int index = int.parse(url.id.toString());
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _current == index
+                        ? const Color.fromRGBO(0, 0, 0, 0.9)
+                        : const Color.fromRGBO(0, 0, 0, 0.4),
+                  ),
+                );
+              },
+            ).toList(),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buttons() {

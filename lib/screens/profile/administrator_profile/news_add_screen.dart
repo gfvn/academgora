@@ -25,6 +25,9 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
 
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
+  bool isDeleteLoading = false;
+
+  bool isChaged = false;
   String photoUrl = '';
   File image = File("");
   List<String> numberList = ["1", "2", "3", "4"];
@@ -33,44 +36,55 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: screenWidth,
+        height: screenHeight,
         decoration: screenDecoration("assets/all_instructors/bg.png"),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(bottom: 30, top: 70, right: 16, left: 16),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildRoleText("Добавить новости"),
-                const SizedBox(
-                  height: 16,
-                ),
-                _newsPhoto(),
-                const SizedBox(
-                  height: 16,
-                ),
-                _redactPhotoButton(context),
-                const SizedBox(
-                  height: 48,
-                ),
-                buildRoleText("Выберите число"),
-                const SizedBox(
-                  height: 16,
-                ),
-                buildDroppButton(),
-                const SizedBox(
-                  height: 16,
-                ),
-                buildInstructionText(),
-                const SizedBox(
-                  height: 16,
-                ),
-                _saveButton(context),
-                const SizedBox(
-                  height: 32,
-                ),
-                _backToMainScreenButton(context),
-              ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(bottom: 30, top: 70, right: 16, left: 16),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      buildRoleText("Добавить новости"),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      _newsPhoto(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      _redactPhotoButton(context),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      buildRoleText("Выберите число"),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      buildDroppButton(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      buildInstructionText(),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      _saveButton(context),
+                      _saveDeleteButton(context),
+                      _backToMainScreenButton(context),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -113,7 +127,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   Widget _saveButton(BuildContext context) {
     return Container(
       width: screenWidth * 0.8,
-      height: screenHeight * 0.08,
+      height: screenHeight * 0.07,
       margin: const EdgeInsets.only(top: 10),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
@@ -132,7 +146,49 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+              : const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget _saveDeleteButton(BuildContext context) {
+    return Container(
+      width: screenWidth * 0.8,
+      height: screenHeight * 0.07,
+      margin: const EdgeInsets.only(top: 10),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.red,
+        child: InkWell(
+          onTap: () {
+            _deleteNews(choosedNumber);
+          },
+          child: !isDeleteLoading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Удалить",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -212,6 +268,31 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
                 isLoading = false;
               },
             );
+          },
+        );
+      },
+    );
+  }
+
+  void _deleteNews(String id) async {
+    setState(
+      () {
+        isDeleteLoading = true;
+      },
+    );
+
+    await _firebaseRequestsController
+        .update("Новости/$id", {"Фото": "", "Место": id}).then(
+      (value) async {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await _firebaseRequestsController.getAsList('Новости').then(
+          (value) {
+            _newsDataKeeper.updateInstructors(value);
+          },
+        );
+        setState(
+          () {
+            isDeleteLoading = false;
           },
         );
       },

@@ -42,6 +42,7 @@ class MyAppState extends State<MyApp> {
   final NewsKeeper _newsDataKeeper = NewsKeeper();
 
   bool? _isUserAuthorized;
+  bool? _dataisloded = false;
 
   @override
   void initState() {
@@ -83,6 +84,13 @@ class MyAppState extends State<MyApp> {
     _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
   }
 
+  void isloded() async {
+    await Future.delayed(const Duration(milliseconds: 3000));
+    setState(() {
+      _dataisloded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -96,7 +104,13 @@ class MyAppState extends State<MyApp> {
           screenHeight = MediaQuery.of(context).size.height;
           screenWidth = MediaQuery.of(context).size.width;
           if (_isUserAuthorized != null) {
-            return _isUserAuthorized! ? const MainScreen() : const AuthScreen();
+            if (_dataisloded!) {
+              return _isUserAuthorized!
+                  ? const MainScreen()
+                  : const AuthScreen();
+            } else {
+              return const Scaffold();
+            }
           } else {
             return const SplashScreen();
           }
@@ -139,6 +153,7 @@ class MyAppState extends State<MyApp> {
     await _firebaseController.getAsList('Новости').then((value) {
       log("Новости ${value.toString()}");
       _newsDataKeeper.updateInstructors(value);
+      isloded();
       setState(() {});
     });
   }

@@ -33,15 +33,14 @@ class _AdministratorProfileScreenState
                 ],
               ),
               Positioned(
-                bottom: 32,
-
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _backToMainScreenButton(),
-                  ],
-                )),
+                  bottom: 32,
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _backToMainScreenButton(),
+                    ],
+                  )),
             ],
           ),
         ),
@@ -83,25 +82,23 @@ class _AdministratorProfileScreenState
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: Colors.blue,
         child: InkWell(
-            onTap: () => {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => MainScreen()),
-                      (route) => false)
-                },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "НА ГЛАВНУЮ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ]),
-            )),
+          onTap: () => {Navigator.pop(context)},
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "НА ГЛАВНУЮ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -56,7 +56,7 @@ class InstructorWidgetState extends State<InstructorWidget> {
                 width: screenWidth * 0.58,
                 margin: const EdgeInsets.only(left: 12),
                 child: Text(
-                  instructor!.name!,
+                  instructor!.name ??'',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 )),
           ],

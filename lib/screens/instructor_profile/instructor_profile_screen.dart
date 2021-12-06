@@ -42,7 +42,7 @@ class InstructorProfileScreen extends StatelessWidget {
     return Container(
         margin: const EdgeInsets.only(top: 10),
         child: Text(
-          instructor.name!,
+          instructor.name??"",
           style: const TextStyle(
               fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
         ));
@@ -54,7 +54,7 @@ class InstructorProfileScreen extends StatelessWidget {
         width: screenWidth * 0.8,
         margin: const EdgeInsets.only(top: 10),
         child: Text(
-          instructor.info!,
+          instructor.info??"",
           textAlign: TextAlign.center,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ));
@@ -82,7 +82,7 @@ class InstructorProfileScreen extends StatelessWidget {
     return SizedBox(
       height: screenHeight * 0.25,
       child: ListView.builder(
-          itemCount: instructor.socialNetworks!.length,
+          itemCount: instructor.socialNetworks!=null?instructor.socialNetworks!.length:0,
           itemBuilder: (context, index) {
             return "${instructor.socialNetworks!.values.toList()[index]}"
                     .isNotEmpty

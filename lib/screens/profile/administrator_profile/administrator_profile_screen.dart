@@ -2,6 +2,7 @@ import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/personal_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/smeta_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 
@@ -71,6 +72,12 @@ class _AdministratorProfileScreenState
                   MaterialPageRoute(builder: (c) => const PersonalScreeen()));
             },
             text: "Персонал"),
+            button(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const SmetaScreen()));
+            },
+            text: "Смета"),
       ],
     );
   }
@@ -147,7 +154,7 @@ class _AdministratorProfileScreenState
   Widget button({required Function onTap, required String text}) {
     return Container(
       width: screenWidth * 0.8,
-      height: screenHeight * 0.1,
+      height: screenHeight * 0.08,
       margin: const EdgeInsets.only(top: 16),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),

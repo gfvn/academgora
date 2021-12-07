@@ -253,11 +253,21 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        buildPersonalView()
+                        buildPersonalView(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Center(child: _backToMainScreenButton(),
+                        
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        
                       ],
                     ),
                   )
-                : Container(
+                : SizedBox(
                     height: screenHeight,
                     width: screenWidth,
                     // ignore: prefer_const_constructors
@@ -271,6 +281,35 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                       ),
                     ),
                   ),
+          ),
+        ),
+      ),
+    );
+  }
+   Widget _backToMainScreenButton() {
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.06,
+      margin: const EdgeInsets.only(top: 18),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.blue,
+        child: InkWell(
+          onTap: () => {Navigator.pop(context)},
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Назад",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

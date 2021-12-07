@@ -47,23 +47,30 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
       margin: const EdgeInsets.only(bottom: 6),
       height: 40,
       decoration: const BoxDecoration(color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            margin: const EdgeInsets.only(left: 8, right: 8),
-            child: Text(
-              widget.instructor.name ?? "Имя Фамилия",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 8, right: 8),
+                child: Text(
+                  widget.instructor.name ?? "Имя Фамилия",
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text(
+                widget.instructor.phone ?? '',
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
+          const SizedBox(height: 8,),
           Container(
-            margin: const EdgeInsets.only(right: 8),
-            child: Text(
-              widget.instructor.phone ?? '',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-          ),
+            height: 1,
+            color: Colors.grey.withOpacity(0.5),
+          )
         ],
       ),
     );
@@ -75,7 +82,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
       width: screenWidth * 0.9,
       decoration: const BoxDecoration(color: Colors.white70),
       child: Container(
-        margin: const EdgeInsets.only(left: 10),
         child: buildWorkoutTable(),
       ),
     );
@@ -84,7 +90,7 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   Widget buildWorkoutTable() {
     final filteredDayWorkOut=_sortWorkoutsBySelectedDate(widget.instructor.workouts!);
     return filteredDayWorkOut.isNotEmpty? Container(
-      margin: const EdgeInsets.only(bottom: 10, top: 10, right: 10),
+      margin: const EdgeInsets.only(bottom: 10, right: 10),
       child: Table(
         border: TableBorder.all(color: Colors.black, width: 2),
         columnWidths: const <int, TableColumnWidth>{

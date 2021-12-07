@@ -6,14 +6,15 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../main.dart';
-import '../../registration_first_screen.dart';
+import '../count_screen.dart';
 
 class DateWidget extends StatefulWidget {
   final DateTime? _selectedDate;
-  final RegistrationFirstScreenState registrationToInstructorScreenState;
+  final CountScreenState registrationToInstructorScreenState;
+  final String text;
 
   const DateWidget(this.registrationToInstructorScreenState, this._selectedDate,
-      {Key? key})
+      {Key? key, required this.text})
       : super(key: key);
 
   @override
@@ -28,22 +29,20 @@ class _DateWidgetState extends State<DateWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [_dateNameWidget(), _dateFieldWidget()],
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _dateNameWidget(),
+       _dateFieldWidget()],
     );
   }
 
   Widget _dateNameWidget() {
     return Row(
       children: [
-        Container(
-            width: 20,
-            height: 20,
-            margin: const EdgeInsets.only(right: 10, left: 10),
-            child: Image.asset("assets/registration_to_instructor/4_e3.png")),
-        const Text(
-          "ДАТА",
-          style: TextStyle(fontWeight: FontWeight.bold),
+
+         Text(
+          widget.text.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         )
       ],
     );
@@ -51,15 +50,15 @@ class _DateWidgetState extends State<DateWidget> {
 
   Widget _dateFieldWidget() {
     return Container(
-      width: screenWidth * 0.5,
+      width:  150,
       height: 30,
-      margin: EdgeInsets.only(left: screenWidth * 0.18),
+      margin: const EdgeInsets.only(left: 16),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [_dateTextWidget(), _clearDateWidget()]),
     );
   }
@@ -68,7 +67,7 @@ class _DateWidgetState extends State<DateWidget> {
     return GestureDetector(
       child: Center(
           child: Container(
-              width: screenWidth * 0.4,
+              width: 100,
               alignment: Alignment.center,
               color: Colors.white,
               height: 30,

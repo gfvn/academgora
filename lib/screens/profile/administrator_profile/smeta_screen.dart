@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/count_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
@@ -61,7 +59,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
 
   void _increaseDate() {
     setState(() {
-      _selectedDate = _selectedDate.add(Duration(days: 1));
+      _selectedDate = _selectedDate.add(const Duration(days: 1));
     });
     _getAllWorkouts();
   }
@@ -72,7 +70,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         _instructorsKeeper.updateInstructors(value);
       },
     );
-        await Future.delayed(const Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
 
     setState(
       () {},
@@ -90,7 +88,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
           child: Container(
             height: screenHeight,
             width: MediaQuery.of(context).size.width,
-            decoration: screenDecoration("assets/instructor_profile/bg.png"),
+            decoration: BoxDecoration(color: Colors.white70),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 20, bottom: 50, right: 20, left: 20),
@@ -99,10 +97,10 @@ class _SmetaScreenState extends State<SmetaScreen> {
                 children: [
                   ListView(
                     children: [
-                      _myRegistrationsTitle(),
+                      _myRegistrationsTitle(text: "Смета"),
                       _calendar(),
-                      _buildPersonListView(),
                       _dateSliderWidget(),
+                      _myRegistrationsTitle(text: "Инструкторы"),
                       _instructorListWidget(),
                     ],
                   ),
@@ -184,13 +182,13 @@ class _SmetaScreenState extends State<SmetaScreen> {
     );
   }
 
-  Widget _myRegistrationsTitle() {
+  Widget _myRegistrationsTitle({required String text}) {
     return Center(
       child: Container(
         margin: const EdgeInsets.only(right: 20, top: 16),
-        child: const Text(
-          "Смета",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
     );

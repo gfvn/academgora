@@ -19,7 +19,7 @@ class SmetaScreen extends StatefulWidget {
 }
 
 class _SmetaScreenState extends State<SmetaScreen> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
   List<Workout> _workoutsPerDay = [];
   List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
@@ -40,13 +40,12 @@ class _SmetaScreenState extends State<SmetaScreen> {
   }
 
   void _getAllWorkouts() async {
-    List<Workout>? workouts = [];
     setState(() {});
   }
 
   void _decreaseDate() {
     setState(() {
-      _selectedDate = _selectedDate.subtract(Duration(days: 1));
+      _selectedDate = _selectedDate.subtract(const Duration(days: 1));
     });
     _getAllWorkouts();
   }
@@ -71,7 +70,6 @@ class _SmetaScreenState extends State<SmetaScreen> {
       },
     );
     await Future.delayed(const Duration(milliseconds: 2000));
-
     setState(
       () {},
     );
@@ -88,7 +86,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
           child: Container(
             height: screenHeight,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: Colors.white70),
+            decoration: const BoxDecoration(color: Colors.white70),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 20, bottom: 50, right: 20, left: 20),
@@ -121,6 +119,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         children: List.generate(instructorlist.length, (index) {
           return InstructorDataWidget(
             instructorlist[index],
+            isNeedCount: true,
             selectedDate: _selectedDate,
           );
         }),

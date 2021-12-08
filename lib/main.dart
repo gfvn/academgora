@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/firebase_requests_controller.dart';
 import 'data_keepers/instructors_keeper.dart';
@@ -40,6 +42,7 @@ class MyAppState extends State<MyApp> {
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
+  final PriceKeeper _priceDataKeeper = PriceKeeper();
 
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
@@ -82,6 +85,8 @@ class MyAppState extends State<MyApp> {
 
     _saveNewsrDataKeeper(null);
     _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
+
+    _savePriceInDataKeeper(null);
   }
 
   void isloded() async {
@@ -191,6 +196,13 @@ class MyAppState extends State<MyApp> {
       isloded();
       setState(() {});
     });
+  }
+
+  void _savePriceInDataKeeper(Event? event) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> list = prefs.getStringList('price') ?? ['0', '0', '0', '0'];
+    print('lissstttttt $list');
+    _priceDataKeeper.updateWorkouts(list);
   }
 }
 

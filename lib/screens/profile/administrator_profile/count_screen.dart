@@ -1,15 +1,17 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data_keepers/instructors_keeper.dart';
 import '../../../main.dart';
-import '../../../model/workout.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/count_data_widget.dart';
 
@@ -26,6 +28,8 @@ class CountScreenState extends State<CountScreen> {
   @override
   void initState() {
     _getInstructors();
+    _getAllPrices();
+    selectedDate = widget.choosedDateTime;
     super.initState();
   }
 
@@ -33,18 +37,50 @@ class CountScreenState extends State<CountScreen> {
     instructorlist = _instructorsKeeper.instructorsList;
   }
 
-  DateTime selectedDate = DateTime.now();
+  void _getAllPrices() {
+    priceList = _priceDataKeeper.priceListOfString;
+    if (priceList.isNotEmpty) {
+      onePeopleController.text = priceList[0];
+      twoPeopleController.text = priceList[1];
+      threePeopleController.text = priceList[2];
+      fourPeopleController.text = priceList[3];
+      onePrice = int.parse(priceList[0]);
+      twoPrice = int.parse(priceList[1]);
+      threePrice = int.parse(priceList[2]);
+      fourPrice = int.parse(priceList[3]);
+    }
+
+    setState(() {});
+  }
+
+  void setPricec() async {
+    List<String> priceList = [];
+    final prefs = await SharedPreferences.getInstance();
+    priceList.add(onePeopleController.text);
+    priceList.add(twoPeopleController.text);
+    priceList.add(threePeopleController.text);
+    priceList.add(fourPeopleController.text);
+    prefs.setStringList('price', priceList);
+  }
+
+  int sum = 0;
+  int onePrice = 0;
+  int twoPrice = 0;
+  int threePrice = 0;
+  int fourPrice = 0;
+
   TextEditingController onePeopleController = TextEditingController();
   TextEditingController twoPeopleController = TextEditingController();
   TextEditingController threePeopleController = TextEditingController();
   TextEditingController fourPeopleController = TextEditingController();
-
   List<Instructor> instructorlist = [];
+  List<String> priceList = [];
 
-  final EventList<Event> _markedDateMap = EventList<Event>(events: Map());
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
+  DateTime selectedDate = DateTime.now();
+  final PriceKeeper _priceDataKeeper = PriceKeeper();
 
   Future<void> update() async {
     await _firebaseController.get('Инструкторы').then(
@@ -53,14 +89,90 @@ class CountScreenState extends State<CountScreen> {
       },
     );
     await Future.delayed(const Duration(milliseconds: 2000));
-
     setState(
       () {},
     );
   }
 
+  int getWorkoutPrice(int? number) {
+    if (number == 1) {
+      return onePrice;
+    }
+    if (number == 2) {
+      return twoPrice;
+    }
+    if (number == 3) {
+      return threePrice;
+    }
+    if (number == 4) {
+      return fourPrice;
+    }
+    return 0;
+  }
+
+  void countAllInstructorPrice() {
+    int instructorSum = 0;
+    for (Instructor instructor in instructorlist) {
+      print("instructorSum $instructorSum");
+      instructorSum = instructorSum +
+          countWorkoutsPriceOneInstructor(
+              _sortWorkoutsBySelectedDate(instructor.workouts!));
+    }
+    setState(() {
+      sum = instructorSum;
+    });
+  }
+
+  List<Workout> _sortWorkoutsBySelectedDate(List<Workout> list) {
+    List<Workout> sortedWorkouts = [];
+    if (list.isNotEmpty) {
+      for (var workout in list) {
+        String workoutDateString = workout.date!;
+        String now = DateFormat('ddMMyyyy').format(selectedDate);
+        if (now == workoutDateString) sortedWorkouts.add(workout);
+      }
+    }
+    return _sortWorkoutsByTime(sortedWorkouts);
+  }
+
+  List<Workout> _sortWorkoutsByTime(List<Workout> list) {
+    TimesController timesController = TimesController();
+    if (list.isNotEmpty) {
+      list.sort((first, second) {
+        return timesController.times[first.from] -
+            timesController.times[second.from];
+      });
+    }
+    return list;
+  }
+
+  int countWorkoutsPriceOneInstructor(List<Workout> workouts) {
+    int summAllWorkout = 0;
+    for (Workout workout in workouts) {
+      int price = getWorkoutPrice(workout.peopleCount);
+      summAllWorkout = summAllWorkout + workout.workoutDuration! * price;
+    }
+    return summAllWorkout;
+  }
+
+  Widget buildSummAllInstructor() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16, left: 16),
+          child: Text(
+            'Итого: $sum',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    countAllInstructorPrice();
     return Scaffold(
       body: SingleChildScrollView(
         child: RefreshIndicator(
@@ -68,7 +180,7 @@ class CountScreenState extends State<CountScreen> {
           child: Container(
             height: screenHeight,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: Colors.white70),
+            decoration: const BoxDecoration(color: Colors.white70),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 20, bottom: 50, right: 20, left: 20),
@@ -96,6 +208,7 @@ class CountScreenState extends State<CountScreen> {
                           ],
                         ),
                         _instructorListWidget(),
+                        buildSummAllInstructor()
                       ],
                     ),
                   ),
@@ -117,6 +230,7 @@ class CountScreenState extends State<CountScreen> {
           return InstructorDataWidget(
             instructorlist[index],
             selectedDate: selectedDate,
+            isNeedCount: true,
           );
         }),
       ),
@@ -212,7 +326,9 @@ class CountScreenState extends State<CountScreen> {
             ),
             button(
               text: "Сохранить",
-              onTap: () {},
+              onTap: () {
+                setPricec();
+              },
             ),
           ],
         ),

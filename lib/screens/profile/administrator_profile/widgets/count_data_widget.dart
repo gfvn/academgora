@@ -30,17 +30,14 @@ class _DateWidgetState extends State<DateWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _dateNameWidget(),
-       _dateFieldWidget()],
+      children: [_dateNameWidget(), _dateFieldWidget()],
     );
   }
 
   Widget _dateNameWidget() {
     return Row(
       children: [
-
-         Text(
+        Text(
           widget.text.toString(),
           style: const TextStyle(fontWeight: FontWeight.bold),
         )
@@ -50,7 +47,7 @@ class _DateWidgetState extends State<DateWidget> {
 
   Widget _dateFieldWidget() {
     return Container(
-      width:  150,
+      width: 150,
       height: 30,
       margin: const EdgeInsets.only(left: 16),
       decoration: BoxDecoration(
@@ -66,18 +63,20 @@ class _DateWidgetState extends State<DateWidget> {
   Widget _dateTextWidget() {
     return GestureDetector(
       child: Center(
-          child: Container(
-              width: 100,
-              alignment: Alignment.center,
-              color: Colors.white,
-              height: 30,
-              child: Text(
-                _selectedDate == null
-                    ? ""
-                    : DateFormat("dd.MM.yyyy").format(_selectedDate!),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ))),
+        child: Container(
+          width: 100,
+          alignment: Alignment.center,
+          color: Colors.white,
+          height: 30,
+          child: Text(
+            _selectedDate == null
+                ? ""
+                : DateFormat("dd.MM.yyyy").format(_selectedDate!),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
       onTap: _showDateDialog,
     );
   }
@@ -96,10 +95,15 @@ class _DateWidgetState extends State<DateWidget> {
   void _clearDateFieldButton() {
     _selectedDate = null;
     WorkoutDataKeeper().date = null;
-    widget.registrationToInstructorScreenState.setState(() {
-      widget.registrationToInstructorScreenState.selectedDate = _selectedDate!;
-    });
-    setState(() {});
+    widget.registrationToInstructorScreenState.setState(
+      () {
+        widget.registrationToInstructorScreenState.selectedDate =
+            _selectedDate!;
+      },
+    );
+    setState(
+      () {},
+    );
   }
 
   Future<void> _showDateDialog() async {
@@ -108,45 +112,46 @@ class _DateWidgetState extends State<DateWidget> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return StatefulBuilder(
-            builder: (c, setState) => AlertDialog(
-                    actions: [
-                      TextButton(
-                          child: const Text('OK'),
-                          onPressed: _applyAndCloseDialog),
-                    ],
-                    content: CalendarCarousel<Event>(
-                      headerTextStyle: TextStyle(
-                          fontSize: screenHeight * 0.028,
-                          color: Colors.blueAccent),
-                      locale: "ru",
-                      width: 300,
-                      height: 270,
-                      todayBorderColor: Colors.transparent,
-                      todayButtonColor: Colors.transparent,
-                      todayTextStyle: const TextStyle(color: Colors.blueAccent),
-                      onDayPressed: (DateTime date, List<Event> events) {
-                        DateTime now = DateTime.now();
-                        if (date.isAfter(now) || date.isSameDate(now)) {
-                          setState(() {
-                            {
-                              DateTime newDateTime = DateTime(
-                                  date.year,
-                                  date.month,
-                                  date.day,
-                                  now.hour,
-                                  now.minute,
-                                  now.second,
-                                  now.millisecond);
-                              _selectedDate = newDateTime;
-                            }
-                          });
-                        }
-                      },
-                      selectedDateTime: _selectedDate,
-                      targetDateTime: _selectedDate,
-                      selectedDayTextStyle:
-                          const TextStyle(color: Colors.white),
-                    ),),);
+          builder: (c, setState) => AlertDialog(
+            actions: [
+              TextButton(
+                  child: const Text('OK'), onPressed: _applyAndCloseDialog),
+            ],
+            content: CalendarCarousel<Event>(
+              headerTextStyle: TextStyle(
+                  fontSize: screenHeight * 0.028, color: Colors.blueAccent),
+              locale: "ru",
+              width: 300,
+              height: 270,
+              todayBorderColor: Colors.transparent,
+              todayButtonColor: Colors.transparent,
+              todayTextStyle: const TextStyle(color: Colors.blueAccent),
+              onDayPressed: (DateTime date, List<Event> events) {
+                DateTime now = DateTime.now();
+                if (true) {
+                  setState(
+                    () {
+                      {
+                        DateTime newDateTime = DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                            now.hour,
+                            now.minute,
+                            now.second,
+                            now.millisecond);
+                        _selectedDate = newDateTime;
+                      }
+                    },
+                  );
+                }
+              },
+              selectedDateTime: _selectedDate,
+              targetDateTime: _selectedDate,
+              selectedDayTextStyle: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
       },
     );
   }

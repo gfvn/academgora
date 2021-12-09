@@ -5,6 +5,7 @@ import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -64,7 +65,8 @@ class CountScreenState extends State<CountScreen> {
     prefs.setStringList('price', priceList);
   }
 
-  int sum = 0;
+  int sumOneDay = 0;
+  int sumAllDay = 0;
   int onePrice = 0;
   int twoPrice = 0;
   int threePrice = 0;
@@ -114,25 +116,24 @@ class CountScreenState extends State<CountScreen> {
     return 0;
   }
 
-  void countAllInstructorPrice() {
+  int countAllInstructorPrice(DateTime selectedTime) {
     int instructorSum = 0;
     for (Instructor instructor in instructorlist) {
-      print("instructorSum $instructorSum");
       instructorSum = instructorSum +
           countWorkoutsPriceOneInstructor(
-              _sortWorkoutsBySelectedDate(instructor.workouts!));
+            _sortWorkoutsBySelectedDate(instructor.workouts!, selectedTime),
+          );
     }
-    setState(() {
-      sum = instructorSum;
-    });
+    return instructorSum;
   }
 
-  List<Workout> _sortWorkoutsBySelectedDate(List<Workout> list) {
+  List<Workout> _sortWorkoutsBySelectedDate(
+      List<Workout> list, DateTime selectedDate) {
     List<Workout> sortedWorkouts = [];
     if (list.isNotEmpty) {
       for (var workout in list) {
         String workoutDateString = workout.date!;
-        String now = DateFormat('ddMMyyyy').format(firstDate);
+        String now = DateFormat('ddMMyyyy').format(selectedDate);
         if (now == workoutDateString) sortedWorkouts.add(workout);
       }
     }
@@ -159,15 +160,16 @@ class CountScreenState extends State<CountScreen> {
     return summAllWorkout;
   }
 
-  Widget buildSummAllInstructor() {
+  Widget buildSummAllInstructor(DateTime time) {
+    int sumOfOneDay = countAllInstructorPrice(time);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 16, left: 16),
+          padding: const EdgeInsets.only(right: 32, left: 32),
           child: Text(
-            'Итого: $sum',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            'Итого дня: $sumOfOneDay',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         )
       ],
@@ -176,7 +178,7 @@ class CountScreenState extends State<CountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    countAllInstructorPrice();
+    updateListOfDates();
     return Scaffold(
       body: SingleChildScrollView(
         child: RefreshIndicator(
@@ -192,7 +194,7 @@ class CountScreenState extends State<CountScreen> {
                 alignment: Alignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
+                    padding: const EdgeInsets.only(bottom: 150),
                     child: ListView(
                       children: [
                         _myRegistrationsTitle(text: 'Подсчёт'),
@@ -213,7 +215,9 @@ class CountScreenState extends State<CountScreen> {
                             ),
                           ],
                         ),
-                        isOneDay() ? oneDayIsntructor() : manyDaysInstructor()
+                        isOneDay()
+                            ? oneDayIsntructor(firstDate)
+                            : manyDaysInstructor()
                       ],
                     ),
                   ),
@@ -231,9 +235,14 @@ class CountScreenState extends State<CountScreen> {
     return firstDate == secondDate;
   }
 
-  Widget oneDayIsntructor() {
+  Widget oneDayIsntructor(DateTime time) {
+    countAllInstructorPrice(time);
     return Column(
-      children: [_instructorListWidget(), buildSummAllInstructor()],
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _instructorListWidget(time),
+        buildSummAllInstructor(time),
+      ],
     );
   }
 
@@ -251,22 +260,72 @@ class CountScreenState extends State<CountScreen> {
     return days;
   }
 
+  int countAllDaysPrice(){
+    int sum =0;
+    for (DateTime time in listOfDates){
+      sum=sum+countAllInstructorPrice(time);
+    }
+    return sum;
+  }
+
   Widget manyDaysInstructor() {
     updateListOfDates();
     return Column(
-        children: List.generate(listOfDates.length, (index) {
-      return Text(listOfDates[index].toString());
-    }));
+      children: [
+        Column(
+          children: List.generate(
+            listOfDates.length,
+            (index) {
+              return buildManyInstructorItem(
+                listOfDates[index],
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: buildSumAlldays(),
+        ),
+      ],
+    );
   }
 
-  Widget _instructorListWidget() {
+  Widget buildManyInstructorItem(DateTime time) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: _titleWidget(
+            _getSelectedDate(time),
+          ),
+        ),
+        oneDayIsntructor(time),
+      ],
+    );
+  }
+
+  Widget buildSumAlldays() {
+    int sum = countAllDaysPrice();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [_sumWidget(sum.toString())],
+    );
+  }
+
+  String _getSelectedDate(DateTime time) {
+    String month = months[time.month - 1];
+    String weekday = weekdays[time.weekday - 1];
+    return "${time.day} $month ($weekday)";
+  }
+
+  Widget _instructorListWidget(DateTime selectedDate) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 50, right: 8, left: 8),
+      padding: const EdgeInsets.only(top: 20, bottom: 20, right: 8, left: 8),
       child: Column(
         children: List.generate(instructorlist.length, (index) {
           return InstructorDataWidget(
             instructorlist[index],
-            selectedDate: firstDate,
+            selectedDate: selectedDate,
             isNeedCount: true,
           );
         }),
@@ -311,7 +370,18 @@ class CountScreenState extends State<CountScreen> {
       margin: const EdgeInsets.only(left: 8.0),
       child: Text(
         text,
-        style: const TextStyle(color: Colors.blue),
+        style: const TextStyle(fontSize: 16, color: Colors.black),
+      ),
+    );
+  }
+
+  Widget _sumWidget(String text) {
+    return Container(
+      margin: const EdgeInsets.only(left: 8.0),
+      child: Text(
+        "Итого: $text",
+        style: const TextStyle(
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
       ),
     );
   }
@@ -348,28 +418,34 @@ class CountScreenState extends State<CountScreen> {
   }
 
   Widget buildButtons() {
-    return Column(
-      children: [
-        buildInstructionText(),
-        buildInputs(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Column(
           children: [
-            button(
-              text: "Назад",
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            button(
-              text: "Сохранить",
-              onTap: () {
-                setPricec();
-              },
+            buildInstructionText(),
+            buildInputs(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                button(
+                  text: "Назад",
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                button(
+                  text: "Сохранить",
+                  onTap: () {
+                    setPricec();
+                  },
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 

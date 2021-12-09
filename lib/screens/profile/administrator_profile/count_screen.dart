@@ -29,7 +29,8 @@ class CountScreenState extends State<CountScreen> {
   void initState() {
     _getInstructors();
     _getAllPrices();
-    selectedDate = widget.choosedDateTime;
+    firstDate = widget.choosedDateTime;
+    secondDate = widget.choosedDateTime;
     super.initState();
   }
 
@@ -75,11 +76,14 @@ class CountScreenState extends State<CountScreen> {
   TextEditingController fourPeopleController = TextEditingController();
   List<Instructor> instructorlist = [];
   List<String> priceList = [];
+  List<DateTime> listOfDates = [];
 
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
-  DateTime selectedDate = DateTime.now();
+  DateTime firstDate = DateTime.now();
+  DateTime secondDate = DateTime.now();
+
   final PriceKeeper _priceDataKeeper = PriceKeeper();
 
   Future<void> update() async {
@@ -128,7 +132,7 @@ class CountScreenState extends State<CountScreen> {
     if (list.isNotEmpty) {
       for (var workout in list) {
         String workoutDateString = workout.date!;
-        String now = DateFormat('ddMMyyyy').format(selectedDate);
+        String now = DateFormat('ddMMyyyy').format(firstDate);
         if (now == workoutDateString) sortedWorkouts.add(workout);
       }
     }
@@ -197,18 +201,19 @@ class CountScreenState extends State<CountScreen> {
                           children: [
                             DateWidget(
                               this,
-                              selectedDate,
+                              firstDate,
                               text: "C",
+                              isFirstdate: true,
                             ),
                             DateWidget(
                               this,
-                              selectedDate,
+                              secondDate,
                               text: "До",
+                              isFirstdate: false,
                             ),
                           ],
                         ),
-                        _instructorListWidget(),
-                        buildSummAllInstructor()
+                        isOneDay() ? oneDayIsntructor() : manyDaysInstructor()
                       ],
                     ),
                   ),
@@ -222,6 +227,38 @@ class CountScreenState extends State<CountScreen> {
     );
   }
 
+  bool isOneDay() {
+    return firstDate == secondDate;
+  }
+
+  Widget oneDayIsntructor() {
+    return Column(
+      children: [_instructorListWidget(), buildSummAllInstructor()],
+    );
+  }
+
+  void updateListOfDates() {
+    setState(() {
+      listOfDates = getDaysInBetween(firstDate, secondDate);
+    });
+  }
+
+  List<DateTime> getDaysInBetween(DateTime startDate, DateTime endDate) {
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+    }
+    return days;
+  }
+
+  Widget manyDaysInstructor() {
+    updateListOfDates();
+    return Column(
+        children: List.generate(listOfDates.length, (index) {
+      return Text(listOfDates[index].toString());
+    }));
+  }
+
   Widget _instructorListWidget() {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 50, right: 8, left: 8),
@@ -229,7 +266,7 @@ class CountScreenState extends State<CountScreen> {
         children: List.generate(instructorlist.length, (index) {
           return InstructorDataWidget(
             instructorlist[index],
-            selectedDate: selectedDate,
+            selectedDate: firstDate,
             isNeedCount: true,
           );
         }),

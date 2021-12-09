@@ -12,9 +12,10 @@ class DateWidget extends StatefulWidget {
   final DateTime? _selectedDate;
   final CountScreenState registrationToInstructorScreenState;
   final String text;
+  final bool isFirstdate;
 
   const DateWidget(this.registrationToInstructorScreenState, this._selectedDate,
-      {Key? key, required this.text})
+      {Key? key, required this.text, required this.isFirstdate})
       : super(key: key);
 
   @override
@@ -93,18 +94,33 @@ class _DateWidgetState extends State<DateWidget> {
   }
 
   void _clearDateFieldButton() {
-    _selectedDate = null;
-    WorkoutDataKeeper().date = null;
+    _selectedDate =
+        widget.registrationToInstructorScreenState.widget.choosedDateTime;
+    if (widget.isFirstdate) {
+      widget.registrationToInstructorScreenState.setState(
+        () {
+          widget.registrationToInstructorScreenState.firstDate = _selectedDate!;
+        },
+      );
+    } else {
+      widget.registrationToInstructorScreenState.setState(
+        () {
+          widget.registrationToInstructorScreenState.secondDate = _selectedDate!;
+        },
+      );
+    }
     widget.registrationToInstructorScreenState.setState(
       () {
-        widget.registrationToInstructorScreenState.selectedDate =
-            _selectedDate!;
+        widget.registrationToInstructorScreenState.firstDate = _selectedDate!;
       },
     );
     setState(
       () {},
     );
   }
+  
+
+
 
   Future<void> _showDateDialog() async {
     return showDialog<void>(
@@ -159,7 +175,11 @@ class _DateWidgetState extends State<DateWidget> {
   void _applyAndCloseDialog() {
     Navigator.of(context).pop();
     widget.registrationToInstructorScreenState.setState(() {
-      widget.registrationToInstructorScreenState.selectedDate = _selectedDate!;
+      if (widget.isFirstdate) {
+        widget.registrationToInstructorScreenState.firstDate = _selectedDate!;
+      } else {
+        widget.registrationToInstructorScreenState.secondDate = _selectedDate!;
+      }
     });
     setState(() {});
   }

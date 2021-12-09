@@ -119,7 +119,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         children: List.generate(instructorlist.length, (index) {
           return InstructorDataWidget(
             instructorlist[index],
-            isNeedCount: true,
+            isNeedCount: false,
             selectedDate: _selectedDate,
           );
         }),

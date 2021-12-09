@@ -191,7 +191,7 @@ class CountScreenState extends State<CountScreen> {
   Widget build(BuildContext context) {
     updateListOfDates();
     _getInstructors();
-    _getAllPrices();
+    // _getAllPrices();
     return Scaffold(
       body: SingleChildScrollView(
         child: RefreshIndicator(
@@ -212,7 +212,7 @@ class CountScreenState extends State<CountScreen> {
                       children: [
                         _myRegistrationsTitle(text: 'Подсчёт'),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             DateWidget(
                               this,

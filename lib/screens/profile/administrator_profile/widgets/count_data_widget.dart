@@ -48,9 +48,9 @@ class _DateWidgetState extends State<DateWidget> {
 
   Widget _dateFieldWidget() {
     return Container(
-      width: 150,
+      width: 130,
       height: 30,
-      margin: const EdgeInsets.only(left: 16),
+      margin: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5.0),

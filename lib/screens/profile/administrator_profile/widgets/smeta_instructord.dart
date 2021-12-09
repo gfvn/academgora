@@ -15,13 +15,14 @@ class InstructorDataWidget extends StatefulWidget {
   final Instructor instructor;
   final DateTime selectedDate;
   final bool isNeedCount;
+  final bool isUpdate;
 
 
   const InstructorDataWidget(
     this.instructor, {
     Key? key,
     required this.selectedDate,
-    required this.isNeedCount,
+    required this.isNeedCount, required this.isUpdate,
   }) : super(key: key);
 
   @override
@@ -56,6 +57,7 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _getPrice();
     return _instructorWidget();
   }
 
@@ -108,7 +110,7 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   }
 
   Widget _body() {
-    return Container(
+    return widget.isUpdate? Container(
       margin: const EdgeInsets.only(bottom: 5),
       width: screenWidth * 0.9,
       decoration: const BoxDecoration(color: Colors.white70),
@@ -134,7 +136,7 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
               : Container(),
         ],
       ),
-    );
+    ):Container();
   }
 
   int getWorkoutPrice(int? number) {
@@ -169,7 +171,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   Widget buildWorkoutTable() {
     final filteredDayWorkOut =
         _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
-
     ///Count workouts price
     countWorkoutsPrice(filteredDayWorkOut);
     return filteredDayWorkOut.isNotEmpty

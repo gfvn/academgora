@@ -63,6 +63,11 @@ class CountScreenState extends State<CountScreen> {
     priceList.add(threePeopleController.text);
     priceList.add(fourPeopleController.text);
     prefs.setStringList('price', priceList);
+
+    setState(() {
+      _priceDataKeeper.updateWorkouts(priceList);
+      _getAllPrices();
+    });
   }
 
   int sumOneDay = 0;
@@ -71,6 +76,7 @@ class CountScreenState extends State<CountScreen> {
   int twoPrice = 0;
   int threePrice = 0;
   int fourPrice = 0;
+
 
   TextEditingController onePeopleController = TextEditingController();
   TextEditingController twoPeopleController = TextEditingController();
@@ -85,6 +91,7 @@ class CountScreenState extends State<CountScreen> {
       FirebaseRequestsController();
   DateTime firstDate = DateTime.now();
   DateTime secondDate = DateTime.now();
+  bool isUpdate=true;
 
   final PriceKeeper _priceDataKeeper = PriceKeeper();
 
@@ -96,7 +103,11 @@ class CountScreenState extends State<CountScreen> {
     );
     await Future.delayed(const Duration(milliseconds: 2000));
     setState(
-      () {},
+      () {
+        isUpdate=true;
+        _getInstructors();
+        _getAllPrices();
+      },
     );
   }
 
@@ -179,6 +190,8 @@ class CountScreenState extends State<CountScreen> {
   @override
   Widget build(BuildContext context) {
     updateListOfDates();
+    _getInstructors();
+    _getAllPrices();
     return Scaffold(
       body: SingleChildScrollView(
         child: RefreshIndicator(
@@ -260,10 +273,10 @@ class CountScreenState extends State<CountScreen> {
     return days;
   }
 
-  int countAllDaysPrice(){
-    int sum =0;
-    for (DateTime time in listOfDates){
-      sum=sum+countAllInstructorPrice(time);
+  int countAllDaysPrice() {
+    int sum = 0;
+    for (DateTime time in listOfDates) {
+      sum = sum + countAllInstructorPrice(time);
     }
     return sum;
   }
@@ -327,6 +340,7 @@ class CountScreenState extends State<CountScreen> {
             instructorlist[index],
             selectedDate: selectedDate,
             isNeedCount: true,
+            isUpdate: isUpdate,
           );
         }),
       ),

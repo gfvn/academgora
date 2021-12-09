@@ -23,6 +23,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
   List<Workout> _workoutsPerDay = [];
   List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
+  bool isUpdate=true;
 
   final EventList<Event> _markedDateMap = EventList<Event>(events: Map());
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
@@ -65,14 +66,19 @@ class _SmetaScreenState extends State<SmetaScreen> {
 
   Future<void> update() async {
     await _firebaseController.get('Инструкторы').then(
-      (value) {
+      (value) async {
+        await Future.delayed(const Duration(milliseconds: 3000));
         _instructorsKeeper.updateInstructors(value);
       },
     );
-    await Future.delayed(const Duration(milliseconds: 2000));
     setState(
-      () {},
+      () {
+        isUpdate=true;
+        _getInstructors();
+      },
+      
     );
+
   }
 
   @override
@@ -120,6 +126,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
           return InstructorDataWidget(
             instructorlist[index],
             isNeedCount: false,
+            isUpdate: isUpdate,
             selectedDate: _selectedDate,
           );
         }),

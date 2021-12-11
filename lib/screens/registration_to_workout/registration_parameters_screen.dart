@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
@@ -15,7 +16,8 @@ import 'helpers_widgets/reg_parameters/select_duration_widget.dart';
 import 'helpers_widgets/reg_parameters/select_level_of_skating_widget.dart';
 import 'helpers_widgets/reg_parameters/select_people_count_widget.dart';
 import 'reg_final_screen.dart';
-
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/intl.dart';
 
 class RegistrationParametersScreen extends StatefulWidget {
@@ -40,6 +42,11 @@ class RegistrationParametersScreenState
   final TimesController _timesController = TimesController();
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
+      @override
+  void initState() {
+    tz.initializeTimeZones();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,59 +197,67 @@ class RegistrationParametersScreenState
 
   Widget _continueButton() {
     return Container(
-        margin: const EdgeInsets.only(top: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: _onBackPressed,
-              child: const Icon(
-                Icons.chevron_left,
-                color: Colors.blue,
-                size: 40,
+      margin: const EdgeInsets.only(top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: _onBackPressed,
+            child: const Icon(
+              Icons.chevron_left,
+              color: Colors.blue,
+              size: 40,
+            ),
+          ),
+          SizedBox(
+            width: 170,
+            height: screenHeight * 0.05,
+            child: Material(
+              borderRadius: const BorderRadius.all(Radius.circular(35)),
+              color: _continueButtonBackgroundColor(),
+              child: InkWell(
+                onTap: peopleCount != null &&
+                        levelOfSkating != null &&
+                        duration != null &&
+                        _checkTextControllers()
+                    ? _sendData
+                    : null,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "ПРОДОЛЖИТЬ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: _continueButtonTextColor(),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              width: 170,
-              height: screenHeight * 0.05,
-              child: Material(
-                borderRadius: const BorderRadius.all(Radius.circular(35)),
-                color: _continueButtonBackgroundColor(),
-                child: InkWell(
-                    onTap: peopleCount != null &&
-                            levelOfSkating != null &&
-                            duration != null &&
-                            _checkTextControllers()
-                        ? _sendData
-                        : null,
-                    child: Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "ПРОДОЛЖИТЬ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: _continueButtonTextColor(),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                    )),
-              ),
-            )
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 
   void _sendData() {
     workoutSingleton.peopleCount = peopleCount;
     workoutSingleton.levelOfSkating = levelOfSkating;
-    _sendWorkoutDataToUser().then((_) {
-      _sendWorkoutDataToInstructor().then((_) {
-        _openRegFinalScreen();
-      });
-    });
+    _sendWorkoutDataToUser().then(
+      (_) {
+        _sendWorkoutDataToInstructor().then(
+          (_) {
+                NotificationService().showNotification(2, "Скоро занятия", "Через 2 часа у вас будет занятия в АкадемГора", 10);
+            // _openRegFinalScreen();
+          },
+        );
+      },
+    );
   }
 
   void _openRegFinalScreen() {

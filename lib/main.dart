@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
@@ -22,6 +23,7 @@ late double screenWidth;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

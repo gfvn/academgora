@@ -262,9 +262,10 @@ class RegistrationParametersScreenState
                   "Скоро занятия",
                   "Через 2 часа у вас будет занятия в АкадемГора",
                   norificationTime);
+            } else {
+              NotificationService().showNotification(2, "Скоро занятия",
+                  "Вы записались на занятия в АкадемГора", 10);
             }
-            NotificationService().showNotification(
-                2, "Скоро занятия", "Вы записались на занятия в АкадемГора", 0);
             _openRegFinalScreen();
           },
         );
@@ -289,9 +290,8 @@ class RegistrationParametersScreenState
         "${workoutSingleton.from?.substring(3, 5)}",
       ),
     );
-    seconds = time.difference(now).inSeconds - 2 * 3600;
+    seconds = time.difference(now).inSeconds - 5400;
     log('difference in seconds $seconds');
-
     return seconds;
   }
 

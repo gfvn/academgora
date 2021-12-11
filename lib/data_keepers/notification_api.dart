@@ -37,7 +37,7 @@ class NotificationService {
   }
 
   Future<void> showNotification(int id, String title, String body, int seconds) async {
-    log("hereeerrrrrrrrrrr");
+    log("hereeerrrrrrrrrrr $seconds");
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -62,6 +62,9 @@ class NotificationService {
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
     );
+  }
+  Future<void> cancelNotificationLocal(int id)async{
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   Future<void> cancelAllNotifications() async {

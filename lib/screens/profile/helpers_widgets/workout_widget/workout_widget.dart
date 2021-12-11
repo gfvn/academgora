@@ -1,4 +1,5 @@
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:flutter/material.dart';
@@ -150,6 +151,11 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
               ),
               onPressed: () {
                 _cancelWorkout.cancelWorkout(widget.workout);
+                NotificationService().cancelNotificationLocal(
+                  int.parse(
+                    widget.workout.id.toString(),
+                  ),
+                );
                 Navigator.of(context).pop();
               },
             ),

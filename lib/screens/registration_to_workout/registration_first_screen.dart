@@ -13,7 +13,6 @@ import 'instructors_list_screen.dart';
 import 'package:intl/intl.dart';
 
 class RegistrationFirstScreen extends StatefulWidget {
-
   const RegistrationFirstScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +37,8 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      decoration: screenDecoration("assets/registration_to_instructor/1_bg.png"),
+      decoration:
+          screenDecoration("assets/registration_to_instructor/1_bg.png"),
       child: Column(
         children: [
           SelectKindOfSportWidget(this, kindOfSport),
@@ -106,10 +106,12 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     final DateFormat formatter = DateFormat('ddMMyyyy');
     final String formattedDate = formatter.format(now);
     workoutDataKeeper.date ??= formattedDate;
-    workoutDataKeeper.id = selectedDate!.millisecondsSinceEpoch.toString();
+    workoutDataKeeper.id = selectedDate!.millisecond.toString() +
+        selectedDate!.microsecond.toString();
     workoutDataKeeper.temporaryFrom = fromTime;
     workoutDataKeeper.to = toTime;
-    workoutDataKeeper.sportType = kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
+    workoutDataKeeper.sportType =
+        kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (c) => const InstructorsListScreen()));
   }
@@ -158,7 +160,8 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
   }
 
   void _openInstructorsListScreen() {
-    workoutDataKeeper.sportType = kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
+    workoutDataKeeper.sportType =
+        kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
     workoutDataKeeper.from = fromTime;
     workoutDataKeeper.to = toTime;
     Navigator.of(context)

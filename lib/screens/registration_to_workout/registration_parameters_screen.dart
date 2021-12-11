@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
@@ -42,7 +44,7 @@ class RegistrationParametersScreenState
   final TimesController _timesController = TimesController();
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
-      @override
+  @override
   void initState() {
     tz.initializeTimeZones();
     super.initState();
@@ -252,12 +254,45 @@ class RegistrationParametersScreenState
       (_) {
         _sendWorkoutDataToInstructor().then(
           (_) {
-                NotificationService().showNotification(2, "Скоро занятия", "Через 2 часа у вас будет занятия в АкадемГора", 10);
-            // _openRegFinalScreen();
+            countWorkoutTime();
+            int norificationTime = countWorkoutTime();
+            if (norificationTime > 0) {
+              NotificationService().showNotification(
+                  int.tryParse(workoutSingleton.id.toString()) ?? 0,
+                  "Скоро занятия",
+                  "Через 2 часа у вас будет занятия в АкадемГора",
+                  norificationTime);
+            }
+            NotificationService().showNotification(
+                2, "Скоро занятия", "Вы записались на занятия в АкадемГора", 0);
+            _openRegFinalScreen();
           },
         );
       },
     );
+  }
+
+  int countWorkoutTime() {
+    int seconds = 0;
+    DateTime now = DateTime.now();
+    String formattedDate =
+        "${workoutSingleton.date?.substring(4, 8)}-${workoutSingleton.date?.substring(2, 4)}-${workoutSingleton.date?.substring(0, 2)}";
+    DateTime workoutday = DateTime.parse(formattedDate);
+    DateTime time = DateTime(
+      workoutday.year,
+      workoutday.month,
+      workoutday.day,
+      int.parse(
+        "${workoutSingleton.from?.substring(0, 2)}",
+      ),
+      int.parse(
+        "${workoutSingleton.from?.substring(3, 5)}",
+      ),
+    );
+    seconds = time.difference(now).inSeconds - 2 * 3600;
+    log('difference in seconds $seconds');
+
+    return seconds;
   }
 
   void _openRegFinalScreen() {

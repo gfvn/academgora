@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/news.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
@@ -13,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../main.dart';
 import 'extension.dart';
@@ -46,9 +49,42 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     _getNews();
+     tz.initializeTimeZones();
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          NotificationService().showNotification(123, "${notification.title}", "${notification.body}", 5);
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        print('A new onMessageOpenedApp event was published!');
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title.toString()),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body.toString())],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
     super.initState();
   }
-
   void _getNews() async {
     setState(() {
       isLoading = true;

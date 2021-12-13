@@ -12,11 +12,53 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'api/firebase_requests_controller.dart';
 import 'data_keepers/instructors_keeper.dart';
 import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  description:
+      'This channel is used for important notifications.', // description
+  importance: Importance.high,
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<String> setupNotification() async {
+  String token = '';
+  void setToken(String? token) {
+    log('FCM Token: $token');
+  }
+
+  Stream<String> _tokenStream;
+  await Firebase.initializeApp();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  token = await FirebaseMessaging.instance.getToken() ?? "no token";
+  setToken(token);
+  _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+  _tokenStream.listen(setToken);
+  return token;
+}
 
 late double screenHeight;
 late double screenWidth;
@@ -25,6 +67,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   await Firebase.initializeApp();
+  setupNotification();
   runApp(const MyApp());
 }
 

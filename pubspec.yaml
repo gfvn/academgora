@@ -36,6 +36,7 @@ dev_dependencies:
   cached_network_image: ^3.2.0
   flutter_local_notifications: ^9.1.5
   timezone: ^0.8.0
+  firebase_messaging: ^11.2.3
 
 # script for uploading app icon: flutter pub run flutter_launcher_icons:main
 flutter_icons:

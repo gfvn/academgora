@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/api/auth_controller.dart';
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/data_keepers/user_workouts_keeper.dart';
@@ -90,7 +92,8 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
     if (result){
-      await _authController.saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!).then((userRole) {
+            final token = await setupNotification();
+      await _authController.saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!, token).then((userRole) {
         if (userRole == UserRole.user) {
           _firebaseRequestsController.addListener(
               "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
@@ -98,6 +101,10 @@ class _AuthScreenState extends State<AuthScreen> {
         }
         _openMainScreen();
       });
+    }
+    else{
+            log('resullt is bad');
+
     }
   }
 

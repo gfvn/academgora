@@ -181,7 +181,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
   Widget _redactInstructorInfoButton(BuildContext context) {
     return GestureDetector(
       onTap: () =>
-          _showRedactInfoDialog(context, _currentInstructor.info!, false),
+          _showRedactInfoDialog(context, _currentInstructor.info??"", false),
       child: const Text(
         "Редактировать информацию о себе",
         style: TextStyle(color: Colors.blue),

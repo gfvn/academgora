@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/components/search_widget.dart';
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
@@ -59,7 +57,6 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
 
   void _getUsers() {
     personalList = _userKeeper.getAllPersons();
-    log('userrrrrr $personalList');
   }
 
   void _getAdmins() {
@@ -74,7 +71,6 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     filteredPersonList = [];
     filteredInstructorList = [];
     filteredAdminList = [];
-
     final person = personalList.where((user) {
       final titleLower = user.phone ?? user.phone!.toLowerCase();
       final searchLower = query.toLowerCase();
@@ -106,7 +102,6 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     final user = adminlist.where((user) {
       final titleLower = user.phone ?? user.phone!.toLowerCase();
       final searchLower = query.toLowerCase();
-
       return titleLower.contains(searchLower);
     }).toList();
 
@@ -118,78 +113,119 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
 
   void makeInstructorToAdmin(Instructor instructor) {
     filteredInstructorList.remove(instructor);
-    deleteInstructor(instructor.id.toString());
-    createAdmin(instructor.id.toString(), instructor.phone.toString());
+    deleteInstructor(instructor.id.toString(), instructor.name.toString());
+    createAdmin(
+      instructor.id.toString(),
+      instructor.phone.toString(),
+      instructor.name.toString(),
+      instructor.fcm_token.toString(),
+    );
   }
 
   void makeInstructorToUser(Instructor instructor) {
     filteredInstructorList.remove(instructor);
-    deleteInstructor(instructor.id.toString());
-    createUser(instructor.id.toString(), instructor.phone.toString());
+    deleteInstructor(instructor.id.toString(), instructor.name.toString());
+    createUser(
+      instructor.id.toString(),
+      instructor.phone.toString(),
+      instructor.fcm_token.toString(),
+    );
   }
 
-  void deleteInstructor(String urlId) {
+  void deleteInstructor(String urlId, String name) {
     _firebaseController.delete("${UserRole.instructor}/$urlId");
+    _firebaseController.delete("Телефоны инструкторов/$name");
   }
 
-  void createInstructor(String phone, String uuid, String kindOfSport) {
-    _firebaseController.send("${UserRole.instructor}/$uuid", {
-      "Телефон": phone,
-      "Вид спорта": kindOfSport,
-    });
+  void createInstructor(String phone, String uuid, String kindOfSport,
+      String name, String fcm_token) {
+    _firebaseController.send(
+      "${UserRole.instructor}/$uuid",
+      {
+        "Телефон": phone,
+        "Вид спорта": kindOfSport,
+        "fcm_token": fcm_token,
+      },
+    );
+    _firebaseController.send(
+      "Телефоны инструкторов",
+      {
+        name: phone,
+      },
+    );
   }
 
   void makeAdminToUser(Adminstrator administrator) {
     filteredAdminList.remove(administrator);
-    deleteAdmin(administrator.id.toString());
-    createUser(administrator.id.toString(), administrator.phone.toString());
+    deleteAdmin(administrator.id.toString(), administrator.name.toString());
+    createUser(
+      administrator.id.toString(),
+      administrator.phone.toString(),
+      administrator.fcm_token.toString(),
+    );
   }
 
   void makeAdminToInstructor(Adminstrator administrator, String kindOfSport) {
     filteredAdminList.remove(administrator);
-    deleteAdmin(administrator.id.toString());
-    createInstructor(administrator.phone.toString(),
-        administrator.id.toString(), kindOfSport);
+    deleteAdmin(administrator.id.toString(), administrator.name.toString());
+    createInstructor(
+        administrator.phone.toString(),
+        administrator.id.toString(),
+        kindOfSport,
+        administrator.name.toString(),
+        administrator.fcm_token.toString());
   }
 
-  void deleteAdmin(String urlId) {
+  void deleteAdmin(String urlId, String name) {
     _firebaseController.delete("${UserRole.administrator}/$urlId");
+    _firebaseController.delete("Телефоны администраторов/$name");
   }
 
-  void createAdmin(String uuid, String phone) {
+  void createAdmin(String uuid, String phone, String name, String fcm_token) {
     _firebaseController
         .send("${UserRole.administrator}/$uuid", {"Телефон": phone});
+    _firebaseController.send(
+      "Телефоны администраторов",
+      {name: phone, "fcm_token": fcm_token},
+    );
   }
 
   void makeUserToInstructor(User user, String kindofSport) {
     filteredPersonList.remove(user);
     deleteUser(user.id.toString());
-    createInstructor(user.phone.toString(), user.id.toString(), kindofSport);
+    createInstructor(user.phone.toString(), user.id.toString(), kindofSport,
+        user.name.toString(), user.fcm_token.toString());
   }
 
   void makeUserToAdmin(User user) {
     filteredPersonList.remove(user);
     deleteUser(user.id.toString());
-    createAdmin(user.id.toString(), user.phone.toString());
+    createAdmin(user.id.toString(), user.phone.toString(), user.name.toString(),
+        user.fcm_token.toString());
   }
 
   void deleteUser(String urlId) {
     _firebaseController.delete("${UserRole.user}/$urlId");
   }
 
-  void createUser(String uid, String phone) {
-    _firebaseController.send("${UserRole.user}/$uid", {"Телефон": phone});
+  void createUser(String uid, String phone, String fcm_token) {
+    _firebaseController.send(
+      "${UserRole.user}/$uid",
+      {"Телефон": phone, "fcm_token": fcm_token},
+    );
   }
 
   Future<void> onRefresh() async {
     _getUsers();
     _getAdmins();
     _getInstructors();
-    setState(() {
-      filteredPersonList = personalList;
-      filteredAdminList = adminlist;
-      filteredInstructorList = instructorlist;
-    });
+    setState(
+      () {
+        filteredPersonList = personalList;
+        filteredAdminList = adminlist;
+        filteredInstructorList = instructorlist;
+      },
+    );
   }
 
   @override
@@ -257,13 +293,12 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Center(child: _backToMainScreenButton(),
-                        
+                        Center(
+                          child: _backToMainScreenButton(),
                         ),
                         const SizedBox(
                           height: 16,
                         ),
-                        
                       ],
                     ),
                   )
@@ -286,7 +321,8 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       ),
     );
   }
-   Widget _backToMainScreenButton() {
+
+  Widget _backToMainScreenButton() {
     return Container(
       width: screenWidth * 0.6,
       height: screenHeight * 0.06,

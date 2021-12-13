@@ -9,6 +9,7 @@ class Instructor {
   String? photoUrl;
   String? info;
   String? kindOfSport;
+  String? fcm_token;
   List<Workout>? workouts;
   Map<dynamic, dynamic>? socialNetworks;
   Map<dynamic, dynamic>? schedule;
@@ -24,6 +25,7 @@ class Instructor {
     instructor.socialNetworks = map["Соцсети"];
     instructor.schedule = _parseDates(map["График работы"], id);
     instructor.kindOfSport = map["Вид спорта"];
+    instructor.fcm_token=map["fcm_token"];
     return instructor;
   }
 

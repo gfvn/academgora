@@ -3,12 +3,16 @@ import 'package:academ_gora_release/model/workout.dart';
 class Adminstrator {
   String? id;
   String? phone;
+  String? name;
+  String? fcm_token;
   List<Workout>? workouts;
 
   static Adminstrator fromJson(String id, map) {
     Adminstrator admin = Adminstrator();
     admin.id = id;
     admin.phone = map["Телефон"] ?? "";
+    admin.name = map["ФИО"] ?? "";
+    admin.fcm_token=map["fcm_token"];
     return admin;
   }
 

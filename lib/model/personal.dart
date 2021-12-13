@@ -3,12 +3,16 @@ import 'package:academ_gora_release/model/workout.dart';
 class User {
   String? id;
   String? phone;
+  String? name;
+  String? fcm_token;
   List<Workout>? workouts;
 
   static User fromJson(String id, map) {
     User user = User();
     user.id = id;
+    user.name=map['ФИО'];
     user.phone = map["Телефон"] ?? "";
+    user.fcm_token=map["fcm_token"]??"";
     // user.workouts = _parseWorkouts(map["Занятия"])??[];
     return user;
   }

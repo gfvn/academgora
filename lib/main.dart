@@ -67,7 +67,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   await Firebase.initializeApp();
-  setupNotification();
   runApp(const MyApp());
 }
 

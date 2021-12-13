@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -6,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthController {
   final dbRef = FirebaseDatabase.instance.reference();
 
-  Future<String> saveUserRole(String phoneNumber) async {
+  Future<String> saveUserRole(String phoneNumber, String fcm_token) async {
     String userRole = UserRole.user;
     var instructorsPhoneNumbers = {};
     var administratorsPhoneNumbers = {};
@@ -26,22 +28,27 @@ class AuthController {
         }
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("userRole", userRole);
-        _saveUserInDb(userRole);
+        _saveUserInDb(userRole, fcm_token);
       });
     });
     return userRole;
   }
 
-  void _saveUserInDb(String userRole) {
+  void _saveUserInDb(String userRole, String fcm_token) {
+    log("userrole $userRole, token $fcm_token");
     dbRef.child(userRole).once().then((value) {
       bool userExists = false;
       for (var userId in (value.value as Map<dynamic, dynamic>).keys) {
         if (userId == FirebaseAuth.instance.currentUser!.uid) userExists = true;
       }
-      if (!userExists) {
-        dbRef
-            .child("$userRole/${FirebaseAuth.instance.currentUser!.uid}")
-            .set({"Телефон": FirebaseAuth.instance.currentUser!.phoneNumber});
+
+      ///TODO change here
+      // if (!userExists) {
+      if (true) {
+        dbRef.child("$userRole/${FirebaseAuth.instance.currentUser!.uid}").set({
+          "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
+          "fcm_token": fcm_token
+        });
       }
     });
   }

@@ -158,6 +158,48 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
   );
 }
 
+Widget buildOneInputs({required TextEditingController controller}) {
+  return _textFieldWidget(
+    width: screenWidth * 0.5,
+    textInputType: TextInputType.name,
+    controller: controller,
+  );
+}
+
+Widget _textFieldWidget(
+    {required double width,
+    required TextInputType textInputType,
+    required TextEditingController controller}) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 16, left: 5, right: 5, top:16,),
+    height: 30,
+    width: width,
+    child: TextField(
+      onSubmitted: (s) {
+        // {widget.registrationParametersScreenState.setState(() {})};
+      },
+      keyboardType: textInputType,
+      controller: controller,
+      style: const TextStyle(fontSize: 14),
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        isDense: true,
+        contentPadding: EdgeInsets.only(left: 5, bottom: 5, top: 5, right: 5),
+      ),
+    ),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(5),
+      ),
+    ),
+  );
+}
+
 void showRoleChangeDialog(
     {required BuildContext context,
     required Function function,
@@ -166,15 +208,16 @@ void showRoleChangeDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-          content: SizedBox(
-        height: screenHeight * 0.15,
-        child: Column(
-          children: [
-            Text(
-              "Точно хотите поменять роль на \n\"$role\" ?",
-              textAlign: TextAlign.center,
-            ),
-            Container(
+        content: SizedBox(
+          height: 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Точно хотите поменять роль на \n\"$role\" ?",
+                textAlign: TextAlign.center,
+              ),
+              Container(
                 margin: const EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -182,11 +225,12 @@ void showRoleChangeDialog(
                     Container(
                       margin: const EdgeInsets.only(right: 20),
                       child: OutlinedButton(
-                          child: const Text('ДА'),
-                          onPressed: () {
-                            function();
-                            Navigator.of(context).pop();
-                          }),
+                        child: const Text('ДА'),
+                        onPressed: () {
+                          function();
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
                     OutlinedButton(
                       child: const Text('ОТМЕНА'),
@@ -195,24 +239,84 @@ void showRoleChangeDialog(
                       },
                     ),
                   ],
-                ))
-          ],
+                ),
+              )
+            ],
+          ),
         ),
-      ));
+      );
     },
   );
 }
 
-Future<String?> showInstructorKindOfSportDialog(
+Future<String?> showRoleChangeDialogWithInput(
     {required BuildContext context, required String role}) async {
+  TextEditingController nameController = TextEditingController();
   return await showDialog<String>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         content: SizedBox(
-          height: screenHeight * 0.15,
+          height: 200,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                "Введите имя, чтобы поменять роль на \"$role\"",
+                textAlign: TextAlign.center,
+              ),
+              buildOneInputs(controller: nameController),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                        child: const Text('Сохранить'),
+                        onPressed: () {
+                          Navigator.of(context).pop(nameController.text);
+                        },
+                      ),
+                    ),
+                    OutlinedButton(
+                      child: const Text('ОТМЕНА'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Future<Map?> showInstructorKindOfSportDialog(
+    {required BuildContext context, required String role}) async {
+  TextEditingController nameController = TextEditingController();
+  String name = "";
+  String kindOFSport = '';
+  Map<String, String> param = {"name": name, "kindOfSport": kindOFSport};
+  return await showDialog<Map>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SizedBox(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Введите имя инструктора",
+                textAlign: TextAlign.center,
+              ),
+              buildOneInputs(controller: nameController),
               const Text(
                 "Выберите вид спорта",
                 textAlign: TextAlign.center,
@@ -227,14 +331,18 @@ Future<String?> showInstructorKindOfSportDialog(
                       child: OutlinedButton(
                         child: const Text(KindsOfSport.SKIES),
                         onPressed: () {
-                          Navigator.of(context).pop(KindsOfSport.SKIES);
+                          param["name"] = nameController.text;
+                          param["kindOfSport"] = KindsOfSport.SKIES;
+                          Navigator.of(context).pop(param);
                         },
                       ),
                     ),
                     OutlinedButton(
                       child: const Text(KindsOfSport.SNOWBOARD),
                       onPressed: () {
-                        Navigator.of(context).pop(KindsOfSport.SNOWBOARD);
+                        param["name"] = nameController.text;
+                        param["kindOfSport"] = KindsOfSport.SNOWBOARD;
+                        Navigator.of(context).pop(param);
                       },
                     ),
                   ],

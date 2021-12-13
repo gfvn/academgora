@@ -111,13 +111,13 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     });
   }
 
-  void makeInstructorToAdmin(Instructor instructor) {
+  void makeInstructorToAdmin(Instructor instructor, String name) {
     filteredInstructorList.remove(instructor);
     deleteInstructor(instructor.id.toString(), instructor.name.toString());
     createAdmin(
       instructor.id.toString(),
       instructor.phone.toString(),
-      instructor.name.toString(),
+      name,
       instructor.fcm_token.toString(),
     );
   }
@@ -145,6 +145,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         "Телефон": phone,
         "Вид спорта": kindOfSport,
         "fcm_token": fcm_token,
+        "ФИО": name
       },
     );
     _firebaseController.send(
@@ -165,14 +166,15 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     );
   }
 
-  void makeAdminToInstructor(Adminstrator administrator, String kindOfSport) {
+  void makeAdminToInstructor(
+      Adminstrator administrator, String kindOfSport, String name) {
     filteredAdminList.remove(administrator);
     deleteAdmin(administrator.id.toString(), administrator.name.toString());
     createInstructor(
         administrator.phone.toString(),
         administrator.id.toString(),
         kindOfSport,
-        administrator.name.toString(),
+        name,
         administrator.fcm_token.toString());
   }
 
@@ -182,26 +184,43 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
   }
 
   void createAdmin(String uuid, String phone, String name, String fcm_token) {
-    _firebaseController
-        .send("${UserRole.administrator}/$uuid", {"Телефон": phone});
+    _firebaseController.send(
+      "${UserRole.administrator}/$uuid",
+      {
+        "Телефон": phone,
+        "fcm_token": fcm_token,
+        "ФИО": name,
+      },
+    );
     _firebaseController.send(
       "Телефоны администраторов",
-      {name: phone, "fcm_token": fcm_token},
+      {
+        name: phone,
+      },
     );
   }
 
-  void makeUserToInstructor(User user, String kindofSport) {
+  void makeUserToInstructor(User user, String kindofSport, String name) {
     filteredPersonList.remove(user);
     deleteUser(user.id.toString());
-    createInstructor(user.phone.toString(), user.id.toString(), kindofSport,
-        user.name.toString(), user.fcm_token.toString());
+    createInstructor(
+      user.phone.toString(),
+      user.id.toString(),
+      kindofSport,
+      name,
+      user.fcm_token.toString(),
+    );
   }
 
-  void makeUserToAdmin(User user) {
+  void makeUserToAdmin(User user, String name) {
     filteredPersonList.remove(user);
     deleteUser(user.id.toString());
-    createAdmin(user.id.toString(), user.phone.toString(), user.name.toString(),
-        user.fcm_token.toString());
+    createAdmin(
+      user.id.toString(),
+      user.phone.toString(),
+      name,
+      user.fcm_token.toString(),
+    );
   }
 
   void deleteUser(String urlId) {
@@ -390,14 +409,17 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
               ),
               key:
                   ValueKey<String>(filteredInstructorList[index].id.toString()),
-              onDismissed: (DismissDirection direction) {
+              onDismissed: (DismissDirection direction) async {
                 if (direction == DismissDirection.startToEnd) {
-                  showRoleChangeDialog(
-                      context: context,
-                      function: () {
-                        makeInstructorToAdmin(filteredInstructorList[index]);
-                      },
-                      role: "Администратор");
+                  await showRoleChangeDialogWithInput(
+                    role: "Администратор",
+                    context: context,
+                  ).then(
+                    (name) {
+                      makeInstructorToAdmin(
+                          filteredInstructorList[index], name.toString());
+                    },
+                  );
                 } else {
                   showRoleChangeDialog(
                     context: context,
@@ -453,16 +475,14 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             key: ValueKey<String>(filteredAdminList[index].id.toString()),
             onDismissed: (DismissDirection direction) async {
               if (direction == DismissDirection.startToEnd) {
-                await showInstructorKindOfSportDialog(
+                var map = await showInstructorKindOfSportDialog(
                   context: context,
                   role: "Инструктор",
-                ).then(
-                  (value) {
-                    makeAdminToInstructor(
-                      filteredAdminList[index],
-                      value.toString(),
-                    );
-                  },
+                );
+                makeAdminToInstructor(
+                  filteredAdminList[index],
+                  map!['kindOfSport'],
+                  map['name'],
                 );
               } else {
                 showRoleChangeDialog(
@@ -522,22 +542,29 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             key: ValueKey<String>(filteredPersonList[index].id.toString()),
             onDismissed: (DismissDirection direction) async {
               if (direction == DismissDirection.startToEnd) {
+                var map = await showInstructorKindOfSportDialog(
+                  context: context,
+                  role: "Инструктор",
+                );
+                makeUserToInstructor(
+                  filteredPersonList[index],
+                  map!['kindOfSport'],
+                  map['name'],
+                );
                 await showInstructorKindOfSportDialog(
                   context: context,
                   role: "Инструктор",
-                ).then((value) {
-                  makeUserToInstructor(
-                    filteredPersonList[index],
-                    value.toString(),
-                  );
-                });
+                ).then(
+                  (value) {},
+                );
               } else {
-                showRoleChangeDialog(
-                  context: context,
-                  function: () {
-                    makeUserToAdmin(filteredPersonList[index]);
-                  },
+                await showRoleChangeDialogWithInput(
                   role: "Администратор",
+                  context: context,
+                ).then(
+                  (name) {
+                    makeUserToAdmin(filteredPersonList[index], name.toString());
+                  },
                 );
               }
             },
@@ -652,12 +679,24 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            user.phone.toString(),
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                user.phone.toString(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+               Text(
+                user.name.toString(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 10,

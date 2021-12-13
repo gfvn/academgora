@@ -148,7 +148,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         "ФИО": name
       },
     );
-    _firebaseController.send(
+    _firebaseController.update(
       "Телефоны инструкторов",
       {
         name: phone,
@@ -192,7 +192,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         "ФИО": name,
       },
     );
-    _firebaseController.send(
+    _firebaseController.update(
       "Телефоны администраторов",
       {
         name: phone,
@@ -551,12 +551,6 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                   map!['kindOfSport'],
                   map['name'],
                 );
-                await showInstructorKindOfSportDialog(
-                  context: context,
-                  role: "Инструктор",
-                ).then(
-                  (value) {},
-                );
               } else {
                 await showRoleChangeDialogWithInput(
                   role: "Администратор",
@@ -644,7 +638,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                 ),
               ),
               Text(
-                user.name.toString() != null ? user.name.toString() : '',
+                user.name != null ? user.name.toString() : '',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -689,7 +683,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-               Text(
+              Text(
                 user.name.toString(),
                 style: const TextStyle(
                   fontSize: 16,

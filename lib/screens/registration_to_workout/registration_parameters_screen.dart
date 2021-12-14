@@ -260,7 +260,7 @@ class RegistrationParametersScreenState
               NotificationService().showNotification(
                   int.tryParse(workoutSingleton.id.toString()) ?? 0,
                   "Скоро занятия",
-                  "Через 2 часа у вас будет занятия в АкадемГора",
+                  "Через 2 часа у вас будет занятие в АкадемГора",
                   norificationTime);
             } else {
               NotificationService().showNotification(2, "Скоро занятия",

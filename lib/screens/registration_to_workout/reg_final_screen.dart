@@ -11,7 +11,6 @@ import '../extension.dart';
 import '../main_screen.dart';
 
 class RegistrationFinalScreen extends StatefulWidget {
-
   const RegistrationFinalScreen({Key? key}) : super(key: key);
 
   @override
@@ -25,23 +24,24 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: screenDecoration("assets/reg_final/0_bg.png"),
-            child: Container(
-              margin: EdgeInsets.only(top: screenHeight * 0.1),
-              child: Column(
-                children: [
-                  _textWidget("Запись оформлена\n"),
-                  _textWidget(
-                      "Ждем вас на занятии\n${_parseDate(workoutSingleton.date!)} в ${workoutSingleton.from}\nв СК \"Академический\"\n"),
-                  _textWidget(
-                      "Информация о занятии\nдоступна в личном\nкабинете"),
-                  _buttonWidget("В личный кабинет", screenHeight * 0.3),
-                  _buttonWidget("На главную", 20),
-                ],
-              ),
-            )));
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: screenDecoration("assets/reg_final/0_bg.png"),
+        child: Container(
+          margin: EdgeInsets.only(top: screenHeight * 0.15),
+          child: Column(
+            children: [
+              _textWidget("Запись оформлена\n"),
+              _textWidget(
+                  "Ждем вас на занятии\n${_parseDate(workoutSingleton.date!)} в ${workoutSingleton.from}\nв СК \"Академический\"\n"),
+              _textWidget("Информация о занятии\nдоступна в личном\nкабинете"),
+              _buttonWidget("В личный кабинет", screenHeight * 0.3),
+              _buttonWidget("На главную", 20),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   String _parseDate(String date) {
@@ -93,17 +93,18 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
       } else if (userRole == UserRole.instructor) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const InstructorWorkoutsScreen()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (c) => const InstructorWorkoutsScreen()));
       } else {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (c) => const AdministratorProfileScreen()));
       }
     });
   }
 
   void _openMain() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const MainScreen()), (route) => false);
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 }

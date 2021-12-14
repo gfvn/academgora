@@ -67,14 +67,17 @@ class _TimeWidgetState extends State<TimeWidget> {
         Container(
             width: 20,
             height: 20,
-            margin: EdgeInsets.only(right: 10, left: 10),
+            margin: const EdgeInsets.only(right: 10, left: 10),
             child: Image.asset("assets/registration_to_instructor/4_e4.png")),
         Container(
-            margin: EdgeInsets.only(right: 8),
-            child: Text(
-              "ВРЕМЯ",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ))
+          margin: const EdgeInsets.only(right: 8),
+          child: const Text(
+            "",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
       ],
     );
   }

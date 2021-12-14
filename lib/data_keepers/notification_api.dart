@@ -19,20 +19,21 @@ class NotificationService {
   NotificationService._internal();
 
   Future<void> initNotification() async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@drawable/ic_flutternotification');
+    const AndroidInitializationSettings initializationSettingsAndroid =
+         AndroidInitializationSettings('@drawable/ic_stat_ski', );
 
-    final IOSInitializationSettings initializationSettingsIOS =
+    const IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
@@ -50,7 +51,8 @@ class NotificationService {
             channelDescription: 'Main channel notifications',
             importance: Importance.max,
             priority: Priority.max,
-            icon: '@drawable/ic_launcher'),
+            playSound: true,
+            icon: '@drawable/ic_stat_ski'),
         iOS: IOSNotificationDetails(
           sound: 'default.wav',
           presentAlert: true,

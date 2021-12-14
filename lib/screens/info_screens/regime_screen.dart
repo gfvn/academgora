@@ -103,10 +103,10 @@ class _RegimeScreenState extends State<RegimeScreen> {
 
   Widget _description() {
     return Container(
-        height: screenHeight * 0.42,
-        width: screenWidth * 0.8,
-        child: SingleChildScrollView(
-            child: Flex(
+      height: screenHeight * 0.42,
+      width: screenWidth * 0.8,
+      child: SingleChildScrollView(
+        child: Flex(
           crossAxisAlignment: CrossAxisAlignment.start,
           direction: Axis.vertical,
           children: [
@@ -140,12 +140,12 @@ class _RegimeScreenState extends State<RegimeScreen> {
               onTap: () {
                 launchURL("https://www.instagram.com/akademgora/");
               },
-              child: Text(
+              child: const Text(
                 "https://www.instagram.com/akademgora/\n\n",
                 style: TextStyle(fontSize: 12),
               ),
             ),
-            Text(
+            const Text(
               "Понедельник – выходной\n"
               "Со вторника по пятницу работаем с 10:00 до 21:00\n"
               "В выходные, а также праздничные дни работаем с 10:00 до 21:00, обратите внимание, что с 14:00 до 15:00 прокат закрывается на санитарную обработку, получить или сдать арендованный инвентарь в этот период не получится. "
@@ -160,13 +160,15 @@ class _RegimeScreenState extends State<RegimeScreen> {
               onTap: () {
                 launchURL("https://www.instagram.com/akademgora/");
               },
-              child: Text(
+              child: const Text(
                 "https://www.instagram.com/akademgora/",
                 style: TextStyle(fontSize: 12),
               ),
             ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 
   Widget _button(BuildContext context, String text) {

@@ -264,8 +264,15 @@ class RegistrationParametersScreenState
                   norificationTime);
             } else {
               NotificationService().showNotification(2, "Скоро занятия",
-                  "Вы записались на занятия в АкадемГора", 10);
+                  "Вы записались на занятие в АкадемГора", 10);
             }
+            String formattedDate =
+                "${workoutSingleton.date!.substring(4, 8)}-${workoutSingleton.date!.substring(2, 4)}-${workoutSingleton.date!.substring(0, 2)}";
+            NotificationService().sendNotificationToFcm(
+                fcmToken: workoutSingleton.instructorfcmToken!,
+                tittle: "Новая запись",
+                body:
+                    "У вас новая запись на $formattedDate, ${workoutSingleton.from}");
             _openRegFinalScreen();
           },
         );
@@ -302,27 +309,29 @@ class RegistrationParametersScreenState
   }
 
   Future<void> _sendWorkoutDataToUser() async {
-    await UserRole.getUserRole().then((userRole) => {
-          if (userRole == UserRole.user)
-            {
-              _firebaseRequestsController.send(
-                  "$userRole/${FirebaseAuth.instance.currentUser!.uid}/Занятия/${workoutSingleton.id}",
-                  {
-                    "id": workoutSingleton.id,
-                    "Телефон инструктора":
-                        workoutSingleton.instructorPhoneNumber,
-                    "Вид спорта": workoutSingleton.sportType,
-                    "Время": _getWorkoutTime(),
-                    "Дата": workoutSingleton.date,
-                    "Инструктор": workoutSingleton.instructorName,
-                    "Количество человек": workoutSingleton.peopleCount,
-                    "Посетители": _humansMap(),
-                    "Уровень катания": levelOfSkating,
-                    "Продолжительность": workoutSingleton.workoutDuration,
-                    "Комментарий": _commentController.text
-                  })
-            },
-        });
+    await UserRole.getUserRole().then(
+      (userRole) => {
+        if (userRole == UserRole.user)
+          {
+            _firebaseRequestsController.send(
+                "$userRole/${FirebaseAuth.instance.currentUser!.uid}/Занятия/${workoutSingleton.id}",
+                {
+                  "id": workoutSingleton.id,
+                  "Телефон инструктора": workoutSingleton.instructorPhoneNumber,
+                  "Вид спорта": workoutSingleton.sportType,
+                  "Время": _getWorkoutTime(),
+                  "Дата": workoutSingleton.date,
+                  "Инструктор": workoutSingleton.instructorName,
+                  "Количество человек": workoutSingleton.peopleCount,
+                  "Посетители": _humansMap(),
+                  "Уровень катания": levelOfSkating,
+                  "Продолжительность": workoutSingleton.workoutDuration,
+                  "Комментарий": _commentController.text,
+                  "instructor_fcm_token": workoutSingleton.instructorfcmToken,
+                })
+          },
+      },
+    );
   }
 
   Future<void> _sendWorkoutDataToInstructor() async {
@@ -337,7 +346,8 @@ class RegistrationParametersScreenState
           "Уровень катания": levelOfSkating,
           "Комментарий": _commentController.text,
           "Продолжительность": workoutSingleton.workoutDuration,
-          "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber
+          "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
+          "instructor_fcm_token": workoutSingleton.instructorfcmToken,
         });
     _firebaseRequestsController.update(
         "${UserRole.instructor}/${workoutSingleton.instructorId}/График работы/${workoutSingleton.date}",

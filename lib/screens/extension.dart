@@ -261,8 +261,8 @@ Future<String?> showRoleChangeDialogWithInput(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Введите имя, чтобы поменять роль на \"$role\"",
+              const Text(
+                "Введите имя",
                 textAlign: TextAlign.center,
               ),
               buildOneInputs(controller: nameController),

@@ -236,10 +236,12 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         widget.instructorWidgetState.instructor!.name!,
         widget.instructorWidgetState.instructor!.phone!,
         _selectedDate!,
-        time);
+        time,
+        widget.instructorWidgetState.instructor!.fcm_token!);
     if (widget.instructorWidgetState.regToInstructorData == null) {
       _updateRegToInstructorData(regToInstructorData);
-    } else if (widget.instructorWidgetState.regToInstructorData!.instructorName ==
+    } else if (widget
+            .instructorWidgetState.regToInstructorData!.instructorName ==
         regToInstructorData.instructorName) {
       _updateRegToInstructorData(regToInstructorData);
     } else {

@@ -1,42 +1,44 @@
-
 import 'dart:developer';
 
+import 'package:academ_gora_release/api/notification_api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationService {
-  static final NotificationService _notificationService = NotificationService._internal();
+  static final NotificationService _notificationService =
+      NotificationService._internal();
 
   factory NotificationService() {
     return _notificationService;
   }
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   NotificationService._internal();
 
   Future<void> initNotification() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@drawable/ic_flutternotification');
+        AndroidInitializationSettings('@drawable/ic_flutternotification');
 
     final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
+        IOSInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
 
     final InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS
-    );
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(int id, String title, String body, int seconds) async {
+  Future<void> showNotification(
+      int id, String title, String body, int seconds) async {
     log("hereeerrrrrrrrrrr $seconds");
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
@@ -44,14 +46,11 @@ class NotificationService {
       body,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds)),
       const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'main_channel',
-          'Main Channel',
-          channelDescription: 'Main channel notifications',
-          importance: Importance.max,
-          priority: Priority.max,
-          icon: '@drawable/ic_launcher'
-        ),
+        android: AndroidNotificationDetails('main_channel', 'Main Channel',
+            channelDescription: 'Main channel notifications',
+            importance: Importance.max,
+            priority: Priority.max,
+            icon: '@drawable/ic_launcher'),
         iOS: IOSNotificationDetails(
           sound: 'default.wav',
           presentAlert: true,
@@ -59,15 +58,28 @@ class NotificationService {
           presentSound: true,
         ),
       ),
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
     );
   }
-  Future<void> cancelNotificationLocal(int id)async{
+
+  Future<void> cancelNotificationLocal(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  Future<void> sendNotificationToFcm(
+      {required String fcmToken,
+      required String tittle,
+      required String body}) async {
+    await NotificationApi().sendFcmNotification(
+      fcmToken,
+      tittle,
+      body,
+    );
   }
 }

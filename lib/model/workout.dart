@@ -79,6 +79,8 @@ class WorkoutDataKeeper {
   int? age;
   String? instructorName;
   String? instructorPhoneNumber;
+  String? instructorfcmToken;
+  String? clientFcmToken; 
   List<Visitor>? visitors = [];
 
   factory WorkoutDataKeeper() {
@@ -104,5 +106,7 @@ class WorkoutDataKeeper {
     instructorPhoneNumber = null;
     visitors = [];
     instructorId = null;
+    instructorfcmToken=null;
+    clientFcmToken=null;
   }
 }

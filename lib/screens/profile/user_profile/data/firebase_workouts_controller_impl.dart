@@ -28,7 +28,6 @@ class FirebaseWorkoutsControllerImplementation
     List<Workout> workouts = _parseFirebaseResponseToWorkoutsList(
         await _getWorkoutsFromFirebaseForCurrentUser());
     List<Workout> oldWorkouts = _getOldWorkouts(workouts);
-    log("olllld $oldWorkouts");
     if (oldWorkouts.isNotEmpty) oldWorkouts.forEach(workouts.remove);
     _deleteOldWorkoutsFromFirebase(oldWorkouts);
     return _sortWorkouts(workouts);

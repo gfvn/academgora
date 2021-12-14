@@ -101,11 +101,13 @@ class MyAppState extends State<MyApp> {
           if (userRole == UserRole.user)
             {
               _firebaseController.addListener(
-                  "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
-                  _saveWorkoutsIntoUserDataKeeper)
+                "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
+                _saveWorkoutsIntoUserDataKeeper,
+              )
             }
         },
       );
+      setupNotification();
       setState(
         () {
           _isUserAuthorized = true;
@@ -204,10 +206,12 @@ class MyAppState extends State<MyApp> {
   }
 
   void _saveInstructorsIntoKeeper(Event? event) async {
-    await _firebaseController.get("Инструкторы").then((value) {
-      _instructorsKeeper.updateInstructors(value);
-      setState(() {});
-    });
+    await _firebaseController.get("Инструкторы").then(
+      (value) {
+        _instructorsKeeper.updateInstructors(value);
+        setState(() {});
+      },
+    );
   }
 
   void _saveUsersIntoKeeper(Event? event) async {

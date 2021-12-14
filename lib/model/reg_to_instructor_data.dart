@@ -3,9 +3,10 @@ class RegToInstructorData {
   String phoneNumber;
   DateTime date;
   String time;
+  String fcomToken;
 
-  RegToInstructorData(
-      this.instructorName, this.phoneNumber, this.date, this.time);
+  RegToInstructorData(this.instructorName, this.phoneNumber, this.date,
+      this.time, this.fcomToken);
 
   @override
   bool operator ==(Object other) =>
@@ -15,12 +16,14 @@ class RegToInstructorData {
           instructorName == other.instructorName &&
           phoneNumber == other.phoneNumber &&
           date == other.date &&
-          time == other.time;
+          time == other.time &&
+          fcomToken == other.fcomToken;
 
   @override
   int get hashCode =>
       instructorName.hashCode ^
       phoneNumber.hashCode ^
       date.hashCode ^
-      time.hashCode;
+      time.hashCode ^
+      fcomToken.hashCode;
 }

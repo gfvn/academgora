@@ -30,9 +30,10 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
         .findInstructorsByKindOfSport(_workoutSingleton.sportType!);
     return Scaffold(
       body: Container(
-          decoration:
-              screenDecoration("assets/registration_to_instructor/1_bg.png"),
-          child: Column(children: [
+        decoration:
+            screenDecoration("assets/registration_to_instructor/1_bg.png"),
+        child: Column(
+          children: [
             Container(
               height: screenHeight * 0.72,
               margin: const EdgeInsets.only(top: 50, left: 15, right: 15),
@@ -44,21 +45,24 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
               ),
             ),
             _buttons()
-          ])),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _instructorWidget(Instructor instructor, int index) {
     return Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: const BorderSide(width: 0.5, color: Colors.grey),
-            top: index == 0
-                ? const BorderSide(width: 0.5, color: Colors.grey)
-                : const BorderSide(color: Colors.transparent),
-          ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: const BorderSide(width: 0.5, color: Colors.grey),
+          top: index == 0
+              ? const BorderSide(width: 0.5, color: Colors.grey)
+              : const BorderSide(color: Colors.transparent),
         ),
-        child: InstructorWidget(instructor, this));
+      ),
+      child: InstructorWidget(instructor, this),
+    );
   }
 
   Widget _buttons() {
@@ -90,22 +94,23 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: _continueButtonBackgroundColor(),
         child: InkWell(
-            onTap:
-                regToInstructorData == null ? null : _openRegParametersScreen,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "ПРОДОЛЖИТЬ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: _continueButtonTextColor(),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
+          onTap: regToInstructorData == null ? null : _openRegParametersScreen,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "ПРОДОЛЖИТЬ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: _continueButtonTextColor(),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -129,6 +134,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   void _openRegParametersScreen() {
     WorkoutDataKeeper workoutSingleton = WorkoutDataKeeper();
     workoutSingleton.instructorName = regToInstructorData!.instructorName;
+    workoutSingleton.instructorfcmToken=regToInstructorData!.fcomToken;
     workoutSingleton.from = regToInstructorData!.time;
     workoutSingleton.date ??=
         DateFormat('ddMMyyyy').format(regToInstructorData!.date);
@@ -138,7 +144,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     workoutSingleton.instructorId = _instructorsKeeper
         .findInstructorByPhoneNumber(regToInstructorData!.phoneNumber)!
         .id;
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (c) => const RegistrationParametersScreen()));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (c) => const RegistrationParametersScreen()));
   }
 }

@@ -24,6 +24,7 @@ class Workout {
   int? peopleCount;
   int? workoutDuration;
   int? levelOfSkating;
+  String? instructorFcmToken;
   List<Visitor> visitors = [];
 
   static Workout fromJson(String id, workoutData) {
@@ -38,6 +39,7 @@ class Workout {
     workout.peopleCount = workoutData["Количество человек"];
     workout.comment = workoutData["Комментарий"];
     workout.sportType = workoutData["Вид спорта"];
+    workout.instructorFcmToken=workoutData["instructor_fcm_token"];
     workout.levelOfSkating = workoutData["Уровень катания"];
     workout.visitors = _parseVisitors(workoutData["Посетители"]);
     workout.workoutDuration = workoutData["Продолжительность"];

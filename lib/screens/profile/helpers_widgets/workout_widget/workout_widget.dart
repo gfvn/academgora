@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/instructor.dart';
@@ -150,6 +152,17 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
+                log('hereeee');
+                if (widget.workout.instructorFcmToken!.isNotEmpty) {
+                  log('nooo heree((');
+                  String formattedDate =
+                      "${widget.workout.date!.substring(4, 8)}-${widget.workout.date!.substring(2, 4)}-${widget.workout.date!.substring(0, 2)}";
+                  NotificationService().sendNotificationToFcm(
+                      fcmToken: widget.workout.instructorFcmToken!,
+                      tittle: "Запись отменена",
+                      body:
+                          "Клиент отменил занятие на $formattedDate, ${widget.workout.from}");
+                }
                 _cancelWorkout.cancelWorkout(widget.workout);
                 NotificationService().cancelNotificationLocal(
                   int.parse(

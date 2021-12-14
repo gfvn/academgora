@@ -28,6 +28,7 @@ class FirebaseWorkoutsControllerImplementation
     List<Workout> workouts = _parseFirebaseResponseToWorkoutsList(
         await _getWorkoutsFromFirebaseForCurrentUser());
     List<Workout> oldWorkouts = _getOldWorkouts(workouts);
+    log("oldddsssss $oldWorkouts");
     if (oldWorkouts.isNotEmpty) oldWorkouts.forEach(workouts.remove);
     _deleteOldWorkoutsFromFirebase(oldWorkouts);
     return _sortWorkouts(workouts);
@@ -87,23 +88,23 @@ class FirebaseWorkoutsControllerImplementation
   List<Workout> _getOldWorkouts(List<Workout> workouts) {
     List<Workout> oldWorkouts = [];
     for (var element in workouts) {
-      if (!_compareWorkoutDates(element.date!)) {
+      if (!_compareWorkoutDates(element.date!, element.to!)) {
         oldWorkouts.add(element);
       }
     }
     return oldWorkouts;
   }
 
-  bool _compareWorkoutDates(String workoutDate) {
+  bool _compareWorkoutDates(String workoutDate, String workoutTime) {
     String formattedDate =
-        "${workoutDate.substring(4, 8)}-${workoutDate.substring(2, 4)}-${workoutDate.substring(0, 2)}";
+        "${workoutDate.substring(4, 8)}-${workoutDate.substring(2, 4)}-${workoutDate.substring(0, 2)} ${workoutTime.substring(0, 2)}:${workoutTime.substring(3, 5)}";
     DateTime workoutDateTime = DateTime.parse(formattedDate);
     DateTime now = DateTime.now();
     if (workoutDateTime.isAfter(now)
-      ///TODO Заменили тут
-      // workoutDateTime.year >= now.year &&
-      //   workoutDateTime.day >= now.day &&
-      //   workoutDateTime.month >= now.month
+        ///TODO Заменили тут
+        // workoutDateTime.year >= now.year &&
+        //   workoutDateTime.day >= now.day &&
+        //   workoutDateTime.month >= now.month
         ) {
       return true;
     } else {

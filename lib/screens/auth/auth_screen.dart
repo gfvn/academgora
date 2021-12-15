@@ -75,14 +75,15 @@ class _AuthScreenState extends State<AuthScreen> {
     final result = await FlutterAuthUi.startUi(
       items: providers,
       tosAndPrivacyPolicy: TosAndPrivacyPolicy(
-        tosUrl: "https://www.google.com",
-        privacyPolicyUrl: "https://www.google.com",
+        tosUrl: "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
+        privacyPolicyUrl: "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
       ),
       androidOption: const AndroidOption(
         enableSmartLock: false, // default true
         showLogo: true, // default false
         overrideTheme: true, // default false
       ),
+      
       emailAuthOption: const EmailAuthOption(
         requireDisplayName: true,
         enableMailLink: false,

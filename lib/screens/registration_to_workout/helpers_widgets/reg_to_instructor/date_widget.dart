@@ -98,7 +98,7 @@ class _DateWidgetState extends State<DateWidget> {
     _selectedDate = null;
     WorkoutDataKeeper().date = null;
     widget.registrationToInstructorScreenState.setState(() {
-      widget.registrationToInstructorScreenState.selectedDate = _selectedDate!;
+      widget.registrationToInstructorScreenState.selectedDate = _selectedDate;
     });
     setState(() {});
   }

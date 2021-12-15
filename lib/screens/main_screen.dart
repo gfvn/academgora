@@ -49,13 +49,20 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     _getNews();
-     tz.initializeTimeZones();
+    tz.initializeTimeZones();
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-        if (notification != null && android != null) {
-          NotificationService().showNotification(123, "${notification.title}", "${notification.body}", 5);
+        AppleNotification? ios = message.notification?.apple;
+
+        if (notification != null) {
+          log('notification');
+          log('Android $android');
+          log('IOS $ios');
+
+          NotificationService().showNotification(
+              123, "${notification.title}", "${notification.body}", 5);
         }
       },
     );
@@ -65,7 +72,12 @@ class _MainScreenState extends State<MainScreen> {
         print('A new onMessageOpenedApp event was published!');
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-        if (notification != null && android != null) {
+        AppleNotification? ios = message.notification?.apple;
+        if (notification != null) {
+          log('notification');
+          log('Android $android');
+          log('IOS $ios');
+
           showDialog(
             context: context,
             builder: (_) {
@@ -85,6 +97,7 @@ class _MainScreenState extends State<MainScreen> {
     );
     super.initState();
   }
+
   void _getNews() async {
     setState(() {
       isLoading = true;
@@ -105,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
       imageSliders.add(
         imageView(
           imageUrl: url.toString(),
-          assetPath: "assets/main/10_pic${imageUrls.indexOf(news)+1}.png",
+          assetPath: "assets/main/10_pic${imageUrls.indexOf(news) + 1}.png",
         ),
       );
     }

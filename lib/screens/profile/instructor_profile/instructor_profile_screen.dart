@@ -213,7 +213,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
         children: [
           TextField(
               controller: myController,
-              keyboardType: TextInputType.visiblePassword),
+            ),
           Container(
               margin: const EdgeInsets.only(top: 20),
               child: Row(
@@ -335,7 +335,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           (text != FirebaseAuth.instance.currentUser!.phoneNumber &&
                   (text != widget.instructorPhoneNumber || text == null))
               ? GestureDetector(
-                  onTap: () => _showRedactInfoDialog(context, text!, true,
+                  onTap: () => _showRedactInfoDialog(context, text??"", true,
                       socialNetworkName: socialNetworkName),
                   child: Container(
                     margin: const EdgeInsets.only(right: 15),

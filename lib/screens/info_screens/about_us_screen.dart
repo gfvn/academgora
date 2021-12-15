@@ -164,10 +164,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         GestureDetector(
             onTap: () {
               launchURL(
-                  "https://instagram.com/irk_snowboard?igshid=1x8vatsggr7mu");
+                  "https://instagram.com/irk.board?utm_medium=copy_link");
             },
             child: const Text(
-              "https://instagram.com/irk_snowboard?igshid=1x8vatsggr7mu\n",
+              "https://instagram.com/irk.board?utm_medium=copy_link\n",
               style: TextStyle(fontSize: 12),
             )),
         Row(

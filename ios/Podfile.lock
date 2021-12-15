@@ -29,6 +29,9 @@ PODS:
   - Firebase/Database (8.9.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 8.9.0)
+  - Firebase/Messaging (8.9.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 8.9.0)
   - Firebase/Storage (8.9.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 8.9.0)
@@ -41,6 +44,10 @@ PODS:
     - Flutter
   - firebase_database (7.1.1):
     - Firebase/Database (= 8.9.0)
+    - firebase_core
+    - Flutter
+  - firebase_messaging (11.2.3):
+    - Firebase/Messaging (= 8.9.0)
     - firebase_core
     - Flutter
   - firebase_storage (10.1.0):
@@ -87,6 +94,20 @@ PODS:
     - FirebaseAuthUI
     - FirebaseCore
     - GoogleSignIn (~> 6.0)
+  - FirebaseInstallations (8.9.0):
+    - FirebaseCore (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.6)
+    - GoogleUtilities/UserDefaults (~> 7.6)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - FirebaseMessaging (8.9.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleDataTransport (~> 9.1)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.6)
+    - GoogleUtilities/Environment (~> 7.6)
+    - GoogleUtilities/Reachability (~> 7.6)
+    - GoogleUtilities/UserDefaults (~> 7.6)
+    - nanopb (~> 2.30908.0)
   - FirebaseOAuthUI (12.0.2):
     - FirebaseAuth (~> 8.0)
     - FirebaseAuthUI (< 13.0, >= 12.0.2)
@@ -181,6 +202,7 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
+  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_auth_ui (from `.symlinks/plugins/flutter_auth_ui/ios`)
@@ -210,6 +232,8 @@ SPEC REPOS:
     - FirebaseEmailAuthUI
     - FirebaseFacebookAuthUI
     - FirebaseGoogleAuthUI
+    - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseOAuthUI
     - FirebasePhoneAuthUI
     - FirebaseStorage
@@ -231,6 +255,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
+  firebase_messaging:
+    :path: ".symlinks/plugins/firebase_messaging/ios"
   firebase_storage:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
@@ -264,6 +290,7 @@ SPEC CHECKSUMS:
   firebase_auth: 0d56cc4d105ff70d1547a7fcb10ee574ad05adf5
   firebase_core: f770e033e790657b3505f04be4cb24c482912f11
   firebase_database: 39bb8f8a8fe664b725b3631feec23b513c6bed24
+  firebase_messaging: c4696ded2f44fb5c2bf6e94f9a575105793e58fa
   firebase_storage: a3bbe618ef41930ae31da8f4691d37e4ed84f14d
   FirebaseAnonymousAuthUI: dc0d806fb53268e79fa64ae8ffd8e1adfc242244
   FirebaseAuth: 2b78b2a32c07b3ecfa4970bdf1d3632b8304099b
@@ -274,6 +301,8 @@ SPEC CHECKSUMS:
   FirebaseEmailAuthUI: 6d0c5646c49b33a72dbe73a0ff9c908a59b5ff29
   FirebaseFacebookAuthUI: a478313687c2001b53470d7cc265a48a2c504ab8
   FirebaseGoogleAuthUI: 6981c0c3c054367f9ccd730fbcf483504deb0a68
+  FirebaseInstallations: caa7c8e0d3e2345b8829d2fa9ca1b4dfbf2fcc85
+  FirebaseMessaging: 82c4a48638f53f7b184f3cc9f6cd2cbe533ab316
   FirebaseOAuthUI: 8dc3d0270781133b10b2666d1163cd298501f453
   FirebasePhoneAuthUI: d84be4a096ddc19f9aace4a6ebcf80fe334f466b
   FirebaseStorage: 452c98c31ccb40b819764bf3039426c4388d9939

@@ -40,22 +40,34 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
       decoration:
           screenDecoration("assets/registration_to_instructor/1_bg.png"),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SelectKindOfSportWidget(this, kindOfSport),
-          horizontalDivider(20, 20, 20, 20),
-          DateWidget(this, selectedDate),
-          horizontalDivider(20, 20, 20, 20),
-          TimeWidget(this),
-          _warningText(),
-          _continueButton(),
-          Container(
-              padding: const EdgeInsets.only(top: 10),
-              child: const Text("ИЛИ",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey))),
-          _selectCoachButton()
+          Column(
+            children: [
+              SelectKindOfSportWidget(this, kindOfSport),
+              horizontalDivider(20, 20, 20, 20),
+              DateWidget(this, selectedDate),
+              horizontalDivider(20, 20, 20, 20),
+            ],
+          ),
+          // TimeWidget(this),
+          // _warningText(),
+          Column(
+            children: [
+              _continueButton(),
+              Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: const Text("ИЛИ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey))),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: _selectCoachButton(),
+              )
+            ],
+          ),
         ],
       ),
     ));

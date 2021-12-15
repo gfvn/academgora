@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class TimesController {
   final _times = {
     "09:00": 0,
@@ -33,7 +35,10 @@ class TimesController {
     List<String> sortedTimes = [];
     List<int> priorities = [];
     for (var time in times) {
-      priorities.add(_times[time]!);
+      if (time != null) {
+        log('timeeee    $time');
+        priorities.add(_times[time]!);
+      }
     }
     priorities.sort();
     for (var priority in priorities) {
@@ -44,7 +49,7 @@ class TimesController {
 
   bool checkTimeInterval(String time, String from, String to) {
     int timePriority = _times[time]!;
-    int fromPriority = _times[from]!-1;
+    int fromPriority = _times[from]! - 1;
     int toPriority = _times[to]!;
     if (timePriority >= fromPriority && timePriority < toPriority) {
       return true;
@@ -96,8 +101,7 @@ class TimesController {
     if (fromPriority >= 21) {
       return false;
     } else if (schedule[getTimeByValue(fromPriority)] == 'открыто' &&
-        schedule[getTimeByValue(fromPriority + 2)] == 'открыто'
-    ) {
+        schedule[getTimeByValue(fromPriority + 2)] == 'открыто') {
       return true;
     } else {
       return false;

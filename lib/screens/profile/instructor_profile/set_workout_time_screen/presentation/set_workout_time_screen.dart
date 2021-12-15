@@ -253,8 +253,8 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _pickTimeButtonWidget("9:00"),
-              _pickTimeButtonWidget("9:30"),
+              _pickTimeButtonWidget("09:00"),
+              _pickTimeButtonWidget("09:30"),
               _pickTimeButtonWidget("10:00"),
               _pickTimeButtonWidget("10:30"),
               _pickTimeButtonWidget("11:00"),

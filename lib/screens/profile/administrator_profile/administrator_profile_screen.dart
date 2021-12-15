@@ -8,6 +8,7 @@ import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 
 import '../../../main.dart';
 import '../../extension.dart';
+import '../../main_screen.dart';
 
 class AdministratorProfileScreen extends StatefulWidget {
   const AdministratorProfileScreen({Key? key}) : super(key: key);
@@ -130,7 +131,10 @@ class _AdministratorProfileScreenState
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: Colors.blue,
         child: InkWell(
-          onTap: () => {Navigator.pop(context)},
+          onTap: () {
+ Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (c) => const MainScreen()),
+                      (route) => false);          },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

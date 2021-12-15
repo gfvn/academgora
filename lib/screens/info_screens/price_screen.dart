@@ -55,11 +55,11 @@ class _PriceScreenState extends State<PriceScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           const Text(
+          const Text(
             "Будни / ",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-           const Text(
+          const Text(
             "Выходные и праздничные дни",
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
@@ -210,6 +210,8 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.pop(context);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 }

@@ -159,8 +159,9 @@ class _InstructorsScreenState
         color: Colors.blue,
         child: InkWell(
             onTap: () => {
-                 Navigator.pop(context)
-                },
+ Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (c) => const MainScreen()),
+                      (route) => false)                },
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

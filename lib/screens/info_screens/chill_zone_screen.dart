@@ -123,13 +123,19 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
               onTap: () {
                 callNumber(_phoneNumber);
               },
-              child: Text(_phoneNumber, style: TextStyle(fontSize: 12),),
+              child: Text(
+                _phoneNumber,
+                style: TextStyle(fontSize: 12),
+              ),
             ),
             GestureDetector(
               onTap: () {
                 writeEmail("katyagolodiaeva@gmail.com");
               },
-              child: Text("\nkatyagolodiaeva@gmail.com\n", style: TextStyle(fontSize: 12),),
+              child: Text(
+                "\nkatyagolodiaeva@gmail.com\n",
+                style: TextStyle(fontSize: 12),
+              ),
             ),
           ],
         )));
@@ -165,6 +171,8 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.pop(context);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 }

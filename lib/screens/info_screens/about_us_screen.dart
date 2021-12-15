@@ -195,8 +195,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.pop(context);
-
+ Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (c) => const MainScreen()),
+                      (route) => false);
     // Navigator.of(context).pushAndRemoveUntil(
     //     MaterialPageRoute(builder: (c) => const MainScreen()),
     //     (route) => false);

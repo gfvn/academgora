@@ -165,14 +165,14 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
         child: InkWell(
             onTap: () => {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => MainScreen()),
+                      MaterialPageRoute(builder: (c) => const MainScreen()),
                       (route) => false)
                 },
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                     const Text(
                       "НА ГЛАВНУЮ",
                       textAlign: TextAlign.center,
                       style: TextStyle(

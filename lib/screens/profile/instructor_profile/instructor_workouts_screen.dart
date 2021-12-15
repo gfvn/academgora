@@ -418,6 +418,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.pop(context);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 }

@@ -67,7 +67,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(const MyApp(),);
 }
 
 class MyApp extends StatefulWidget {
@@ -96,6 +96,7 @@ class MyAppState extends State<MyApp> {
     super.initState();
     _firebaseController.myAppState = this;
     if (FirebaseAuth.instance.currentUser != null) {
+      print("FirebaseAuth.instance.currentUser ${FirebaseAuth.instance.currentUser}");
       UserRole.getUserRole().then(
         (userRole) => {
           if (userRole == UserRole.user)

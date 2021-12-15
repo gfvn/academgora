@@ -201,6 +201,8 @@ class _RegimeScreenState extends State<RegimeScreen> {
   }
 
   void _openMainScreen() {
-    Navigator.pop(context);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 }

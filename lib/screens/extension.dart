@@ -209,7 +209,7 @@ void showRoleChangeDialog(
     builder: (BuildContext context) {
       return AlertDialog(
         content: SizedBox(
-          height: 100,
+          height: 120,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

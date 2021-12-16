@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
@@ -142,18 +144,32 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   void _fillOpenedTimes() {
+    DateTime now = DateTime.now();
     _openedTimes = [];
     var daysSchedule = widget.instructor.schedule;
     var timesPerDay =
         daysSchedule![DateFormat('ddMMyyyy').format(_selectedDate!)];
+    log("timesperDat $timesPerDay");
+    log("_selectedDate $_selectedDate");
     if (timesPerDay != null) {
-      timesPerDay.forEach((key, value) {
-        if (value == "открыто") {
-          if (!_openedTimes.contains(value)) {
-            _openedTimes.add(key);
+      timesPerDay.forEach(
+        (key, value) {
+          if (value == "открыто") {
+            if (!_openedTimes.contains(value)) {
+              DateTime time = DateTime(
+                _selectedDate!.year,
+                _selectedDate!.month,
+                _selectedDate!.day,
+                int.tryParse(key!.toString().substring(0, 2)) ?? 0,
+              );
+              log("time $time");
+              if (time.isAfter(now)) {
+                _openedTimes.add(key);
+              }
+            }
           }
-        }
-      });
+        },
+      );
     }
     _openedTimes = _timesController.sortTimes(_openedTimes);
     _filterOpenedTimes();

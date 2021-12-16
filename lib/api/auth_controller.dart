@@ -14,9 +14,13 @@ class AuthController {
     var administratorsPhoneNumbers = {};
     dbRef.child("Телефоны инструкторов").once().then(
       (value) async {
-        instructorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
+        if (value != null) {
+          instructorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
+        }
         dbRef.child("Телефоны администраторов").once().then((value) async {
-          administratorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
+          if (value != null) {
+            administratorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
+          }
           for (var element in (instructorsPhoneNumbers).entries) {
             if (element.value == phoneNumber) {
               userRole = UserRole.instructor;
@@ -28,6 +32,7 @@ class AuthController {
             }
           }
           final SharedPreferences prefs = await SharedPreferences.getInstance();
+          log('userRole $userRole');
           prefs.setString("userRole", userRole);
           _saveUserInDb(userRole, fcmToken);
         });
@@ -57,13 +62,11 @@ class AuthController {
               "fcm_token": fcm_token
             },
           );
-        }else{
+        } else {
           dbRef
               .child("$userRole/${FirebaseAuth.instance.currentUser!.uid}")
               .update(
-            {
-              "fcm_token": fcm_token
-            },
+            {"fcm_token": fcm_token},
           );
         }
       },

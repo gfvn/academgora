@@ -218,7 +218,7 @@ class _MainScreenState extends State<MainScreen> {
   void _openAccountScreen() async {
     await SharedPreferences.getInstance().then(
       (prefs) {
-        String userRole = prefs.getString("userRole")!;
+        String userRole = prefs.getString("userRole")??"";
         if (userRole == UserRole.user) {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (c) => const UserAccountScreen()));

@@ -53,6 +53,7 @@ Future<String> setupNotification() async {
     badge: true,
     sound: true,
   );
+  FirebaseMessaging.instance.requestPermission();
   token = await FirebaseMessaging.instance.getToken() ?? "no token";
   setToken(token);
   _tokenStream = FirebaseMessaging.instance.onTokenRefresh;

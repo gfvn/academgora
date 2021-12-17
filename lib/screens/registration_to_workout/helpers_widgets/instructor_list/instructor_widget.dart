@@ -53,7 +53,7 @@ class InstructorWidgetState extends State<InstructorWidget> {
               ),
             ),
             Container(
-                width: screenWidth * 0.58,
+                width: screenWidth * 0.5,
                 margin: const EdgeInsets.only(left: 12),
                 child: Text(
                   instructor!.name ??'',

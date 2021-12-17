@@ -46,13 +46,15 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
                 margin: const EdgeInsets.only(left: 5),
                 child: Text(
                   _parseDate(widget.workout.date!),
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
                 )),
             Container(
                 margin: const EdgeInsets.only(left: 15),
                 child: Text(
                   "${widget.workout.from}-${widget.workout.to}",
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
                 )),
           ],
         ));
@@ -60,28 +62,31 @@ class _WorkoutDataWidgetState extends State<WorkoutDataWidget> {
 
   Widget _body() {
     return Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        width: screenWidth * 0.6,
-        decoration: const BoxDecoration(color: Colors.white70),
-        child: Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_parsePeopleNames()),
-                GestureDetector(
-                    onTap: () {
-                      callNumber(widget.workout.userPhoneNumber!);
-                    },
-                    child: Text(widget.workout.userPhoneNumber!)),
-                Text("Количество человек: ${widget.workout.peopleCount}"),
-                Text("Возраст: ${_parsePeopleAges()}"),
+      margin: const EdgeInsets.only(bottom: 5),
+      width: screenWidth * 0.6,
+      decoration: const BoxDecoration(color: Colors.white70),
+      child: Container(
+        margin: const EdgeInsets.only(left: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(_parsePeopleNames()),
+            GestureDetector(
+                onTap: () {
+                  callNumber(widget.workout.userPhoneNumber!);
+                },
+                child: Text(widget.workout.userPhoneNumber!)),
+            Text("Количество человек: ${widget.workout.peopleCount}"),
+            Text("Возраст: ${_parsePeopleAges()}"),
+            Text("Продолжительность: ${widget.workout.workoutDuration} час."),
+            Text(
+                "Уровень катания: ${_parseLevelOfSkating(widget.workout.levelOfSkating!)}"),
                 Text(
-                    "Продолжительность: ${widget.workout.workoutDuration} час."),
-                Text(
-                    "Уровень катания: ${_parseLevelOfSkating(widget.workout.levelOfSkating!)}"),
-              ],
-            )));
+                "Комментарий: ${widget.workout.comment!}"),
+          ],
+        ),
+      ),
+    );
   }
 
   String _parseDate(String date) {

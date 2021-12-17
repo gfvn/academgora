@@ -88,7 +88,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:const [
+                  children: const [
                     Text(
                       "РЕДАКТИРОВАТЬ ФОТО",
                       textAlign: TextAlign.center,
@@ -181,7 +181,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
   Widget _redactInstructorInfoButton(BuildContext context) {
     return GestureDetector(
       onTap: () =>
-          _showRedactInfoDialog(context, _currentInstructor.info??"", false),
+          _showRedactInfoDialog(context, _currentInstructor.info ?? "", false),
       child: const Text(
         "Редактировать информацию о себе",
         style: TextStyle(color: Colors.blue),
@@ -212,8 +212,8 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
       child: Column(
         children: [
           TextField(
-              controller: myController,
-            ),
+            controller: myController,
+          ),
           Container(
               margin: const EdgeInsets.only(top: 20),
               child: Row(
@@ -249,7 +249,8 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     String userId = "";
     if (widget.instructorPhoneNumber != null) {
       userId = _instructorsKeeper
-          .findInstructorByPhoneNumber(widget.instructorPhoneNumber!)!.id!;
+          .findInstructorByPhoneNumber(widget.instructorPhoneNumber!)!
+          .id!;
     } else {
       userId = FirebaseAuth.instance.currentUser!.uid;
     }
@@ -335,7 +336,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           (text != FirebaseAuth.instance.currentUser!.phoneNumber &&
                   (text != widget.instructorPhoneNumber || text == null))
               ? GestureDetector(
-                  onTap: () => _showRedactInfoDialog(context, text??"", true,
+                  onTap: () => _showRedactInfoDialog(context, text ?? "", true,
                       socialNetworkName: socialNetworkName),
                   child: Container(
                     margin: const EdgeInsets.only(right: 15),
@@ -345,7 +346,9 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                         "assets/instructor_profile/social_network_icons/0edit.png"),
                   ))
               : Container(
-                  height: 20, width: 20, margin: const EdgeInsets.only(right: 15)),
+                  height: 20,
+                  width: 20,
+                  margin: const EdgeInsets.only(right: 15)),
         ],
       ),
     );
@@ -366,7 +369,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:const [
+                  children: const [
                     Text(
                       "НАЗАД",
                       textAlign: TextAlign.center,
@@ -394,9 +397,10 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
   void _openInstructorWorkoutsScreen(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (context) => InstructorWorkoutsScreen(
-                  instructorPhoneNumber: widget.instructorPhoneNumber!,
-                )),
+          builder: (context) => InstructorWorkoutsScreen(
+            instructorPhoneNumber: widget.instructorPhoneNumber!,
+          ),
+        ),
         (route) => false);
   }
 

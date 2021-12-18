@@ -18,7 +18,7 @@
         </intent>
     </queries>
    <application
-        android:label="academ_gora_release"
+        android:label="Академгора"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

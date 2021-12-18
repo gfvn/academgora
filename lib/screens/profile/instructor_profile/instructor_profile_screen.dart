@@ -398,7 +398,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => InstructorWorkoutsScreen(
-            instructorPhoneNumber: widget.instructorPhoneNumber!,
+            instructorPhoneNumber: widget.instructorPhoneNumber,
           ),
         ),
         (route) => false);

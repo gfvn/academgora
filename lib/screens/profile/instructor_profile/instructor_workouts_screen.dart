@@ -414,7 +414,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   void _openSetWorkoutTimeScreen() {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
-            SetWorkoutTimeScreen(phoneNumber: widget.instructorPhoneNumber!)));
+            SetWorkoutTimeScreen(phoneNumber: widget.instructorPhoneNumber??'')));
   }
 
   void _openMainScreen() {

@@ -41,16 +41,18 @@ class Workout {
     workout.sportType = workoutData["Вид спорта"];
     workout.instructorFcmToken=workoutData["instructor_fcm_token"];
     workout.levelOfSkating = workoutData["Уровень катания"];
-    workout.visitors = _parseVisitors(workoutData["Посетители"]);
+    workout.visitors = _parseVisitors(workoutData["Посетители"]??{});
     workout.workoutDuration = workoutData["Продолжительность"];
     return workout;
   }
 
   static List<Visitor> _parseVisitors(Map<dynamic, dynamic> visitors) {
+
     List<Visitor> visitorsList = [];
     visitors.forEach((key, value) {
       visitorsList.add(Visitor(value["Имя"], value["Возраст"]));
     });
+    print("visitorLis $visitorsList");
     return visitorsList;
   }
 

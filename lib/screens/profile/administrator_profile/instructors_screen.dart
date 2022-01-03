@@ -4,6 +4,8 @@ import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
 import '../../extension.dart';
@@ -211,7 +213,11 @@ class _InstructorsScreenState
   }
 
   void _logout() async {
+        FirebaseAuth.instance.currentUser!.delete;
+
     FlutterAuthUi.signOut();
+      var pref = await SharedPreferences.getInstance();
+    pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (c) => const AuthScreen()),

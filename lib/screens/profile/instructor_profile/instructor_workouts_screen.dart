@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:intl/intl.dart';
 
@@ -399,7 +400,10 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   }
 
   void _logout() async {
+    FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
+      var pref = await SharedPreferences.getInstance();
+    pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const AuthScreen()),
         (route) => false);
@@ -413,8 +417,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   void _openSetWorkoutTimeScreen() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SetWorkoutTimeScreen(phoneNumber: widget.instructorPhoneNumber??'')));
+        builder: (context) => SetWorkoutTimeScreen(
+            phoneNumber: widget.instructorPhoneNumber ?? '')));
   }
 
   void _openMainScreen() {

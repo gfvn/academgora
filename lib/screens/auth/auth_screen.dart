@@ -25,14 +25,27 @@ class _AuthScreenState extends State<AuthScreen> {
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      width: screenWidth,
-      decoration: screenDecoration("assets/auth/1_background.png"),
-      child: _loginForm(),
-    ));
+      body: !isLoading
+          ? Container(
+              width: screenWidth,
+              decoration: screenDecoration("assets/auth/1_background.png"),
+              child: _loginForm(),
+            )
+          : const Center(
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+    );
   }
 
   Widget _loginForm() {
@@ -75,15 +88,16 @@ class _AuthScreenState extends State<AuthScreen> {
     final result = await FlutterAuthUi.startUi(
       items: providers,
       tosAndPrivacyPolicy: TosAndPrivacyPolicy(
-        tosUrl: "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
-        privacyPolicyUrl: "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
+        tosUrl:
+            "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
+        privacyPolicyUrl:
+            "https://www.freeprivacypolicy.com/live/b5c4dfd8-1054-4f45-a2d1-688ec52b2d6f",
       ),
       androidOption: const AndroidOption(
         enableSmartLock: false, // default true
         showLogo: true, // default false
         overrideTheme: true, // default false
       ),
-      
       emailAuthOption: const EmailAuthOption(
         requireDisplayName: true,
         enableMailLink: false,
@@ -92,26 +106,38 @@ class _AuthScreenState extends State<AuthScreen> {
         androidMinimumVersion: '',
       ),
     );
-    if (result){
-            final token = await setupNotification();
-      await _authController.saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!, token).then((userRole) {
+    if (result) {
+      setState(() {
+        isLoading = true;
+      });
+      final token = await setupNotification();
+      await Future.delayed(const Duration(milliseconds: 3000));
+
+      await _authController
+          .saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!, token)
+          .then((userRole) {
+        print(FirebaseAuth.instance.currentUser!.phoneNumber!);
         if (userRole == UserRole.user) {
+          print("yesssssssssssssss");
           _firebaseRequestsController.addListener(
               "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
               _saveWorkoutsIntoUserDataKeeper);
         }
+        setState(() {
+          isLoading = false;
+        });
         _openMainScreen();
       });
-    }
-    else{
-            log('resullt is bad');
-
+    } else {
+      print("badddddddddddddd");
+      log('resullt is bad');
     }
   }
 
   void _openMainScreen() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const MainScreen()), (route) => false);
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+        (route) => false);
   }
 
   void _saveWorkoutsIntoUserDataKeeper(Event? event) async {

@@ -18,6 +18,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../main.dart';
+import 'auth/auth_screen.dart';
 import 'extension.dart';
 import 'info_screens/about_us_screen.dart';
 import 'info_screens/call_us_screen.dart';
@@ -218,18 +219,21 @@ class _MainScreenState extends State<MainScreen> {
   void _openAccountScreen() async {
     await SharedPreferences.getInstance().then(
       (prefs) {
-        String userRole = prefs.getString("userRole")??"";
-        if (userRole == UserRole.user) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        String userRole = prefs.getString("userRole") ?? "";
+        if (userRole == UserRole.administrator) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const AdministratorProfileScreen()));
         } else if (userRole == UserRole.instructor) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (c) => InstructorWorkoutsScreen(
                   instructorPhoneNumber:
                       FirebaseAuth.instance.currentUser!.phoneNumber!)));
+        } else if (userRole == UserRole.user) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (c) => const UserAccountScreen()));
         } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (c) => const AdministratorProfileScreen()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
       },
     );
@@ -435,7 +439,25 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _openRegistrationToInstructorScreen() {
+  void _openRegistrationToInstructorScreen() async {
+    await SharedPreferences.getInstance().then(
+      (prefs) {
+        String userRole = prefs.getString("userRole") ?? "";
+        if (userRole == UserRole.administrator) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const RegistrationFirstScreen()));
+        } else if (userRole == UserRole.instructor) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const RegistrationFirstScreen()));
+        } else if (userRole == UserRole.user) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const RegistrationFirstScreen()));
+        } else {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (c) => const AuthScreen()));
+        }
+      },
+    );
     Navigator.of(context).push(
         MaterialPageRoute(builder: (c) => const RegistrationFirstScreen()));
   }

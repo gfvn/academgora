@@ -5,6 +5,8 @@ import 'package:academ_gora_release/screens/profile/administrator_profile/person
 import 'package:academ_gora_release/screens/profile/administrator_profile/smeta_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
 import '../../extension.dart';
@@ -40,10 +42,7 @@ class _AdministratorProfileScreenState
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _backToMainScreenButton(),
-                      _logoutButton()
-                    ],
+                    children: [_backToMainScreenButton(), _logoutButton()],
                   )),
             ],
           ),
@@ -73,10 +72,10 @@ class _AdministratorProfileScreenState
                   MaterialPageRoute(builder: (c) => const PersonalScreeen()));
             },
             text: "Персонал"),
-            button(
+        button(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const SmetaScreen()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (c) => const SmetaScreen()));
             },
             text: "Смета"),
       ],
@@ -84,7 +83,10 @@ class _AdministratorProfileScreenState
   }
 
   void _logout() async {
+    FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
+    var pref = await SharedPreferences.getInstance();
+    pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const AuthScreen()),
         (route) => false);
@@ -132,9 +134,10 @@ class _AdministratorProfileScreenState
         color: Colors.blue,
         child: InkWell(
           onTap: () {
- Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => const MainScreen()),
-                      (route) => false);          },
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const MainScreen()),
+                (route) => false);
+          },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

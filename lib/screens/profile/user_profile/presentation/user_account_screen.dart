@@ -11,6 +11,7 @@ import '../../../../main.dart';
 import '../../../extension.dart';
 import '../../../main_screen.dart';
 import '../../helpers_widgets/workout_widget/workout_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);
@@ -124,7 +125,10 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
   }
 
   void _logout() async {
+    FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
+      var pref = await SharedPreferences.getInstance();
+    pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const AuthScreen()),
         (route) => false);

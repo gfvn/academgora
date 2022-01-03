@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:academ_gora_release/api/auth_controller.dart';
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/model/personal.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -68,7 +70,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   await Firebase.initializeApp();
-  runApp(const MyApp(),);
+  if (await UserRole.isFiresOpen()) {
+    print("fffffffffffffffffffffffffff");
+    FirebaseAuth.instance.currentUser!.delete;
+    UserRole.changeIsFirst();
+  }
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -88,6 +97,7 @@ class MyAppState extends State<MyApp> {
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
+  final AuthController _authController = AuthController();
 
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
@@ -96,32 +106,44 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _firebaseController.myAppState = this;
-    if (FirebaseAuth.instance.currentUser != null) {
-      print("FirebaseAuth.instance.currentUser ${FirebaseAuth.instance.currentUser}");
-      UserRole.getUserRole().then(
-        (userRole) => {
-          if (userRole == UserRole.user)
-            {
-              _firebaseController.addListener(
-                "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
-                _saveWorkoutsIntoUserDataKeeper,
-              )
-            }
-        },
-      );
-      setupNotification();
-      setState(
-        () {
-          _isUserAuthorized = true;
-        },
-      );
-    } else {
-      setState(
-        () {
-          _isUserAuthorized = false;
-        },
-      );
-    }
+    UserRole.checkUserAuth().then(
+      (value) {
+        if (value) {
+          if (FirebaseAuth.instance.currentUser != null) {
+            setupNotification().then(
+              (value) {
+                _authController.saveUserRole(
+                    FirebaseAuth.instance.currentUser!.phoneNumber!, value);
+              },
+            );
+            print(
+                "FirebaseAuth.instance.currentUser ${FirebaseAuth.instance.currentUser}");
+            UserRole.getUserRole().then(
+              (userRole) => {
+                if (userRole == UserRole.user)
+                  {
+                    _firebaseController.addListener(
+                      "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
+                      _saveWorkoutsIntoUserDataKeeper,
+                    )
+                  }
+              },
+            );
+            setState(
+              () {
+                _isUserAuthorized = true;
+              },
+            );
+          }
+        }
+      },
+    );
+    setState(
+      () {
+        _isUserAuthorized = false;
+      },
+    );
+
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
 
@@ -210,6 +232,7 @@ class MyAppState extends State<MyApp> {
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then(
       (value) {
+        print("valueee $value");
         _instructorsKeeper.updateInstructors(value);
         setState(() {});
       },

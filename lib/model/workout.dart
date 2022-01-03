@@ -52,7 +52,6 @@ class Workout {
     visitors.forEach((key, value) {
       visitorsList.add(Visitor(value["Имя"], value["Возраст"]));
     });
-    print("visitorLis $visitorsList");
     return visitorsList;
   }
 

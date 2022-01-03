@@ -118,7 +118,6 @@ class _AuthScreenState extends State<AuthScreen> {
           .then((userRole) {
         print(FirebaseAuth.instance.currentUser!.phoneNumber!);
         if (userRole == UserRole.user) {
-          print("yesssssssssssssss");
           _firebaseRequestsController.addListener(
               "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
               _saveWorkoutsIntoUserDataKeeper);
@@ -129,7 +128,6 @@ class _AuthScreenState extends State<AuthScreen> {
         _openMainScreen();
       });
     } else {
-      print("badddddddddddddd");
       log('resullt is bad');
     }
   }

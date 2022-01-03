@@ -11,17 +11,14 @@ class UserRole {
   static Future<bool> checkUserAuth() async {
     var user = await getUserRole();
     if (user == "unauth") {
-      print("falsseeeeeeeeee");
       return false;
     }
-    print("trueeeeeee");
     return true;
   }
 
   static Future<bool> isFiresOpen() async {
     bool isFirst =
         (await SharedPreferences.getInstance()).getBool("isFirst") ?? false;
-    print("oiFirst $isFirst");
     return !isFirst;
   }
 

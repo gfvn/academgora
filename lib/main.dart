@@ -72,7 +72,10 @@ void main() async {
   await Firebase.initializeApp();
   if (await UserRole.isFiresOpen()) {
     print("fffffffffffffffffffffffffff");
-    FirebaseAuth.instance.currentUser!.delete;
+    if (FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.currentUser?.delete;
+    }
+
     UserRole.changeIsFirst();
   }
   runApp(
@@ -232,7 +235,6 @@ class MyAppState extends State<MyApp> {
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then(
       (value) {
-        print("valueee $value");
         _instructorsKeeper.updateInstructors(value);
         setState(() {});
       },
@@ -274,7 +276,6 @@ class MyAppState extends State<MyApp> {
   void _savePriceInDataKeeper(Event? event) async {
     final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('price') ?? ['0', '0', '0', '0'];
-    print('lissstttttt $list');
     _priceDataKeeper.updateWorkouts(list);
   }
 }

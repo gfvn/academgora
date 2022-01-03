@@ -109,45 +109,44 @@ class _DateWidgetState extends State<DateWidget> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return StatefulBuilder(
-            builder: (c, setState) => AlertDialog(
-                    actions: [
-                      TextButton(
-                          child: const Text('OK'),
-                          onPressed: _applyAndCloseDialog),
-                    ],
-                    content: CalendarCarousel<Event>(
-                      headerTextStyle: TextStyle(
-                          fontSize: screenHeight * 0.028,
-                          color: Colors.blueAccent),
-                      locale: "ru",
-                      width: 300,
-                      height: 270,
-                      todayBorderColor: Colors.transparent,
-                      todayButtonColor: Colors.transparent,
-                      todayTextStyle: const TextStyle(color: Colors.blueAccent),
-                      onDayPressed: (DateTime date, List<Event> events) {
-                        DateTime now = DateTime.now();
-                        if (date.isAfter(now) || date.isSameDate(now)) {
-                          setState(() {
-                            {
-                              DateTime newDateTime = DateTime(
-                                  date.year,
-                                  date.month,
-                                  date.day,
-                                  now.hour,
-                                  now.minute,
-                                  now.second,
-                                  now.millisecond);
-                              _selectedDate = newDateTime;
-                            }
-                          });
-                        }
-                      },
-                      selectedDateTime: _selectedDate,
-                      targetDateTime: _selectedDate,
-                      selectedDayTextStyle:
-                          const TextStyle(color: Colors.white),
-                    ),),);
+          builder: (c, setState) => AlertDialog(
+            actions: [
+              TextButton(
+                  child: const Text('OK'), onPressed: _applyAndCloseDialog),
+            ],
+            content: CalendarCarousel<Event>(
+              headerTextStyle: TextStyle(
+                  fontSize: screenHeight * 0.028, color: Colors.blueAccent),
+              locale: "ru",
+              width: 300,
+              height: 270,
+              todayBorderColor: Colors.transparent,
+              todayButtonColor: Colors.transparent,
+              todayTextStyle: const TextStyle(color: Colors.blueAccent),
+              onDayPressed: (DateTime date, List<Event> events) {
+                DateTime now = DateTime.now();
+                if (date.isAfter(now) || date.isSameDate(now)) {
+                  setState(() {
+                    {
+                      DateTime newDateTime = DateTime(
+                          date.year,
+                          date.month,
+                          date.day,
+                          now.hour,
+                          now.minute,
+                          now.second,
+                          now.millisecond);
+                      _selectedDate = newDateTime;
+                    }
+                  });
+                }
+              },
+              selectedDateTime: _selectedDate,
+              targetDateTime: _selectedDate,
+              selectedDayTextStyle: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
       },
     );
   }

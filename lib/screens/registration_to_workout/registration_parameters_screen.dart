@@ -298,7 +298,6 @@ class RegistrationParametersScreenState
       ),
     );
     seconds = time.difference(now).inSeconds - 5400;
-    log('difference in seconds $seconds');
     return seconds;
   }
 

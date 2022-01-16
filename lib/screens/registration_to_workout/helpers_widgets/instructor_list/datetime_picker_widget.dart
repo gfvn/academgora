@@ -149,8 +149,6 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     var daysSchedule = widget.instructor.schedule;
     var timesPerDay =
         daysSchedule![DateFormat('ddMMyyyy').format(_selectedDate!)];
-    log("timesperDat $timesPerDay");
-    log("_selectedDate $_selectedDate");
     if (timesPerDay != null) {
       timesPerDay.forEach(
         (key, value) {
@@ -162,7 +160,6 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
                 _selectedDate!.day,
                 int.tryParse(key!.toString().substring(0, 2)) ?? 0,
               );
-              log("time $time");
               if (time.isAfter(now)) {
                 _openedTimes.add(key);
               }

@@ -71,7 +71,6 @@ void main() async {
   NotificationService().initNotification();
   await Firebase.initializeApp();
   if (await UserRole.isFiresOpen()) {
-    print("fffffffffffffffffffffffffff");
     if (FirebaseAuth.instance.currentUser != null) {
       FirebaseAuth.instance.currentUser?.delete;
     }
@@ -119,8 +118,6 @@ class MyAppState extends State<MyApp> {
                     FirebaseAuth.instance.currentUser!.phoneNumber!, value);
               },
             );
-            print(
-                "FirebaseAuth.instance.currentUser ${FirebaseAuth.instance.currentUser}");
             UserRole.getUserRole().then(
               (userRole) => {
                 if (userRole == UserRole.user)

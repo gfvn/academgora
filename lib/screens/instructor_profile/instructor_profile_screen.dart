@@ -96,6 +96,7 @@ class InstructorProfileScreen extends StatelessWidget {
   }
 
   Widget _socialNetworkWidget(String path, String url) {
+    
     return Container(
       margin: const EdgeInsets.only(top: 3, bottom: 3),
       child: Row(
@@ -110,6 +111,34 @@ class InstructorProfileScreen extends StatelessWidget {
           GestureDetector(
               onTap: () {
                 launchURL(url);
+              },
+              child: SizedBox(
+                width: screenWidth * 0.7,
+                child: Text(
+                  url,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+    Widget _socialNetworkWidgetTelegram(String path, String url) {
+    return Container(
+      margin: const EdgeInsets.only(top: 3, bottom: 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 15),
+            height: 22,
+            width: 22,
+            child: Image.asset(path),
+          ),
+          GestureDetector(
+              onTap: () {
+                launchURL("https://t.me/"+url);
               },
               child: SizedBox(
                 width: screenWidth * 0.7,

@@ -116,6 +116,7 @@ class MyAppState extends State<MyApp> {
               (value) {
                 _authController.saveUserRole(
                     FirebaseAuth.instance.currentUser!.phoneNumber!, value);
+              
               },
             );
             UserRole.getUserRole().then(

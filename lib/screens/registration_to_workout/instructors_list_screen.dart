@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
@@ -23,11 +24,24 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   RegToInstructorData? regToInstructorData;
   final WorkoutDataKeeper _workoutSingleton = WorkoutDataKeeper();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
+  final TimesController _timesController = TimesController();
+
+  DateTime? _selectedDate;
+  @override
+  void initState() {
+    print("object");
+    _setSelectedDate();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     instructors = _instructorsKeeper
         .findInstructorsByKindOfSport(_workoutSingleton.sportType!);
+    var radomInstructorList = makeInstructorListRandom(instructors);
+
+    var reversedList=radomInstructorList.reversed.toList();
+    
     return Scaffold(
       body: Container(
         decoration:
@@ -38,9 +52,9 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
               height: screenHeight * 0.8,
               margin: const EdgeInsets.only(top: 50, left: 15, right: 15),
               child: ListView.builder(
-                itemCount: instructors.length,
+                itemCount: reversedList.length,
                 itemBuilder: (context, index) {
-                  return _instructorWidget(instructors[index], index);
+                  return _instructorWidget(reversedList[index], index);
                 },
               ),
             ),
@@ -49,6 +63,77 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
         ),
       ),
     );
+  }
+
+  List<Instructor> makeInstructorListRandom(List<Instructor> list) {
+    DateTime now = DateTime.now();
+    list.shuffle();
+    list.map((instructor) {
+      List<String> _openedTimes = [];
+      var daysSchedule = instructor.schedule;
+      var timesPerDay =
+          daysSchedule![DateFormat('ddMMyyyy').format(_selectedDate!)];
+      if (timesPerDay != null) {
+        timesPerDay.forEach(
+          (key, value) {
+            if (value == "открыто") {
+              if (!_openedTimes.contains(value)) {
+                DateTime time = DateTime(
+                  _selectedDate!.year,
+                  _selectedDate!.month,
+                  _selectedDate!.day,
+                  int.tryParse(key!.toString().substring(0, 2)) ?? 0,
+                );
+                if (time.isAfter(now)) {
+                  _openedTimes.add(key);
+                }
+              }
+            }
+          },
+        );
+      }
+      instructor.openedTimes = _filterOpenedTimes(_openedTimes);
+      return instructor;
+    }).toList();
+    list.sort((a, b) => a.openedTimes!.length.compareTo(b.openedTimes!.length));
+    return list;
+  }
+
+  List<String> _filterOpenedTimes(List<String> openedTimes) {
+    List<String> filteredTimes = [];
+    String? from = _workoutSingleton.temporaryFrom;
+    String? to = _workoutSingleton.to;
+    if ((from == null || from == 'любое') && (to == null || to == 'любое')) {
+    } else if ((from != null && from != 'любое') &&
+        (to == null || to == 'любое')) {
+      var times = _timesController.times;
+      int priorityFrom = times[from];
+      for (var element in openedTimes) {
+        int priorityOpenedTime = times[element];
+        if (priorityOpenedTime >= priorityFrom) filteredTimes.add(element);
+      }
+      openedTimes = filteredTimes;
+    } else if ((from == null || from == 'любое') &&
+        (to != null && to != 'любое')) {
+      var times = _timesController.times;
+      int priorityTo = times[to];
+      for (var element in openedTimes) {
+        int priorityOpenedTime = times[element];
+        if (priorityOpenedTime <= priorityTo) filteredTimes.add(element);
+      }
+      openedTimes = filteredTimes;
+    } else {
+      var times = _timesController.times;
+      int priorityFrom = times[from];
+      int priorityTo = times[to];
+      for (var element in openedTimes) {
+        int priorityOpenedTime = times[element];
+        if (priorityOpenedTime >= priorityFrom &&
+            priorityOpenedTime <= priorityTo) filteredTimes.add(element);
+      }
+      openedTimes = filteredTimes;
+    }
+    return openedTimes;
   }
 
   Widget _instructorWidget(Instructor instructor, int index) {
@@ -83,6 +168,19 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
         size: 50,
       ),
     );
+  }
+
+  void _setSelectedDate() {
+    if (_workoutSingleton.date != null && _workoutSingleton.date!.isNotEmpty) {
+      String date = _workoutSingleton.date!;
+      String formattedDate =
+          "${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(0, 2)}";
+      DateTime dateTime = DateTime.parse(formattedDate);
+      _selectedDate = dateTime;
+    } else {
+      _selectedDate = DateTime.now();
+    }
+    print("selectedTime $_selectedDate");
   }
 
   Widget _continueButton() {
@@ -134,7 +232,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   void _openRegParametersScreen() {
     WorkoutDataKeeper workoutSingleton = WorkoutDataKeeper();
     workoutSingleton.instructorName = regToInstructorData!.instructorName;
-    workoutSingleton.instructorfcmToken=regToInstructorData!.fcomToken;
+    workoutSingleton.instructorfcmToken = regToInstructorData!.fcomToken;
     workoutSingleton.from = regToInstructorData!.time;
     workoutSingleton.date ??=
         DateFormat('ddMMyyyy').format(regToInstructorData!.date);

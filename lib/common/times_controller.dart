@@ -36,7 +36,6 @@ class TimesController {
     List<int> priorities = [];
     for (var time in times) {
       if (time != null) {
-        log('timeeee    $time');
         priorities.add(_times[time]!);
       }
     }

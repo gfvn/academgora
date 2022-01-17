@@ -143,7 +143,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     final DateTime now = selectedDate!;
     final DateFormat formatter = DateFormat('ddMMyyyy');
     final String formattedDate = formatter.format(now);
-    workoutDataKeeper.date ??= formattedDate;
+    workoutDataKeeper.date = formattedDate;
     workoutDataKeeper.id = selectedDate!.millisecond.toString() +
         selectedDate!.microsecond.toString();
     workoutDataKeeper.temporaryFrom = fromTime;

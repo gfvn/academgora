@@ -41,6 +41,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<String> setupNotification() async {
   String token = '';
   void setToken(String? token) {
+    print("im herererere");
     log('FCM Token: $token');
   }
 
@@ -112,22 +113,27 @@ class MyAppState extends State<MyApp> {
       (value) {
         if (value) {
           if (FirebaseAuth.instance.currentUser != null) {
-            setupNotification().then(
-              (value) {
-                _authController.saveUserRole(
-                    FirebaseAuth.instance.currentUser!.phoneNumber!, value);
-              
-              },
-            );
+            // setupNotification().then(
+            //   (value) {
+            //     _authController.saveUserRole(
+            //         FirebaseAuth.instance.currentUser!.phoneNumber!, value);
+
+            //   },
+            // );
             UserRole.getUserRole().then(
-              (userRole) => {
-                if (userRole == UserRole.user)
-                  {
-                    _firebaseController.addListener(
-                      "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
-                      _saveWorkoutsIntoUserDataKeeper,
-                    )
-                  }
+              (userRole) {
+                print(userRole);
+                return {
+                  if (userRole == UserRole.user)
+                    {
+                      _firebaseController.addListener(
+                        "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
+                        _saveWorkoutsIntoUserDataKeeper,
+                      )
+                    }
+                  else if (userRole == UserRole.user)
+                    {}
+                };
               },
             );
             setState(
@@ -144,15 +150,14 @@ class MyAppState extends State<MyApp> {
         _isUserAuthorized = false;
       },
     );
+    _saveUsersIntoKeeper(null);
+    // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
+    
+    _saveAdminsIntoKeeper(null);
+    // _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
 
     _saveInstructorsIntoKeeper(null);
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
-
-    _saveUsersIntoKeeper(null);
-    _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
-
-    _saveAdminsIntoKeeper(null);
-    _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
 
     _saveNewsrDataKeeper(null);
     _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);

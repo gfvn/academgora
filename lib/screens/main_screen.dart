@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
+import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/model/news.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
@@ -16,7 +18,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 import '../main.dart';
 import 'auth/auth_screen.dart';
 import 'extension.dart';
@@ -43,9 +45,11 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> imageSliders = [];
   List<News> newsList = [];
   String phoneNumber = "+73952657066";
-  bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
   List<String> imageUrls = [];
+
+  final UsersKeeper usersKeepers = UsersKeeper();
+  final AdminKeeper _adminDataKeeper = AdminKeeper();
 
   @override
   void initState() {
@@ -56,12 +60,10 @@ class _MainScreenState extends State<MainScreen> {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         AppleNotification? ios = message.notification?.apple;
-
         if (notification != null) {
           log('notification');
           log('Android $android');
           log('IOS $ios');
-
           NotificationService().showNotification(
               123, "${notification.title}", "${notification.body}", 5);
         }
@@ -123,15 +125,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
       );
     }
-    // imageSliders = newsList.map((e) {
-    //   var url = saveImageUrl(imageName: e.photo.toString());
-    //   log("url $url");
-
-    //   return imageView(
-    //     imageUrl: url.toString(),
-    //     assetPath: "assets/main/10_pic${e.id}.png",
-    //   );
-    // }).toList();
   }
 
   Widget imageView({required String imageUrl, required String assetPath}) {
@@ -145,8 +138,6 @@ class _MainScreenState extends State<MainScreen> {
             width: width,
             height: height,
             fit: BoxFit.fill,
-
-            // imageUrl: "https://firebasestorage.googleapis.com/v0/b/academgora-6be92.appspot.com/o/news_photos%2Fimage_picker8911253265543154342.png?alt=media&token=06988ffd-d475-43ff-aa25-3f3544c563e0",
             imageUrl: imageUrl,
             placeholder: (context, url) {
               return buildLocalWidget(
@@ -195,34 +186,80 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _titleAndAccButton() {
     return Container(
-        margin: EdgeInsets.only(top: screenHeight * 0.06),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                margin: const EdgeInsets.only(left: 74),
-                child: const Text(
-                  "СК \"АКАДЕМИЧЕСКИЙ\"",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                )),
-            GestureDetector(
-                onTap: _openAccountScreen,
-                child: Container(
-                    width: 26,
-                    height: 26,
-                    margin: const EdgeInsets.only(left: 40),
-                    child: Image.asset("assets/main/lk.svg"))),
-          ],
-        ));
+      margin: EdgeInsets.only(top: screenHeight * 0.06),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+              margin: const EdgeInsets.only(left: 74),
+              child: const Text(
+                "СК \"АКАДЕМИЧЕСКИЙ\"",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              )),
+          GestureDetector(
+              onTap: _openAccountScreen,
+              child: Container(
+                  width: 26,
+                  height: 26,
+                  margin: const EdgeInsets.only(left: 40),
+                  child: Image.asset("assets/main/lk.svg"))),
+        ],
+      ),
+    );
+  }
+
+  void _saveUsersIntoKeeper(Event? event) async {
+    await _firebaseRequestsController.get("Пользователи").then((value) {
+      usersKeepers.updateInstructors(value);
+      // print("user $value");
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  void _saveAdminsIntoKeeper(Event? event) async {
+    await _firebaseRequestsController.get("Администраторы").then((value) {
+      print("adminsValue $value");
+      print("here");
+
+      _adminDataKeeper.updateInstructors(value);
+      setState(() {});
+    });
   }
 
   void _openAccountScreen() async {
     await SharedPreferences.getInstance().then(
-      (prefs) {
+      (prefs) async {
         String userRole = prefs.getString("userRole") ?? "";
         if (userRole == UserRole.administrator) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (c) => const AdministratorProfileScreen()));
+          // setState(() {
+          //   isLoading = true;
+          // });
+          // await _firebaseRequestsController.get("Пользователи").then((value) {
+          //   usersKeepers.updateInstructors(value);
+          //   print("user $value");
+          //   setState(() {
+          //     isLoading = false;
+          //   });
+          // });
+
+          // print("not fast");
+          // if (_adminDataKeeper.userList.isEmpty) {
+          //   _saveAdminsIntoKeeper(null);
+          //   _firebaseRequestsController.addListener(
+          //       "Администраторы", _saveAdminsIntoKeeper);
+          // }
+          // if (usersKeepers.userList.isEmpty) {
+          //   _saveUsersIntoKeeper(null);
+          //   _firebaseRequestsController.addListener(
+          //       "Пользователи", _saveUsersIntoKeeper);
+          // }
+          // print("fast");
+          if (!isLoading) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (c) => const AdministratorProfileScreen()));
+          }
         } else if (userRole == UserRole.instructor) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (c) => InstructorWorkoutsScreen(

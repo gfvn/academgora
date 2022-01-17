@@ -56,14 +56,15 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
 
   Widget _accountTextWidget() {
     return Container(
-        alignment: Alignment.topRight,
-        child: const Text(
-          "Личный кабинет",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-        ));
+      alignment: Alignment.topRight,
+      child: const Text(
+        "Личный кабинет",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+      ),
+    );
   }
 
   Widget _phoneTextWidget() {
@@ -116,9 +117,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         child: Text(
           "НА ГЛАВНУЮ",
           style: TextStyle(
-              color: Colors.white,
-              fontSize:  18,
-              fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -127,7 +126,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
   void _logout() async {
     FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
-      var pref = await SharedPreferences.getInstance();
+    var pref = await SharedPreferences.getInstance();
     pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const AuthScreen()),

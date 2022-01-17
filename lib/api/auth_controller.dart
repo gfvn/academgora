@@ -47,12 +47,10 @@ class AuthController {
       (value) {
         bool userExists = false;
         for (var userId in (value.value as Map<dynamic, dynamic>).keys) {
-          if (userId == FirebaseAuth.instance.currentUser!.uid)
+          if (userId == FirebaseAuth.instance.currentUser!.uid) {
             userExists = true;
+          }
         }
-
-        ///TODO change here
-        // if (!userExists) {
         if (!userExists) {
           dbRef
               .child("$userRole/${FirebaseAuth.instance.currentUser!.uid}")

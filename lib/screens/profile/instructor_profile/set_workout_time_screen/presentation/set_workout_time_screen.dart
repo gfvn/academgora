@@ -107,7 +107,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     return Container(
         margin: EdgeInsets.only(top: screenHeight * 0.07),
         child: Text(
-          _currentInstructor!.name!,
+          _currentInstructor!.name??"имя",
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ));
   }

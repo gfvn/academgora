@@ -20,7 +20,7 @@ import '../extension.dart';
 class UpdateWorkoutScreen extends StatefulWidget {
   final Workout workout;
 
- const UpdateWorkoutScreen(this.workout,{Key? key}):super(key: key);
+  const UpdateWorkoutScreen(this.workout, {Key? key}) : super(key: key);
 
   @override
   UpdateWorkoutScreenState createState() => UpdateWorkoutScreenState();
@@ -154,12 +154,12 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
           Container(
             width: screenWidth * 0.85,
             height: screenHeight * 0.06,
-            margin: EdgeInsets.only(left: 5),
+            margin: const EdgeInsets.only(left: 5),
             child: TextField(
               controller: _commentEditingController,
               maxLines: 10,
-              style: TextStyle(fontSize: 12),
-              decoration: InputDecoration(
+              style: const TextStyle(fontSize: 12),
+              decoration: const InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
                   hintText: "Добавить комментарий",
@@ -173,48 +173,51 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
 
   Widget _saveButton() {
     return Container(
-        margin: const EdgeInsets.only(top: 50),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: _onBackPressed,
-              child: const Icon(
-                  Icons.chevron_left,
-                  color: Colors.blue,
-                  size: 40,
-                ),
+      margin: const EdgeInsets.only(top: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: _onBackPressed,
+            child: const Icon(
+              Icons.chevron_left,
+              color: Colors.blue,
+              size: 40,
             ),
-            Container(
-              width: 170,
-              height: screenHeight * 0.06,
-              child: Material(
-                borderRadius: const BorderRadius.all(Radius.circular(35)),
-                color: _continueButtonBackgroundColor(),
-                child: InkWell(
-                    onTap: peopleCount != null &&
-                            levelOfSkating != null &&
-                            _checkTextControllers()
-                        ? _saveChanges
-                        : null,
-                    child: Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Сохранить",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: _continueButtonTextColor(),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                    )),
+          ),
+          Container(
+            width: 170,
+            height: screenHeight * 0.06,
+            child: Material(
+              borderRadius: const BorderRadius.all(Radius.circular(35)),
+              color: _continueButtonBackgroundColor(),
+              child: InkWell(
+                onTap: peopleCount != null &&
+                        levelOfSkating != null &&
+                        _checkTextControllers()
+                    ? _saveChanges
+                    : null,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Сохранить",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: _continueButtonTextColor(),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            )
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   void _saveChanges() async {
@@ -241,7 +244,8 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
       "Уровень катания": levelOfSkating,
       "Комментарий": _commentEditingController!.text,
       "Продолжительность": widget.workout.workoutDuration,
-      "Телефон инструктора": widget.workout.instructorPhoneNumber
+      "Телефон инструктора": widget.workout.instructorPhoneNumber,
+      "instructor_fcm_token": widget.workout.instructorFcmToken,
     });
   }
 
@@ -261,7 +265,8 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
       "Уровень катания": levelOfSkating,
       "Комментарий": _commentEditingController!.text,
       "Продолжительность": widget.workout.workoutDuration,
-      "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber!
+      "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber!,
+      "instructor_fcm_token": widget.workout.instructorFcmToken,
     });
   }
 
@@ -287,9 +292,7 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
   }
 
   Color _continueButtonBackgroundColor() {
-    if (peopleCount != 0 &&
-        levelOfSkating != null &&
-        _checkTextControllers()) {
+    if (peopleCount != 0 && levelOfSkating != null && _checkTextControllers()) {
       return Colors.blue;
     } else {
       return Colors.white;
@@ -297,9 +300,7 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
   }
 
   Color _continueButtonTextColor() {
-    if (peopleCount != 0 &&
-        levelOfSkating != null &&
-        _checkTextControllers()) {
+    if (peopleCount != 0 && levelOfSkating != null && _checkTextControllers()) {
       return Colors.white;
     } else {
       return Colors.grey;

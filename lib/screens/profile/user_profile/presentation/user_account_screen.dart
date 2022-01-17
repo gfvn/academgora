@@ -117,7 +117,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           "НА ГЛАВНУЮ",
           style: TextStyle(
               color: Colors.white,
-              fontSize: screenHeight * 0.03,
+              fontSize:  18,
               fontWeight: FontWeight.bold),
         ),
       ),

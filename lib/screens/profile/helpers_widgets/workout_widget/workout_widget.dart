@@ -152,9 +152,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
-                log('hereeee');
                 if (widget.workout.instructorFcmToken!.isNotEmpty) {
-                  log('nooo heree((');
                   String formattedDate =
                       "${widget.workout.date!.substring(4, 8)}-${widget.workout.date!.substring(2, 4)}-${widget.workout.date!.substring(0, 2)}";
                   NotificationService().sendNotificationToFcm(

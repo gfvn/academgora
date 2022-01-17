@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 
 import '../../main.dart';
 import '../extension.dart';
+import '../main_screen.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_to_instructor/date_widget.dart';
 import 'helpers_widgets/reg_to_instructor/select_kind_of_sport.dart';
@@ -54,7 +55,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
           // _warningText(),
           Column(
             children: [
-              _continueButton(),
+              _buttons(),
               Container(
                   padding: const EdgeInsets.only(top: 10),
                   child: const Text("ИЛИ",
@@ -109,6 +110,31 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
                     ),
                   ]),
             )),
+      ),
+    );
+  }
+
+  Widget _buttons() {
+    return Container(
+        margin: const EdgeInsets.only(top: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [_backButton(), _continueButton()],
+        ));
+  }
+
+  Widget _backButton() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (c) => const MainScreen()),
+            (route) => false);
+      },
+      child: const Icon(
+        Icons.chevron_left,
+        color: Colors.blue,
+        size: 50,
       ),
     );
   }

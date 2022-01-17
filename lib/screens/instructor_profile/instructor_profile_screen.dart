@@ -42,7 +42,7 @@ class InstructorProfileScreen extends StatelessWidget {
     return Container(
         margin: const EdgeInsets.only(top: 10),
         child: Text(
-          instructor.name??"",
+          instructor.name ?? "",
           style: const TextStyle(
               fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
         ));
@@ -54,7 +54,7 @@ class InstructorProfileScreen extends StatelessWidget {
         width: screenWidth * 0.8,
         margin: const EdgeInsets.only(top: 10),
         child: Text(
-          instructor.info??"",
+          instructor.info ?? "",
           textAlign: TextAlign.center,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ));
@@ -74,7 +74,8 @@ class InstructorProfileScreen extends StatelessWidget {
                 margin: EdgeInsets.only(left: screenWidth * 0.1),
                 child: Text(
                   "Телефон: ${instructor.phone}",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ))));
   }
 
@@ -82,7 +83,9 @@ class InstructorProfileScreen extends StatelessWidget {
     return SizedBox(
       height: screenHeight * 0.25,
       child: ListView.builder(
-          itemCount: instructor.socialNetworks!=null?instructor.socialNetworks!.length:0,
+          itemCount: instructor.socialNetworks != null
+              ? instructor.socialNetworks!.length
+              : 0,
           itemBuilder: (context, index) {
             return "${instructor.socialNetworks!.values.toList()[index]}"
                     .isNotEmpty
@@ -96,7 +99,6 @@ class InstructorProfileScreen extends StatelessWidget {
   }
 
   Widget _socialNetworkWidget(String path, String url) {
-    
     return Container(
       margin: const EdgeInsets.only(top: 3, bottom: 3),
       child: Row(
@@ -110,6 +112,13 @@ class InstructorProfileScreen extends StatelessWidget {
           ),
           GestureDetector(
               onTap: () {
+                print("https://t.me/" + url.replaceAll("@", ""));
+                
+                if (path ==
+                        "assets/instructor_profile/social_network_icons/9telegram.png" &&
+                    !url.contains("https://t.me/")) {
+                  launchURL("https://t.me/" + url.replaceAll("@", ""));
+                }
                 launchURL(url);
               },
               child: SizedBox(
@@ -124,7 +133,8 @@ class InstructorProfileScreen extends StatelessWidget {
       ),
     );
   }
-    Widget _socialNetworkWidgetTelegram(String path, String url) {
+
+  Widget _socialNetworkWidgetTelegram(String path, String url) {
     return Container(
       margin: const EdgeInsets.only(top: 3, bottom: 3),
       child: Row(
@@ -138,7 +148,7 @@ class InstructorProfileScreen extends StatelessWidget {
           ),
           GestureDetector(
               onTap: () {
-                launchURL("https://t.me/"+url);
+                launchURL("https://t.me/" + url);
               },
               child: SizedBox(
                 width: screenWidth * 0.7,

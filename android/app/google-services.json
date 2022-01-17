@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "797239478378",
+    "firebase_url": "https://academdevelop-default-rtdb.firebaseio.com",
     "project_id": "academdevelop",
     "storage_bucket": "academdevelop.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:797239478378:android:e3f9a1422eb16d0bf86213",
+        "mobilesdk_app_id": "1:797239478378:android:41091935f74187b8f86213",
         "android_client_info": {
-          "package_name": "com.ultimatum.academ_gora_release"
+          "package_name": "com.ultimatum.academ_gora_test"
         }
       },
       "oauth_client": [
@@ -31,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "797239478378-hohli82aeur8c5ibvs5jff53ed0cs56t.apps.googleusercontent.com",
+              "client_id": "797239478378-ho3svf0sfss9i97r15pit6rjos0nioho.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ultimatum.academGora"
+                "bundle_id": "com.ultimatum.academGoraTest"
               }
             }
           ]

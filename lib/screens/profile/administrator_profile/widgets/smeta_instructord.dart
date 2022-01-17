@@ -74,7 +74,7 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
     return Container(
       alignment: Alignment.center,
       margin: const EdgeInsets.only(bottom: 6),
-      height: 40,
+      height: 50,
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -82,18 +82,26 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                margin: const EdgeInsets.only(left: 8, right: 8),
-                child: Text(
-                  widget.instructor.name ?? "Имя Фамилия",
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  child: Text(
+                    widget.instructor.name ?? "Имя Фамилия",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-              Text(
-                widget.instructor.phone ?? '',
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  widget.instructor.phone ?? '',
+                  style:
+                      const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

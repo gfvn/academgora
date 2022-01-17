@@ -46,20 +46,27 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
+          padding: EdgeInsets.only(top: 50, bottom: 50),
           width: screenWidth,
           height: screenHeight,
           decoration: screenDecoration("assets/instructor_profile/bg.png"),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _instructorPhoto(),
-              _redactPhotoButton(context),
-              _instructorName(),
-              _instructorInfo(),
-              _redactInstructorInfoButton(context),
-              _socialNetworksList(context),
-              _backButton(context)
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    _instructorPhoto(),
+                    _redactPhotoButton(context),
+                    _instructorName(),
+                    _instructorInfo(),
+                    _redactInstructorInfoButton(context),
+                    _socialNetworksList(context),
+                  ],
+                ),
+                _backButton(context)
+              ],
+            ),
           ),
         ));
   }
@@ -163,8 +170,8 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
 
   Widget _instructorInfo() {
     return Container(
-        margin: const EdgeInsets.only(top: 10),
-        height: screenHeight * 0.18,
+        margin: const EdgeInsets.only(top: 10, bottom: 10),
+        // height: screenHeight * 0.18,
         width: screenWidth * 0.8,
         child: SingleChildScrollView(
             child: Flex(

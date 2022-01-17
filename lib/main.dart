@@ -160,7 +160,6 @@ class MyAppState extends State<MyApp> {
   }
 
   void isloded() async {
-    await Future.delayed(const Duration(milliseconds: 3000));
     setState(() {
       _dataisloded = true;
     });

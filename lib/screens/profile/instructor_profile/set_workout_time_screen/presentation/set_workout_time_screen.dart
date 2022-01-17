@@ -610,7 +610,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             "assets/instructor_set_time/e5.png"),
         _changeStatusButton(
             TimeStatus.NOT_AVAILABLE,
-            "запись недоступна(занято,перерыв)",
+            "запись недоступна(перерыв)",
             "assets/instructor_set_time/e4.png"),
         _changeStatusButton(
             TimeStatus.NOT_OPENED,

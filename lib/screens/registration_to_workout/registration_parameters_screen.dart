@@ -1,14 +1,12 @@
-import 'dart:developer';
+import 'package:academ_gora_release/common/times_controller.dart';
 
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/common/times_controller.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import '../../main.dart';
 import '../extension.dart';
@@ -19,7 +17,6 @@ import 'helpers_widgets/reg_parameters/select_duration_widget.dart';
 import 'helpers_widgets/reg_parameters/select_level_of_skating_widget.dart';
 import 'helpers_widgets/reg_parameters/select_people_count_widget.dart';
 import 'reg_final_screen.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/intl.dart';
 
@@ -40,11 +37,13 @@ class RegistrationParametersScreenState
   int peopleCount = 0;
   int? duration;
   int? levelOfSkating;
+  bool isLoading = false;
 
   final TextEditingController _commentController = TextEditingController();
   final TimesController _timesController = TimesController();
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
+
   @override
   void initState() {
     tz.initializeTimeZones();
@@ -54,51 +53,63 @@ class RegistrationParametersScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration:
-              screenDecoration("assets/registration_parameters/0_bg.png"),
-          child: SizedBox(
-              width: screenWidth,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _infoWidget(),
-                    Container(
-                        margin: const EdgeInsets.only(top: 12, left: 5),
-                        child: SelectPeopleCountWidget(peopleCount, this)),
-                    horizontalDivider(
-                        10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                    Container(
-                        margin: const EdgeInsets.only(left: 5),
-                        child: SelectDurationWidget(duration, this)),
-                    horizontalDivider(
-                        10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                    Container(
-                        margin: const EdgeInsets.only(left: 5),
-                        child:
-                            SelectLevelOfSkatingWidget(levelOfSkating, this)),
-                    horizontalDivider(
-                        10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                    SizedBox(
-                        height: screenHeight * 0.19,
-                        child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(3),
-                            itemCount: peopleCount,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: const EdgeInsets.only(left: 25),
-                                child: HumanInfoWidget(
-                                    index + 1, textEditingControllers, this),
-                              );
-                            })),
-                    _commentFieldWidget(),
-                    _dateFieldWidget(),
-                    _continueButton()
-                  ],
+      body: !isLoading
+          ? Container(
+              height: MediaQuery.of(context).size.height,
+              decoration:
+                  screenDecoration("assets/registration_parameters/0_bg.png"),
+              child: SizedBox(
+                width: screenWidth,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _infoWidget(),
+                      Container(
+                          margin: const EdgeInsets.only(top: 12, left: 5),
+                          child: SelectPeopleCountWidget(peopleCount, this)),
+                      horizontalDivider(
+                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
+                      Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          child: SelectDurationWidget(duration, this)),
+                      horizontalDivider(
+                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
+                      Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          child:
+                              SelectLevelOfSkatingWidget(levelOfSkating, this)),
+                      horizontalDivider(
+                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
+                      SizedBox(
+                          height: screenHeight * 0.19,
+                          child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(3),
+                              itemCount: peopleCount,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(left: 25),
+                                  child: HumanInfoWidget(
+                                      index + 1, textEditingControllers, this),
+                                );
+                              })),
+                      _commentFieldWidget(),
+                      _dateFieldWidget(),
+                      _continueButton()
+                    ],
+                  ),
                 ),
-              ))),
+              ),
+            )
+          : const Center(
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              ),
+            ),
     );
   }
 
@@ -248,34 +259,101 @@ class RegistrationParametersScreenState
     );
   }
 
-  void _sendData() {
-    workoutSingleton.peopleCount = peopleCount;
-    workoutSingleton.levelOfSkating = levelOfSkating;
-    _sendWorkoutDataToUser().then(
-      (_) {
-        _sendWorkoutDataToInstructor().then(
-          (_) {
-            countWorkoutTime();
-            int norificationTime = countWorkoutTime();
-            if (norificationTime > 0) {
-              NotificationService().showNotification(
-                  int.tryParse(workoutSingleton.id.toString()) ?? 0,
-                  "Скоро занятия",
-                  "Через 4 часа у вас будет занятие в АкадемГора",
-                  norificationTime);
-            } else {
-              NotificationService().showNotification(2, "Скоро занятия",
-                  "Вы записались на занятие в АкадемГора", 10);
-            }
-            String formattedDate =
-                "${workoutSingleton.date!.substring(4, 8)}-${workoutSingleton.date!.substring(2, 4)}-${workoutSingleton.date!.substring(0, 2)}";
-            NotificationService().sendNotificationToFcm(
-                fcmToken: workoutSingleton.instructorfcmToken!,
-                tittle: "Новая запись",
-                body:
-                    "У вас новая запись на $formattedDate, ${workoutSingleton.from}");
-            _openRegFinalScreen();
-          },
+  Future<bool> checkForInstructorWorkout() async {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 1000));
+    var value = await _firebaseRequestsController.get(
+        "${UserRole.instructor}/${workoutSingleton.instructorId!}/График работы/${workoutSingleton.date}");
+    print("value ${value}");
+    print("duration ${workoutSingleton.workoutDuration}");
+    print("value ${value[workoutSingleton.from]}");
+    if (workoutSingleton.workoutDuration == 1) {
+      if (_timesController.checkTimesStatusForOneHours(
+          value, workoutSingleton.from.toString(), "открыто")) {
+        setState(() {
+          isLoading = false;
+        });
+        print("true true true true");
+        return true;
+      }
+    } else {
+      if (_timesController.checkTimesStatusForTwoHours(
+          value, workoutSingleton.from.toString(), "открыто")) {
+        setState(() {
+          isLoading = false;
+        });
+        return true;
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+    print('false false false false ');
+    return false;
+  }
+
+  void _sendData() async {
+    print("herer");
+    bool isAvailable = await checkForInstructorWorkout();
+    if (isAvailable) {
+      workoutSingleton.peopleCount = peopleCount;
+      workoutSingleton.levelOfSkating = levelOfSkating;
+      _sendWorkoutDataToUser().then(
+        (_) {
+          _sendWorkoutDataToInstructor().then(
+            (_) {
+              countWorkoutTime();
+              int norificationTime = countWorkoutTime();
+              if (norificationTime > 0) {
+                NotificationService().showNotification(
+                    int.tryParse(workoutSingleton.id.toString()) ?? 0,
+                    "Скоро занятия",
+                    "Через 4 часа у вас будет занятие в АкадемГора",
+                    norificationTime);
+              } else {
+                NotificationService().showNotification(2, "Скоро занятия",
+                    "Вы записались на занятие в АкадемГора", 10);
+              }
+              String formattedDate =
+                  "${workoutSingleton.date!.substring(4, 8)}-${workoutSingleton.date!.substring(2, 4)}-${workoutSingleton.date!.substring(0, 2)}";
+              NotificationService().sendNotificationToFcm(
+                  fcmToken: workoutSingleton.instructorfcmToken!,
+                  tittle: "Новая запись",
+                  body:
+                      "У вас новая запись на $formattedDate, ${workoutSingleton.from}");
+              _openRegFinalScreen();
+            },
+          );
+        },
+      );
+    } else {
+      print("nooooo dateee");
+      _showWarningDialog();
+    }
+  }
+    void _showWarningDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+            "Извините, на данное время уже записались или нструктор отменил запись, пожалуйста, выберите другое время",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'ОК',
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );

@@ -357,75 +357,77 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   void _sendOnce(String time, String status) async {
     print("status $status");
-    UserRole.getUserRole().then((userRole) {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
-      String dateString = DateFormat('ddMMyyyy').format(_selectedDate);
-      if (userRole == UserRole.instructor) {
-        if (_checkChangeTimePossibility(time)) {
-          _firebaseController.update(
-              "$userRole/$userId/График работы/$dateString",
-              {time: status}).then((value) => setState(() {}));
+    UserRole.getUserRole().then(
+      (userRole) {
+        String userId = FirebaseAuth.instance.currentUser!.uid;
+        String dateString = DateFormat('ddMMyyyy').format(_selectedDate);
+        if (userRole == UserRole.instructor) {
+          if (_checkChangeTimePossibility(time)) {
+            _firebaseController.update(
+                "$userRole/$userId/График работы/$dateString",
+                {time: status}).then((value) => setState(() {}));
 
-          if (status == "открыто") {
-            _firebaseController.update(
-              "Log/Instructors",
-              {
-                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-                    instructorOpenWorkout(
-                        _currentInstructor?.name ?? "", dateString, time)
-              },
-            );
-          } else if (status == "недоступно" || status == "не открыто") {
-            _firebaseController.update(
-              "Log/Instructors",
-              {
-                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-                    instructorCloseWorkout(
-                        _currentInstructor?.name ?? "", dateString, time)
-              },
-            );
+            if (status == "открыто") {
+              _firebaseController.update(
+                "Log/Instructors",
+                {
+                  DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                      instructorOpenWorkout(
+                          _currentInstructor?.name ?? "", dateString, time)
+                },
+              );
+            } else if (status == "недоступно" || status == "не открыто") {
+              _firebaseController.update(
+                "Log/Instructors",
+                {
+                  DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                      instructorCloseWorkout(
+                          _currentInstructor?.name ?? "", dateString, time)
+                },
+              );
+            }
+          } else {
+            _showWarningCancelDialog();
           }
-        } else {
-          _showWarningCancelDialog();
         }
-      }
-      if (userRole == UserRole.administrator) {
-        _showWarningChangeTimeDialogForAdmin(() {
-          _firebaseController.update(
-              "${UserRole.instructor}/${_currentInstructor!.id}/График работы/$dateString",
-              {time: status}).then((value) {
-            if (!_checkChangeTimePossibility(time)) {
-              _deleteWorkout(time);
+        if (userRole == UserRole.administrator) {
+          _showWarningChangeTimeDialogForAdmin(() {
+            _firebaseController.update(
+                "${UserRole.instructor}/${_currentInstructor!.id}/График работы/$dateString",
+                {time: status}).then((value) {
+              if (!_checkChangeTimePossibility(time)) {
+                _deleteWorkout(time);
+              }
+            });
+            if (status == "открыто") {
+              _firebaseController.update(
+                "Log/Adminstrator",
+                {
+                  DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                      adminOpenWorkout(
+                          "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                          _currentInstructor?.name ?? "",
+                          dateString,
+                          time)
+                },
+              );
+            } else if (status == "недоступно" || status == "не открыто") {
+              _firebaseController.update(
+                "Log/Adminstrator",
+                {
+                  DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                      adminCancelWorkout(
+                          "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                          _currentInstructor?.name ?? "",
+                          dateString,
+                          time)
+                },
+              );
             }
           });
-          if (status == "открыто") {
-            _firebaseController.update(
-              "Log/Adminstrator",
-              {
-                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-                    adminOpenWorkout(
-                        "${FirebaseAuth.instance.currentUser!.phoneNumber}",
-                        _currentInstructor?.name ?? "",
-                        dateString,
-                        time)
-              },
-            );
-          } else if (status == "недоступно" || status == "не открыто") {
-            _firebaseController.update(
-              "Log/Adminstrator",
-              {
-                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-                    adminCancelWorkout(
-                        "${FirebaseAuth.instance.currentUser!.phoneNumber}",
-                        _currentInstructor?.name ?? "",
-                        dateString,
-                        time)
-              },
-            );
-          }
-        });
-      }
-    });
+        }
+      },
+    );
   }
 
   void _deleteWorkout(String time) {
@@ -577,11 +579,9 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         }
       });
     }
-    print(_openedTimesPerDay);
   }
 
   void _getOpenedTimesPerMonth() {
-    print("hererer filled");
     if (_currentInstructor!.schedule != null) {
       _fillMarkedDateMap(_getDatesWithOpenedRegistration(
           _currentInstructor!.schedule!,
@@ -668,35 +668,36 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _changeStatusButton(String timeStatus, String text, String iconPath) {
     return Container(
-        height: screenHeight * 0.033,
-        margin: EdgeInsets.only(left: screenWidth * 0.2),
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedTimeStatus = timeStatus;
-            });
-          },
-          child: Row(
-            children: [
-              Container(
-                height: 8,
-                width: 8,
-                margin: const EdgeInsets.only(right: 5),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(iconPath),
-                    fit: BoxFit.cover,
-                  ),
+      height: screenHeight * 0.033,
+      margin: EdgeInsets.only(left: screenWidth * 0.2),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedTimeStatus = timeStatus;
+          });
+        },
+        child: Row(
+          children: [
+            Container(
+              height: 8,
+              width: 8,
+              margin: const EdgeInsets.only(right: 5),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(iconPath),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Text(
-                text,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: _selectedTimeStatus == timeStatus ? 14 : 12),
-              )
-            ],
-          ),
-        ));
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: _selectedTimeStatus == timeStatus ? 14 : 12),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

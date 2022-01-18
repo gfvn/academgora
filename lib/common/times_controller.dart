@@ -106,6 +106,28 @@ class TimesController {
       return false;
     }
   }
+    bool checkTimesStatusForOneHours(
+      Map<dynamic, dynamic> schedule, String from, String status) {
+    int fromPriority = _times[from]!;
+    if (schedule[getTimeByValue(fromPriority)] == 'открыто') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+    bool checkAvailableWorkoutTime(
+      Map<dynamic, dynamic> schedule, String from, String status) {
+    int fromPriority = _times[from]!;
+    if (fromPriority >= 21) {
+      return false;
+    } else if (schedule[getTimeByValue(fromPriority)] == 'открыто' &&
+        schedule[getTimeByValue(fromPriority + 2)] == 'открыто') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   get times => _times;
 }

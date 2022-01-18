@@ -4,6 +4,9 @@ import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+
+import '../screens/extension.dart';
 
 class AuthController {
   final dbRef = FirebaseDatabase.instance.reference();
@@ -14,11 +17,11 @@ class AuthController {
     var administratorsPhoneNumbers = {};
     dbRef.child("Телефоны инструкторов").once().then(
       (value) async {
-        if (value != null) {
+        if (value.value != null) {
           instructorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
         }
         dbRef.child("Телефоны администраторов").once().then((value) async {
-          if (value != null) {
+          if (value.value != null) {
             administratorsPhoneNumbers = value.value as Map<dynamic, dynamic>;
           }
           for (var element in (instructorsPhoneNumbers).entries) {
@@ -32,7 +35,6 @@ class AuthController {
             }
           }
           final SharedPreferences prefs = await SharedPreferences.getInstance();
-          log('userRole $userRole');
           prefs.setString("userRole", userRole);
           _saveUserInDb(userRole, fcmToken);
         });
@@ -43,6 +45,9 @@ class AuthController {
 
   void _saveUserInDb(String userRole, String fcm_token) {
     log("userrole $userRole, token $fcm_token");
+    var now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd–kk:mm').format(now);
+
     dbRef.child(userRole).once().then(
       (value) {
         bool userExists = false;
@@ -60,11 +65,25 @@ class AuthController {
               "fcm_token": fcm_token
             },
           );
+          dbRef.child("Log/Registraion").update(
+            {
+              DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                  userRegisteredToApp(
+                      FirebaseAuth.instance.currentUser!.phoneNumber.toString())
+            },
+          );
         } else {
           dbRef
               .child("$userRole/${FirebaseAuth.instance.currentUser!.uid}")
               .update(
             {"fcm_token": fcm_token},
+          );
+          dbRef.child("Log/Login").update(
+            {
+              DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                  userLoggedToApp(
+                      FirebaseAuth.instance.currentUser!.phoneNumber.toString())
+            },
           );
         }
       },

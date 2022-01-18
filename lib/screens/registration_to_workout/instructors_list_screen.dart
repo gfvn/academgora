@@ -21,6 +21,8 @@ class InstructorsListScreen extends StatefulWidget {
 
 class InstructorsListScreenState extends State<InstructorsListScreen> {
   List<Instructor> instructors = [];
+  List<Instructor> reversedList = [];
+
   RegToInstructorData? regToInstructorData;
   final WorkoutDataKeeper _workoutSingleton = WorkoutDataKeeper();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
@@ -29,19 +31,16 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   DateTime? _selectedDate;
   @override
   void initState() {
-    print("object");
     _setSelectedDate();
+    instructors = _instructorsKeeper
+        .findInstructorsByKindOfSport(_workoutSingleton.sportType!);
+    var radomInstructorList = makeInstructorListRandom(instructors);
+    reversedList = radomInstructorList.reversed.toList();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    instructors = _instructorsKeeper
-        .findInstructorsByKindOfSport(_workoutSingleton.sportType!);
-    var radomInstructorList = makeInstructorListRandom(instructors);
-
-    var reversedList=radomInstructorList.reversed.toList();
-    
     return Scaffold(
       body: Container(
         decoration:

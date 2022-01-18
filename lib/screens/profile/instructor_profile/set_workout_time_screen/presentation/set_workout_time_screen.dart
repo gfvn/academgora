@@ -59,28 +59,29 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _body() {
     return StreamBuilder(
-        stream: _instructorDataViewModel.instructorData,
-        builder: (ctx, snap) {
-          if (!snap.hasData) {
-            return Container();
-          } else {
-            _currentInstructor = snap.data as Instructor;
-            _getOpenedTimesPerDay();
-            _getOpenedTimesPerMonth();
-            _getAllWorkoutsPerDay();
-            return Column(
-              children: [
-                _titleRow(),
-                horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
-                _calendar(),
-                _indicatorsRow(),
-                horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 15, 15),
-                _dateTimePickerWidget(),
-                _changeStatusButtons()
-              ],
-            );
-          }
-        });
+      stream: _instructorDataViewModel.instructorData,
+      builder: (ctx, snap) {
+        if (!snap.hasData) {
+          return Container();
+        } else {
+          _currentInstructor = snap.data as Instructor;
+          _getOpenedTimesPerDay();
+          _getOpenedTimesPerMonth();
+          _getAllWorkoutsPerDay();
+          return Column(
+            children: [
+              _titleRow(),
+              horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
+              _calendar(),
+              _indicatorsRow(),
+              horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 15, 15),
+              _dateTimePickerWidget(),
+              _changeStatusButtons()
+            ],
+          );
+        }
+      },
+    );
   }
 
   Widget _titleRow() {
@@ -107,7 +108,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     return Container(
         margin: EdgeInsets.only(top: screenHeight * 0.07),
         child: Text(
-          _currentInstructor!.name??"имя",
+          _currentInstructor!.name ?? "имя",
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ));
   }
@@ -341,9 +342,8 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
                 _sendOnce(time, "недоступно");
                 Navigator.pop(context);
               });
-            }else{
-                              _sendOnce(time, "недоступно");
-
+            } else {
+              _sendOnce(time, "недоступно");
             }
 
             // _sendOnce(time, "недоступно");
@@ -356,6 +356,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   void _sendOnce(String time, String status) async {
+    print("status $status");
     UserRole.getUserRole().then((userRole) {
       String userId = FirebaseAuth.instance.currentUser!.uid;
       String dateString = DateFormat('ddMMyyyy').format(_selectedDate);
@@ -364,6 +365,26 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
           _firebaseController.update(
               "$userRole/$userId/График работы/$dateString",
               {time: status}).then((value) => setState(() {}));
+
+          if (status == "открыто") {
+            _firebaseController.update(
+              "Log/Instructors",
+              {
+                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                    instructorOpenWorkout(
+                        _currentInstructor?.name ?? "", dateString, time)
+              },
+            );
+          } else if (status == "недоступно" || status == "не открыто") {
+            _firebaseController.update(
+              "Log/Instructors",
+              {
+                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                    instructorCloseWorkout(
+                        _currentInstructor?.name ?? "", dateString, time)
+              },
+            );
+          }
         } else {
           _showWarningCancelDialog();
         }
@@ -377,6 +398,31 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
               _deleteWorkout(time);
             }
           });
+          if (status == "открыто") {
+            _firebaseController.update(
+              "Log/Adminstrator",
+              {
+                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                    adminOpenWorkout(
+                        "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                        _currentInstructor?.name ?? "",
+                        dateString,
+                        time)
+              },
+            );
+          } else if (status == "недоступно" || status == "не открыто") {
+            _firebaseController.update(
+              "Log/Adminstrator",
+              {
+                DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+                    adminCancelWorkout(
+                        "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                        _currentInstructor?.name ?? "",
+                        dateString,
+                        time)
+              },
+            );
+          }
         });
       }
     });
@@ -397,10 +443,10 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   void _sendNotification(String userPhone, String workoutId) {
-    _firebaseController.send("Log", {
-      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-          extensions.administratorCancelledWorkout(userPhone, workoutId)
-    });
+    // _firebaseController.send("Log", {
+    //   DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+    //       extensions.administratorCancelledWorkout(userPhone, workoutId)
+    // });
   }
 
   void _findUserAndDeleteWorkout(String userPhoneNumber, String workoutId) {
@@ -531,9 +577,11 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         }
       });
     }
+    print(_openedTimesPerDay);
   }
 
   void _getOpenedTimesPerMonth() {
+    print("hererer filled");
     if (_currentInstructor!.schedule != null) {
       _fillMarkedDateMap(_getDatesWithOpenedRegistration(
           _currentInstructor!.schedule!,
@@ -608,10 +656,8 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       children: [
         _changeStatusButton(TimeStatus.OPENED, "открыта предварительная запись",
             "assets/instructor_set_time/e5.png"),
-        _changeStatusButton(
-            TimeStatus.NOT_AVAILABLE,
-            "запись недоступна(перерыв)",
-            "assets/instructor_set_time/e4.png"),
+        _changeStatusButton(TimeStatus.NOT_AVAILABLE,
+            "запись недоступна(перерыв)", "assets/instructor_set_time/e4.png"),
         _changeStatusButton(
             TimeStatus.NOT_OPENED,
             "предварительная запись не открыта",

@@ -113,13 +113,6 @@ class MyAppState extends State<MyApp> {
       (value) {
         if (value) {
           if (FirebaseAuth.instance.currentUser != null) {
-            // setupNotification().then(
-            //   (value) {
-            //     _authController.saveUserRole(
-            //         FirebaseAuth.instance.currentUser!.phoneNumber!, value);
-
-            //   },
-            // );
             UserRole.getUserRole().then(
               (userRole) {
                 print(userRole);

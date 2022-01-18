@@ -116,10 +116,10 @@ class _DateWidgetState extends State<DateWidget> {
             ],
             content: CalendarCarousel<Event>(
               headerTextStyle: TextStyle(
-                  fontSize: screenHeight * 0.028, color: Colors.blueAccent),
+                  fontSize: 20, color: Colors.blueAccent),
               locale: "ru",
               width: 300,
-              height: 270,
+              height: 350,
               todayBorderColor: Colors.transparent,
               todayButtonColor: Colors.transparent,
               todayTextStyle: const TextStyle(color: Colors.blueAccent),

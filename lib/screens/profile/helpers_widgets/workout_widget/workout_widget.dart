@@ -211,7 +211,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 width: screenWidth * 0.4,
                 margin: const EdgeInsets.only(left: 45),
                 child: Text(
-                  _instructor!.name!,
+                  "${_instructor!.name??""}",
                   style: const TextStyle(fontSize: 14),
                 )),
           ],

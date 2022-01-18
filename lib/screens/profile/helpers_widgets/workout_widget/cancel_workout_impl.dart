@@ -19,6 +19,7 @@ class CancelWorkoutImplementation implements CancelWorkout {
   void cancelWorkout(Workout workout) {
     _deleteWorkoutFromUser(workout);
     _deleteWorkoutFromInstructor(workout);
+    
   }
 
   void _deleteWorkoutFromUser(Workout workout) {
@@ -33,8 +34,14 @@ class CancelWorkoutImplementation implements CancelWorkout {
     _firebaseRequestsController.update(
         "${UserRole.instructor}/${_instructor.id}/График работы/${workout.date}",
         {workout.from!: "открыто"});
-    _firebaseRequestsController.send("Log", {
-      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()): userCancelledWorkoutForInstructor(workout.instructorPhoneNumber!),
-    });
+    _firebaseRequestsController.update(
+      "Log/Users",
+      {
+        DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+            userCancekWorkout(
+          _instructor.phone ?? '',
+        )
+      },
+    );
   }
 }

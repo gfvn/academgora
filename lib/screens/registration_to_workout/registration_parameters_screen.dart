@@ -8,6 +8,7 @@ import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../../main.dart';
 import '../extension.dart';
@@ -308,6 +309,21 @@ class RegistrationParametersScreenState
   }
 
   Future<void> _sendWorkoutDataToUser() async {
+    // DateTime now = DateTime.now();
+    // final dbRef = FirebaseDatabase.instance.reference();
+    // String formattedDate = DateFormat('yyyy-MM-dd–kk:mm').format(now);
+    // dbRef.child("Log/Login").update(
+    //   {
+    //     now.millisecondsSinceEpoch.toString():
+    //         "$formattedDate Пользователь ${FirebaseAuth.instance.currentUser!.phoneNumber} записался к инструктору ${workoutSingleton.instructorName} в ${workoutSingleton.date} ${_getWorkoutTime()}",
+    //   },
+    // );
+    //  dbRef.child("Log/Login").update(
+    //       {
+    //         now.millisecondsSinceEpoch.toString():
+    //             "$formattedDate Пользователь ${FirebaseAuth.instance.currentUser!.phoneNumber} вошел в приложении",
+    //       },
+    //     );
     await UserRole.getUserRole().then(
       (userRole) => {
         if (userRole == UserRole.user)
@@ -352,11 +368,26 @@ class RegistrationParametersScreenState
         "${UserRole.instructor}/${workoutSingleton.instructorId}/График работы/${workoutSingleton.date}",
         _timesController.setTimesStatus(
             workoutSingleton.from!, duration!, "недоступно"));
-    _firebaseRequestsController.send("Log", {
-      DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-          userRegisteredForInstructor(workoutSingleton.instructorPhoneNumber!,
-              date: workoutSingleton.date!, time: workoutSingleton.from!)
-    });
+
+    _firebaseRequestsController.update(
+      "Log/Classes",
+      {
+        DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+            userRegisteredForInstructor(workoutSingleton.instructorPhoneNumber!,
+                date: workoutSingleton.date!,
+                time: workoutSingleton.from!,
+                instructorname: workoutSingleton.instructorName.toString())
+      },
+    );
+    _firebaseRequestsController.update(
+      "Log/Users",
+      {
+        DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
+            userRegisterWorkout(
+          workoutSingleton.instructorPhoneNumber!,
+        )
+      },
+    );
   }
 
   String _getWorkoutTime() {

@@ -6,18 +6,49 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../main.dart';
 
-String userCancelledWorkoutForInstructor(String phone) {
-  return "user cancelled workout for instructor $phone";
+String userLoggedToApp(String phone) {
+  return "Пользователь $phone вошел в приложении";
+}
+
+String userRegisteredToApp(String phone) {
+  return "Пользователь $phone зарегистрировался в приложении";
 }
 
 String userRegisteredForInstructor(String phone,
-    {String date = "", String time = ""}) {
-  return "user registered on $date and $time for $phone";
+    {String date = "", String time = "", String instructorname=''}) {
+  return "Пользователь $phone записалься on $date и $time  к инструктору $instructorname";
 }
 
-String administratorCancelledWorkout(String userPhone, String workoutId) {
-  return "administrator cancelled workout of user $userPhone;workoutId=$workoutId";
+String instructorOpenWorkout(String instructorName, String date, String time) {
+  return "Инструктор $instructorName открыл занятие $date на $time";
 }
+String instructorCloseWorkout(String instructorName, String date, String time) {
+  return "Инструктор $instructorName закрыл занятие $date на $time";
+}
+
+String userRegisterWorkout(String phone,) {
+  return "Пользователь $phone записалься на занятия";
+}
+String userCancekWorkout(String phone,) {
+  return "Пользователь $phone отменил  занятие";
+}
+String adminCancelWorkout(String adminPhone, String instructorName, String date, String time) {
+  return "Администратор $adminPhone отменил занятие $instructorName на $date $time";
+}
+String adminOpenWorkout(String adminPhone, String instructorName, String date, String time) {
+  return "Администратор $adminPhone открыл занятие $instructorName на $date $time";
+}
+String adminAddInstructor(String phone, String instructorName) {
+  return "Администратор $phone добавил нового Инструктора $instructorName";
+}
+
+// String userCancelledWorkoutForInstructor(String phone) {
+//   return "user cancelled workout for instructor $phone";
+// }
+
+// String administratorCancelledWorkout(String userPhone, String workoutId) {
+//   return "administrator cancelled workout of user $userPhone;workoutId=$workoutId";
+// }
 
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {

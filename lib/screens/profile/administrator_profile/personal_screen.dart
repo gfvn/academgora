@@ -11,6 +11,8 @@ import 'package:academ_gora_release/model/personal.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/screens/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FireBaseAuth;
+import 'package:intl/intl.dart';
 
 class PersonalScreeen extends StatefulWidget {
   const PersonalScreeen({Key? key}) : super(key: key);
@@ -152,6 +154,16 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       "Телефоны инструкторов",
       {
         name: phone,
+      },
+    );
+    _firebaseController.update(
+      "Log/Adminstrator",
+      {
+        DateFormat('yyyy-MM-dd hh-mm-ss')
+            .format(
+                DateTime.now()): adminAddInstructor(
+            "${FireBaseAuth.FirebaseAuth.instance.currentUser!.phoneNumber}",
+            name)
       },
     );
   }

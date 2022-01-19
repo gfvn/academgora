@@ -115,7 +115,8 @@ class _ClassesScreenState extends State<ClassesScreen> {
           onTap: () {
     Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()),
-                (route) => false);          },
+                (route) => false);          
+                },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

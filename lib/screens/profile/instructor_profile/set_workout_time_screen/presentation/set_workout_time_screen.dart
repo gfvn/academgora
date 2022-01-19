@@ -18,8 +18,12 @@ import 'instructor_data_view_model_impl.dart';
 
 class SetWorkoutTimeScreen extends StatefulWidget {
   final String? phoneNumber;
+  final DateTime? selectedDateFrom;
+  final String? time;
 
-  const SetWorkoutTimeScreen({Key? key, this.phoneNumber}) : super(key: key);
+  const SetWorkoutTimeScreen(
+      {Key? key, this.phoneNumber, this.selectedDateFrom, this.time})
+      : super(key: key);
 
   @override
   _SetWorkoutTimeScreenState createState() => _SetWorkoutTimeScreenState();
@@ -47,6 +51,9 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   @override
   void initState() {
+    if (widget.selectedDateFrom != null) {
+      _selectedDate = widget.selectedDateFrom ?? DateTime.now();
+    }
     super.initState();
     _instructorDataViewModel.getInstructorData(widget.phoneNumber);
   }
@@ -87,7 +94,10 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   Widget _titleRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [_backButton(), _instructorName()],
+      children: [
+        _backButton(),
+        _instructorName(),
+      ],
     );
   }
 
@@ -113,11 +123,18 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         ));
   }
 
+  Widget workoutTime() {
+    return Text(
+      widget.time ?? "",
+      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+    );
+  }
+
   Widget _calendar() {
     return CalendarCarousel<Event>(
       locale: "ru",
       width: screenWidth * 0.69,
-      height: screenHeight * 0.43,
+      height:  350,
       selectedDayButtonColor: Colors.blue,
       headerMargin: const EdgeInsets.all(0),
       headerTextStyle:
@@ -184,7 +201,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _dateTimePickerWidget() {
     return Column(
-      children: [_dateSliderWidget(), _timesWidget()],
+      children: [_dateSliderWidget(), workoutTime(), _timesWidget()],
     );
   }
 

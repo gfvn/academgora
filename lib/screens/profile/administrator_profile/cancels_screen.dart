@@ -5,6 +5,8 @@ import 'package:academ_gora_release/model/cancel.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
+
 class CancelsScreen extends StatefulWidget {
   const CancelsScreen({Key? key}) : super(key: key);
 
@@ -112,64 +114,83 @@ class _CancelsScreenState extends State<CancelsScreen> {
   Widget cancelListItem(CancelModel cancelModel) {
     String formattedDate =
         "${cancelModel.date!.substring(4, 8)}-${cancelModel.date!.substring(2, 4)}-${cancelModel.date!.substring(0, 2)}";
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Container(
-        width: screenWidth,
-        height: 130,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            const BoxShadow(
-              color: Colors.black,
+    return InkWell(
+      onTap: () {
+        DateTime selected=DateTime(
+          int.parse(cancelModel.date!.substring(4, 8)),
+          int.parse(cancelModel.date!.substring(3, 4)),
+          int.parse(cancelModel.date!.substring(0, 2))
+        );
+        print("selected $selected");
+        Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (c) => SetWorkoutTimeScreen(
+                phoneNumber: cancelModel.instructorPhoneNumber,
+                selectedDateFrom: selected,
+                time: cancelModel.time,
+              ),
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Инструктор: "),
-                  Text("${cancelModel.instructorName}"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Телефон: "),
-                  Text("${cancelModel.instructorPhoneNumber}"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Вид занятия: "),
-                  Text("${cancelModel.workoutSportType}"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Дата: $formattedDate"),
-                  Text("Время: ${cancelModel.time}"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Продолжительность: "),
-                  cancelModel.duration == 1
-                      ? Text("${cancelModel.duration} час")
-                      : Text("${cancelModel.duration} часа"),
-                ],
+            );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Container(
+          width: screenWidth,
+          height: 130,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              const BoxShadow(
+                color: Colors.black,
               ),
             ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Инструктор: "),
+                    Text("${cancelModel.instructorName}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Телефон: "),
+                    Text("${cancelModel.instructorPhoneNumber}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Вид занятия: "),
+                    Text("${cancelModel.workoutSportType}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Дата: $formattedDate"),
+                    Text("Время: ${cancelModel.time}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Продолжительность: "),
+                    cancelModel.duration == 1
+                        ? Text("${cancelModel.duration} час")
+                        : Text("${cancelModel.duration} часа"),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:academ_gora_release/api/auth_controller.dart';
 import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/data_keepers/cancel_keeper.dart';
 import 'package:academ_gora_release/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
-import 'package:academ_gora_release/model/personal.dart';
 import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +41,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<String> setupNotification() async {
   String token = '';
   void setToken(String? token) {
-    print("im herererere");
     log('FCM Token: $token');
   }
 
@@ -99,8 +98,8 @@ class MyAppState extends State<MyApp> {
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
+  final CancelKeeper _cancelKeeper = CancelKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
-  final AuthController _authController = AuthController();
 
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
@@ -115,7 +114,6 @@ class MyAppState extends State<MyApp> {
           if (FirebaseAuth.instance.currentUser != null) {
             UserRole.getUserRole().then(
               (userRole) {
-                print(userRole);
                 return {
                   if (userRole == UserRole.user)
                     {
@@ -124,7 +122,7 @@ class MyAppState extends State<MyApp> {
                         _saveWorkoutsIntoUserDataKeeper,
                       )
                     }
-                  else if (userRole == UserRole.user)
+                  else if (userRole == UserRole.administrator)
                     {}
                 };
               },
@@ -145,7 +143,7 @@ class MyAppState extends State<MyApp> {
     );
     _saveUsersIntoKeeper(null);
     // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
-    
+
     _saveAdminsIntoKeeper(null);
     // _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
 
@@ -154,6 +152,9 @@ class MyAppState extends State<MyApp> {
 
     _saveNewsrDataKeeper(null);
     _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
+
+    _saveCancelsIntoDataKeeper(null);
+    // _firebaseController.addListener("Отмена", _saveCancelsIntoDataKeeper);
 
     _savePriceInDataKeeper(null);
   }
@@ -231,6 +232,15 @@ class MyAppState extends State<MyApp> {
     await _firebaseController.get("Инструкторы").then(
       (value) {
         _instructorsKeeper.updateInstructors(value);
+        setState(() {});
+      },
+    );
+  }
+
+  void _saveCancelsIntoDataKeeper(Event? event) async {
+    await _firebaseController.get("Отмена").then(
+      (value) {
+        _cancelKeeper.updateInstructors(value);
         setState(() {});
       },
     );

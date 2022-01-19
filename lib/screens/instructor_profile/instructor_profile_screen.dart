@@ -112,7 +112,6 @@ class InstructorProfileScreen extends StatelessWidget {
           ),
           GestureDetector(
               onTap: () {
-                print("https://t.me/" + url.replaceAll("@", ""));
                 
                 if (path ==
                         "assets/instructor_profile/social_network_icons/9telegram.png" &&

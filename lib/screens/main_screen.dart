@@ -211,7 +211,6 @@ class _MainScreenState extends State<MainScreen> {
   void _saveUsersIntoKeeper(Event? event) async {
     await _firebaseRequestsController.get("Пользователи").then((value) {
       usersKeepers.updateInstructors(value);
-      // print("user $value");
       setState(() {
         isLoading = false;
       });
@@ -220,9 +219,6 @@ class _MainScreenState extends State<MainScreen> {
 
   void _saveAdminsIntoKeeper(Event? event) async {
     await _firebaseRequestsController.get("Администраторы").then((value) {
-      print("adminsValue $value");
-      print("here");
-
       _adminDataKeeper.updateInstructors(value);
       setState(() {});
     });
@@ -238,13 +234,11 @@ class _MainScreenState extends State<MainScreen> {
           // });
           // await _firebaseRequestsController.get("Пользователи").then((value) {
           //   usersKeepers.updateInstructors(value);
-          //   print("user $value");
           //   setState(() {
           //     isLoading = false;
           //   });
           // });
 
-          // print("not fast");
           // if (_adminDataKeeper.userList.isEmpty) {
           //   _saveAdminsIntoKeeper(null);
           //   _firebaseRequestsController.addListener(
@@ -255,7 +249,6 @@ class _MainScreenState extends State<MainScreen> {
           //   _firebaseRequestsController.addListener(
           //       "Пользователи", _saveUsersIntoKeeper);
           // }
-          // print("fast");
           if (!isLoading) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (c) => const AdministratorProfileScreen()));

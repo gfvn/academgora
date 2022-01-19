@@ -356,7 +356,6 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   void _sendOnce(String time, String status) async {
-    print("status $status");
     UserRole.getUserRole().then(
       (userRole) {
         String userId = FirebaseAuth.instance.currentUser!.uid;

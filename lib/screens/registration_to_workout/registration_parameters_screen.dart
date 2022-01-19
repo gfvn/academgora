@@ -266,16 +266,12 @@ class RegistrationParametersScreenState
     await Future.delayed(const Duration(milliseconds: 1000));
     var value = await _firebaseRequestsController.get(
         "${UserRole.instructor}/${workoutSingleton.instructorId!}/График работы/${workoutSingleton.date}");
-    print("value ${value}");
-    print("duration ${workoutSingleton.from}");
-    print("value ${value[workoutSingleton.from]}");
     if (workoutSingleton.workoutDuration == 1) {
       if (_timesController.checkTimesStatusForOneHours(
           value, workoutSingleton.from.toString(), "открыто")) {
         setState(() {
           isLoading = false;
         });
-        print("true true true true");
         return true;
       }
     } else {
@@ -290,12 +286,10 @@ class RegistrationParametersScreenState
     setState(() {
       isLoading = false;
     });
-    print('false false false false ');
     return false;
   }
 
   void _sendData() async {
-    print("herer");
     bool isAvailable = await checkForInstructorWorkout();
     if (isAvailable) {
       workoutSingleton.peopleCount = peopleCount;
@@ -329,7 +323,6 @@ class RegistrationParametersScreenState
         },
       );
     } else {
-      print("nooooo dateee");
       _showWarningDialog();
     }
   }

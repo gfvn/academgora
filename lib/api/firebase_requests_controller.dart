@@ -61,7 +61,6 @@ class FirebaseRequestsController {
   }
 
   Future<Map> get(String path) async {
-    print("getRequest");
     DataSnapshot dataSnapshot =
         await FirebaseDatabase.instance.reference().child(path).once();
     return dataSnapshot.value == null

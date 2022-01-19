@@ -179,7 +179,6 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     } else {
       _selectedDate = DateTime.now();
     }
-    print("selectedTime $_selectedDate");
   }
 
   Widget _continueButton() {

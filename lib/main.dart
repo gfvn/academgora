@@ -140,7 +140,7 @@ class MyAppState extends State<MyApp> {
         _isUserAuthorized = false;
       },
     );
-    _saveUsersIntoKeeper(null);
+  _saveUsersIntoKeeper(null);
     // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
 
     _saveAdminsIntoKeeper(null);

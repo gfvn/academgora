@@ -15,29 +15,40 @@ String userRegisteredToApp(String phone) {
 }
 
 String userRegisteredForInstructor(String phone,
-    {String date = "", String time = "", String instructorname=''}) {
+    {String date = "", String time = "", String instructorname = ''}) {
   return "Пользователь $phone записалься on $date и $time  к инструктору $instructorname";
 }
 
 String instructorOpenWorkout(String instructorName, String date, String time) {
   return "Инструктор $instructorName открыл занятие $date на $time";
 }
+
 String instructorCloseWorkout(String instructorName, String date, String time) {
   return "Инструктор $instructorName закрыл занятие $date на $time";
 }
 
-String userRegisterWorkout(String phone,) {
+String userRegisterWorkout(
+  String phone,
+) {
   return "Пользователь $phone записалься на занятия";
 }
-String userCancekWorkout(String phone,) {
+
+String userCancekWorkout(
+  String phone,
+) {
   return "Пользователь $phone отменил  занятие";
 }
-String adminCancelWorkout(String adminPhone, String instructorName, String date, String time) {
+
+String adminCancelWorkout(
+    String adminPhone, String instructorName, String date, String time) {
   return "Администратор $adminPhone отменил занятие $instructorName на $date $time";
 }
-String adminOpenWorkout(String adminPhone, String instructorName, String date, String time) {
+
+String adminOpenWorkout(
+    String adminPhone, String instructorName, String date, String time) {
   return "Администратор $adminPhone открыл занятие $instructorName на $date $time";
 }
+
 String adminAddInstructor(String phone, String instructorName) {
   return "Администратор $phone добавил нового Инструктора $instructorName";
 }
@@ -202,7 +213,12 @@ Widget _textFieldWidget(
     required TextInputType textInputType,
     required TextEditingController controller}) {
   return Container(
-    margin: const EdgeInsets.only(bottom: 16, left: 5, right: 5, top:16,),
+    margin: const EdgeInsets.only(
+      bottom: 16,
+      left: 5,
+      right: 5,
+      top: 16,
+    ),
     height: 30,
     width: width,
     child: TextField(
@@ -412,6 +428,41 @@ void showCancelDialog(BuildContext context, Function()? logoutFunction) {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
+                    ),
+                  ],
+                ))
+          ],
+        ),
+      ));
+    },
+  );
+}
+
+void showDeleteNotifications(BuildContext context,
+    {required Function()? confirmFunction,
+    required Function()? cancelFunction}) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+          content: SizedBox(
+        height: screenHeight * 0.15,
+        child: Column(
+          children: [
+            const Text("Вы точно хотите удалить?"),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: OutlinedButton(
+                          child: const Text('ДА'), onPressed: confirmFunction),
+                    ),
+                    OutlinedButton(
+                      child: const Text('ОТМЕНА'),
+                      onPressed: cancelFunction,
                     ),
                   ],
                 ))

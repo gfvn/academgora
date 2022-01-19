@@ -5,6 +5,7 @@ import 'package:academ_gora_release/model/cancel.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../extension.dart';
 import '../instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
 
 class CancelsScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _CancelsScreenState extends State<CancelsScreen> {
   }
 
   Future<void> update() async {
+    print('update');
     await Future.delayed(const Duration(milliseconds: 1000));
     await _firebaseController.get("Отмена").then(
       (value) {
@@ -66,7 +68,61 @@ class _CancelsScreenState extends State<CancelsScreen> {
                     parent: AlwaysScrollableScrollPhysics()),
                 itemCount: cancelsList.length,
                 itemBuilder: (context, index) {
-                  return cancelListItem(cancelsList[index]);
+                  return Dismissible(
+                    key: ValueKey<String>(
+                        DateTime.now().millisecondsSinceEpoch.toString()),
+                    background: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'Удалить',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    secondaryBackground: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'Удалить',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    onDismissed: (DismissDirection direction) {
+                      showDeleteNotifications(context,
+                          confirmFunction: () async {
+                        _firebaseController
+                            .delete("Отмена/${cancelsList[index].workoutId}");
+                        Navigator.pop(context);
+                        await update();
+                        // cancelsList.removeAt(index);
+                      }, cancelFunction: () async {
+                        Navigator.pop(context);
+                        // cancelsList.removeAt(index);
+                        await update();
+                      });
+                    },
+                    child: cancelListItem(cancelsList[index]),
+                  );
                 },
               ),
             ),
@@ -116,21 +172,20 @@ class _CancelsScreenState extends State<CancelsScreen> {
         "${cancelModel.date!.substring(4, 8)}-${cancelModel.date!.substring(2, 4)}-${cancelModel.date!.substring(0, 2)}";
     return InkWell(
       onTap: () {
-        DateTime selected=DateTime(
-          int.parse(cancelModel.date!.substring(4, 8)),
-          int.parse(cancelModel.date!.substring(3, 4)),
-          int.parse(cancelModel.date!.substring(0, 2))
-        );
+        DateTime selected = DateTime(
+            int.parse(cancelModel.date!.substring(4, 8)),
+            int.parse(cancelModel.date!.substring(3, 4)),
+            int.parse(cancelModel.date!.substring(0, 2)));
         print("selected $selected");
         Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (c) => SetWorkoutTimeScreen(
-                phoneNumber: cancelModel.instructorPhoneNumber,
-                selectedDateFrom: selected,
-                time: cancelModel.time,
-              ),
+          MaterialPageRoute(
+            builder: (c) => SetWorkoutTimeScreen(
+              phoneNumber: cancelModel.instructorPhoneNumber,
+              selectedDateFrom: selected,
+              time: cancelModel.time,
             ),
-            );
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 20.0),

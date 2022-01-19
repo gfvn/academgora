@@ -43,7 +43,6 @@ Future<String> setupNotification() async {
   void setToken(String? token) {
     log('FCM Token: $token');
   }
-
   Stream<String> _tokenStream;
   await Firebase.initializeApp();
   await flutterLocalNotificationsPlugin

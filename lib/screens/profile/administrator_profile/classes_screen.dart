@@ -1,6 +1,7 @@
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/screens/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/archive_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/cancels_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/current_screen.dart';
@@ -112,8 +113,9 @@ class _ClassesScreenState extends State<ClassesScreen> {
         color: Colors.blue,
         child: InkWell(
           onTap: () {
-            Navigator.pop(context);
-          },
+    Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()),
+                (route) => false);          },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/data_keepers/notification_api.dart';
+import 'package:academ_gora_release/model/administrator.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +28,21 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   Instructor? _instructor;
   late CancelWorkout _cancelWorkout;
-
+  final AdminKeeper _adminKeeper = AdminKeeper();
+  List<Adminstrator> adminlist = [];
+  List<Adminstrator> filteredAdminList = [];
   @override
   void initState() {
     super.initState();
+    _getAdmins();
+    filteredAdminList = adminlist;
     _instructor = _instructorsKeeper
         .findInstructorByPhoneNumber(widget.workout.instructorPhoneNumber!);
     _cancelWorkout = CancelWorkoutImplementation(_instructor!);
+  }
+
+  void _getAdmins() {
+    adminlist = _adminKeeper.getAllPersons();
   }
 
   @override
@@ -135,6 +145,29 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
     );
   }
 
+  void sendNotifications() {
+    if (widget.workout.instructorFcmToken!.isNotEmpty) {
+      String formattedDate =
+          "${widget.workout.date!.substring(4, 8)}-${widget.workout.date!.substring(2, 4)}-${widget.workout.date!.substring(0, 2)}";
+      NotificationService().sendNotificationToFcm(
+        fcmToken: widget.workout.instructorFcmToken!,
+        tittle: "Запись отменена",
+        body:
+            "Клиент отменил занятие на $formattedDate, ${widget.workout.from},",
+      );
+    }
+
+    for (Adminstrator admin in filteredAdminList) {
+      if (admin.fcm_token != null && admin.fcm_token!.isNotEmpty) {
+        NotificationService().sendNotificationToFcm(
+          fcmToken: admin.fcm_token.toString(),
+          tittle: "Отмена занятия",
+          body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
+        );
+      }
+    }
+  }
+
   void _showCancelWorkoutDialog() {
     showDialog<void>(
       context: context,
@@ -152,15 +185,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
-                if (widget.workout.instructorFcmToken!.isNotEmpty) {
-                  String formattedDate =
-                      "${widget.workout.date!.substring(4, 8)}-${widget.workout.date!.substring(2, 4)}-${widget.workout.date!.substring(0, 2)}";
-                  NotificationService().sendNotificationToFcm(
-                      fcmToken: widget.workout.instructorFcmToken!,
-                      tittle: "Запись отменена",
-                      body:
-                          "Клиент отменил занятие на $formattedDate, ${widget.workout.from}");
-                }
+                sendNotifications();
                 _cancelWorkout.cancelWorkout(widget.workout);
                 NotificationService().cancelNotificationLocal(
                   int.parse(
@@ -211,7 +236,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 width: screenWidth * 0.4,
                 margin: const EdgeInsets.only(left: 45),
                 child: Text(
-                  "${_instructor!.name??""}",
+                  "${_instructor!.name ?? ""}",
                   style: const TextStyle(fontSize: 14),
                 )),
           ],

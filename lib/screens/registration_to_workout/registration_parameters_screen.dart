@@ -267,7 +267,7 @@ class RegistrationParametersScreenState
     var value = await _firebaseRequestsController.get(
         "${UserRole.instructor}/${workoutSingleton.instructorId!}/График работы/${workoutSingleton.date}");
     print("value ${value}");
-    print("duration ${workoutSingleton.workoutDuration}");
+    print("duration ${workoutSingleton.from}");
     print("value ${value[workoutSingleton.from]}");
     if (workoutSingleton.workoutDuration == 1) {
       if (_timesController.checkTimesStatusForOneHours(

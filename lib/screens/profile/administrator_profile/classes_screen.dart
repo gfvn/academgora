@@ -1,28 +1,19 @@
-import 'package:academ_gora_release/screens/auth/auth_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/personal_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/smeta_screen.dart';
+import 'package:academ_gora_release/main.dart';
+import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/archive_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/cancels_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/current_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_ui/flutter_auth_ui.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../main.dart';
-import '../../extension.dart';
-import '../../main_screen.dart';
-
-class AdministratorProfileScreen extends StatefulWidget {
-  const AdministratorProfileScreen({Key? key}) : super(key: key);
+class ClassesScreen extends StatefulWidget {
+  const ClassesScreen({Key? key}) : super(key: key);
 
   @override
-  _AdministratorProfileScreenState createState() =>
-      _AdministratorProfileScreenState();
+  _ClassesScreenState createState() => _ClassesScreenState();
 }
 
-class _AdministratorProfileScreenState
-    extends State<AdministratorProfileScreen> {
+class _ClassesScreenState extends State<ClassesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +34,7 @@ class _AdministratorProfileScreenState
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [_backToMainScreenButton(), _logoutButton()],
+                    children: [cancelButton(),_backToMainScreenButton()],
                   )),
             ],
           ),
@@ -58,76 +49,22 @@ class _AdministratorProfileScreenState
         button(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const NewsAddScreen()));
+                  MaterialPageRoute(builder: (c) => const CancelsScreen()));
             },
-            text: "Новости"),
+            text: "Отмена"),
         button(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const InstructorsScreen()));
+                  MaterialPageRoute(builder: (c) => const CurrentScreen()));
             },
-            text: "Инструкторы"),
+            text: "Текущие"),
         button(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const PersonalScreeen()));
+                  MaterialPageRoute(builder: (c) => const ArchiveScreen()));
             },
-            text: "Персонал"),
-        button(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (c) => const SmetaScreen()));
-            },
-            text: "Смета"),
-        button(
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const ClassesScreen()));
-            },
-            text: "Занятия"),
+            text: "Архив"),
       ],
-    );
-  }
-
-  void _logout() async {
-    FirebaseAuth.instance.currentUser!.delete;
-    FlutterAuthUi.signOut();
-    var pref = await SharedPreferences.getInstance();
-    pref.remove("userRole");
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const AuthScreen()),
-        (route) => false);
-  }
-
-  Widget _logoutButton() {
-    return Container(
-      width: screenWidth * 0.6,
-      height: screenHeight * 0.06,
-      margin: const EdgeInsets.only(top: 5),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.red,
-        child: InkWell(
-          onTap: () {
-            showLogoutDialog(context, _logout);
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "ВЫЙТИ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -151,6 +88,38 @@ class _AdministratorProfileScreenState
               children: const [
                 Text(
                   "НА ГЛАВНУЮ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+ Widget cancelButton() {
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.06,
+      margin: const EdgeInsets.only(top: 18),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        color: Colors.blue,
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Назад",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

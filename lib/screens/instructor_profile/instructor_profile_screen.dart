@@ -19,20 +19,28 @@ class InstructorProfileScreen extends StatelessWidget {
       height: screenHeight,
       width: screenWidth,
       decoration: screenDecoration("assets/instructor_profile/bg.png"),
-      child: Column(
+      child: Stack(
         children: [
-          Container(
-              margin: EdgeInsets.only(top: screenHeight * 0.06),
-              child: InstructorPhotoWidget(
-                instructor,
-                width: screenHeight * 0.2,
-                height: screenHeight * 0.2,
-              )),
-          _instructorNameWidget(),
-          _instructorInfoWidget(),
-          _instructorPhoneWidget(),
-          _socialNetworksList(),
-          _backButtons(context)
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: screenHeight * 0.06),
+                  child: InstructorPhotoWidget(
+                    instructor,
+                    width: screenHeight * 0.2,
+                    height: screenHeight * 0.2,
+                  ),
+                ),
+                _instructorNameWidget(),
+                _instructorInfoWidget(),
+                _instructorPhoneWidget(),
+                _socialNetworksList(),
+                _backButtons(context)
+              ],
+            ),
+          ),
         ],
       ),
     ));
@@ -40,61 +48,69 @@ class InstructorProfileScreen extends StatelessWidget {
 
   Widget _instructorNameWidget() {
     return Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Text(
-          instructor.name ?? "",
-          style: const TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
-        ));
+      margin: const EdgeInsets.only(top: 10),
+      child: Text(
+        instructor.name ?? "",
+        style: const TextStyle(
+            fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Widget _instructorInfoWidget() {
     return Container(
-        height: screenHeight * 0.25,
-        width: screenWidth * 0.8,
-        margin: const EdgeInsets.only(top: 10),
-        child: Text(
-          instructor.info ?? "",
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ));
+      // height: screenHeight * 0.25,
+      width: screenWidth * 0.9,
+      margin: const EdgeInsets.only(top: 10),
+      child: Text(
+        instructor.info ?? "",
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Widget _instructorPhoneWidget() {
     return GestureDetector(
+      onTap: () {
+        callNumber(instructor.phone!);
+      },
+      child: GestureDetector(
         onTap: () {
           callNumber(instructor.phone!);
         },
-        child: GestureDetector(
-            onTap: () {
-              callNumber(instructor.phone!);
-            },
-            child: Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(left: screenWidth * 0.1),
-                child: Text(
-                  "Телефон: ${instructor.phone}",
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ))));
+        child: Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(left: screenWidth * 0.1, top: screenHeight * 0.02),
+          child: Text(
+            "Телефон: ${instructor.phone}",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _socialNetworksList() {
-    return SizedBox(
-      height: screenHeight * 0.25,
+    return Container(
+      height: instructor.socialNetworks != null
+            ? instructor.socialNetworks!.length*40
+            : 0.0,
       child: ListView.builder(
-          itemCount: instructor.socialNetworks != null
-              ? instructor.socialNetworks!.length
-              : 0,
-          itemBuilder: (context, index) {
-            return "${instructor.socialNetworks!.values.toList()[index]}"
-                    .isNotEmpty
-                ? _socialNetworkWidget(
-                    _getSocialNetworkImagePath(
-                        "${instructor.socialNetworks!.keys.toList()[index]}"),
-                    "${instructor.socialNetworks!.values.toList()[index]}")
-                : Container();
-          }),
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: instructor.socialNetworks != null
+            ? instructor.socialNetworks!.length
+            : 0,
+        itemBuilder: (context, index) {
+          return "${instructor.socialNetworks!.values.toList()[index]}"
+                  .isNotEmpty
+              ? _socialNetworkWidget(
+                  _getSocialNetworkImagePath(
+                      "${instructor.socialNetworks!.keys.toList()[index]}"),
+                  "${instructor.socialNetworks!.values.toList()[index]}")
+              : Container();
+        },
+      ),
     );
   }
 
@@ -111,23 +127,26 @@ class InstructorProfileScreen extends StatelessWidget {
             child: Image.asset(path),
           ),
           GestureDetector(
-              onTap: () {
-                
-                if (path ==
-                        "assets/instructor_profile/social_network_icons/9telegram.png" &&
-                    !url.contains("https://t.me/")) {
-                  launchURL("https://t.me/" + url.replaceAll("@", ""));
-                }
-                launchURL(url);
-              },
-              child: SizedBox(
-                width: screenWidth * 0.7,
-                child: Text(
-                  url,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-              )),
+            onTap: () {
+              print("hererhererherer");
+              if (path ==
+                      "assets/instructor_profile/social_network_icons/9telegram.png" &&
+                  !url.contains("https://t.me/")) {
+                launchURL("https://t.me/" + url.replaceAll("@", ""));
+              }
+              launchURL(url);
+            },
+            child: SizedBox(
+              width: screenWidth * 0.7,
+              child: Text(
+                url,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -146,17 +165,18 @@ class InstructorProfileScreen extends StatelessWidget {
             child: Image.asset(path),
           ),
           GestureDetector(
-              onTap: () {
-                launchURL("https://t.me/" + url);
-              },
-              child: SizedBox(
-                width: screenWidth * 0.7,
-                child: Text(
-                  url,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-              )),
+            onTap: () {
+              launchURL("https://t.me/" + url);
+            },
+            child: SizedBox(
+              width: screenWidth * 0.7,
+              child: Text(
+                url,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -187,11 +207,12 @@ class InstructorProfileScreen extends StatelessWidget {
 
   Widget _backButtons(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(top: 35),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_backButton(context), _backToMainScreenButton(context)],
-        ));
+      margin: const EdgeInsets.only(top: 35, bottom: 35),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [_backButton(context), _backToMainScreenButton(context)],
+      ),
+    );
   }
 
   Widget _backButton(BuildContext context) {

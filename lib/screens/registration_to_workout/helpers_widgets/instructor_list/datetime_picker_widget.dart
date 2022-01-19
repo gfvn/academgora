@@ -60,7 +60,10 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   Widget _dateTimePickerWidget() {
     return Column(
-      children: [_dateSliderWidget(), _timeWidget()],
+      children: [
+        _dateSliderWidget(),
+        _timeWidget(),
+      ],
     );
   }
 
@@ -117,7 +120,12 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   Widget _timeWidget() {
-    return Container(
+    print("length ${_openedTimes.length}");
+    return _openedTimes.isEmpty? const Padding(
+      padding: EdgeInsets.only(top:16.0, bottom: 16),
+      child: Center(child: Text("Нет доступного времени", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
+    ):
+     Container(
       margin: EdgeInsets.only(left: screenWidth * 0.1, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

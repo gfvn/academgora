@@ -83,9 +83,9 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 3,
+                flex: 1,
                 child: Container(
-                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  margin: const EdgeInsets.only(left: 3, right: 5),
                   child: Text(
                     widget.instructor.name ?? "Имя Фамилия",
                     maxLines: 2,
@@ -96,11 +96,14 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Text(
                   widget.instructor.phone ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style:
-                      const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
             ],

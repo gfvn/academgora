@@ -49,7 +49,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
           children: [
             Container(
               height: screenHeight * 0.8,
-              margin: const EdgeInsets.only(top: 50, left: 15, right: 15),
+              margin: const EdgeInsets.only(top: 30, left: 15, right: 15),
               child: ListView.builder(
                 itemCount: reversedList.length,
                 itemBuilder: (context, index) {

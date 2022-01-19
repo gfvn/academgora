@@ -314,7 +314,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   Widget _workoutsListWidget() {
     return SizedBox(
-        height: screenHeight * 0.22,
+        height: screenHeight * 0.20,
         width: screenWidth * 0.6,
         child: ListView.builder(
           itemCount: _workoutsPerDay.length,

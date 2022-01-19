@@ -134,7 +134,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     return CalendarCarousel<Event>(
       locale: "ru",
       width: screenWidth * 0.69,
-      height:  350,
+      height: screenHeight * 0.38,
       selectedDayButtonColor: Colors.blue,
       headerMargin: const EdgeInsets.all(0),
       headerTextStyle:

@@ -114,10 +114,8 @@ class _CancelsScreenState extends State<CancelsScreen> {
                             .delete("Отмена/${cancelsList[index].workoutId}");
                         Navigator.pop(context);
                         await update();
-                        // cancelsList.removeAt(index);
                       }, cancelFunction: () async {
                         Navigator.pop(context);
-                        // cancelsList.removeAt(index);
                         await update();
                       });
                     },
@@ -239,8 +237,20 @@ class _CancelsScreenState extends State<CancelsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Cтатус: "),
-                    Text("${cancelModel.status}"),
+                    const Text(
+                      "Cтатус: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16
+                      ),
+                    ),
+                    Text(
+                      "${cancelModel.status}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16
+                      ),
+                    ),
                   ],
                 ),
               ],

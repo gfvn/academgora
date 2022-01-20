@@ -43,6 +43,7 @@ Future<String> setupNotification() async {
   void setToken(String? token) {
     log('FCM Token: $token');
   }
+
   Stream<String> _tokenStream;
   await Firebase.initializeApp();
   await flutterLocalNotificationsPlugin
@@ -140,7 +141,7 @@ class MyAppState extends State<MyApp> {
         _isUserAuthorized = false;
       },
     );
-  _saveUsersIntoKeeper(null);
+    _saveUsersIntoKeeper(null);
     // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
 
     _saveAdminsIntoKeeper(null);
@@ -150,7 +151,7 @@ class MyAppState extends State<MyApp> {
     _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
 
     _saveNewsrDataKeeper(null);
-    _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
+    // _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);
 
     _saveCancelsIntoDataKeeper(null);
     // _firebaseController.addListener("Отмена", _saveCancelsIntoDataKeeper);
@@ -269,12 +270,14 @@ class MyAppState extends State<MyApp> {
   }
 
   void _saveNewsrDataKeeper(Event? event) async {
-    await _firebaseController.getAsList('Новости').then((value) {
+    await _firebaseController.getAsList('Новости').then((value) async{
       log("Новости ${value.toString()}");
       _newsDataKeeper.updateInstructors(value);
-      isloded();
+
       setState(() {});
     });
+    await Future.delayed(const Duration(milliseconds: 3000));
+    isloded();
   }
 
   void _savePriceInDataKeeper(Event? event) async {

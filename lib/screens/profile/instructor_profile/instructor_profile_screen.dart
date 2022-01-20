@@ -239,7 +239,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                     ),
                   ),
                   OutlinedButton(
-                    child: Text('ОТМЕНА'),
+                    child: const Text('ОТМЕНА'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

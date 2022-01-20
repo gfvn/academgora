@@ -17,27 +17,11 @@ class CancelWorkoutImplementation implements CancelWorkout {
 
   @override
   void cancelWorkout(Workout workout) {
+    print("hero");
     _deleteWorkoutFromUser(workout);
     _deleteWorkoutFromInstructor(workout);
-    _createCancelOnDB(workout);
   }
 
-  void _createCancelOnDB(Workout workout) {
-    _firebaseRequestsController.update(
-      "Отмена/${workout.id.toString()}",
-      {
-        "workout_id": workout.id,
-        "workout_sportType": workout.sportType,
-        "date": workout.date,
-        "time": (workout.from.toString() + "-" + workout.to.toString()),
-        "instructor_name": workout.instructorName,
-        "instructor_fcm_token": workout.instructorFcmToken,
-        "instructor_phone": workout.instructorPhoneNumber,
-        "duration": workout.workoutDuration,
-        "user_number": workout.userPhoneNumber
-      },
-    );
-  }
 
   void _deleteWorkoutFromUser(Workout workout) {
     String userId = FirebaseAuth.instance.currentUser!.uid;

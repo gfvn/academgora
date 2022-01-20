@@ -398,13 +398,14 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         NotificationService().sendNotificationToFcm(
           fcmToken: admin.fcm_token.toString(),
           tittle: "Отмена занятия",
-          body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
+          body: "Инструктор отменил занятие, пожалуйста, утвердите!",
         );
       }
     }
   }
 
   void _createCancelOnDB(String time, String status) {
+    print("здесььььььь");
     String userId = FirebaseAuth.instance.currentUser!.uid;
     String dateString = DateFormat('ddMMyyyy').format(_selectedDate);
     _firebaseController.update(
@@ -418,6 +419,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         "instructor_fcm_token": _currentInstructor?.fcm_token,
         "instructor_phone": _currentInstructor?.phone,
         "status": status,
+        "неок": 'ok'
       },
     );
   }
@@ -463,6 +465,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
             _firebaseController.update(
                 "${UserRole.instructor}/${_currentInstructor!.id}/График работы/$dateString",
                 {time: status}).then((value) {
+              print("herererer");
               if (!_checkChangeTimePossibility(time)) {
                 _deleteWorkout(time);
               }
@@ -499,14 +502,15 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   }
 
   void _deleteWorkout(String time) {
+    print("delete workout with admin");
     String workoutId = "";
     if (_workoutsPerDay.isNotEmpty) {
       for (var element in _workoutsPerDay) {
         if (_timesController.checkTimeInterval(
             time, element.from!, element.to!)) {
+          print("${element.userPhoneNumber!}");
           workoutId = element.id!;
           _findUserAndDeleteWorkout(element.userPhoneNumber!, workoutId);
-          _sendNotification(element.userPhoneNumber!, workoutId);
         }
       }
     }

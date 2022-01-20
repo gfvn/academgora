@@ -332,7 +332,7 @@ class RegistrationParametersScreenState
       builder: (BuildContext context) {
         return AlertDialog(
           content: const Text(
-            "Извините, на данное время уже записались или нструктор отменил запись, пожалуйста, выберите другое время",
+            "Извините, на данное время уже записались или инструктор отменил запись, пожалуйста, выберите другое время",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18),
           ),

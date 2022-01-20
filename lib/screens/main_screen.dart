@@ -107,6 +107,8 @@ class _MainScreenState extends State<MainScreen> {
     });
     newsList = _newsKeeper.getAllPersons();
     imageUrls = _newsKeeper.getNewsUrls();
+    print("imageUrls $imageUrls");
+    print('newsList $newsList');
     createSliderWidget();
     setState(
       () {
@@ -162,6 +164,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _getNews();
     return Scaffold(
       body: Container(
         decoration: screenDecoration("assets/main/background.svg"),

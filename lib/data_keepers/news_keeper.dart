@@ -51,11 +51,12 @@ class NewsKeeper {
 
   void updateNewsUrls() async {
     newsUrl = [];
-    log('urrrlUpdate');
     for (News news in newsList) {
       final String url = await saveImageUrl(imageName: news.photo.toString());
       newsUrl.add(url);
     }
+        log('urrrlUpdate $newsUrl');
+
   }
 
   Future<String> saveImageUrl({required String imageName}) async {

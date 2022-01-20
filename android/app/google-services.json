@@ -1,41 +1,173 @@
 {
   "project_info": {
-    "project_number": "797239478378",
-    "firebase_url": "https://academdevelop-default-rtdb.firebaseio.com",
-    "project_id": "academdevelop",
-    "storage_bucket": "academdevelop.appspot.com"
+    "project_number": "888183445557",
+    "firebase_url": "https://academgora-6be92-default-rtdb.firebaseio.com",
+    "project_id": "academgora-6be92",
+    "storage_bucket": "academgora-6be92.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:797239478378:android:41091935f74187b8f86213",
+        "mobilesdk_app_id": "1:888183445557:android:14b983da64e3c3dd69b97c",
         "android_client_info": {
-          "package_name": "com.ultimatum.academ_gora_test"
+          "package_name": "com.skynet.academ_gora"
         }
       },
       "oauth_client": [
         {
-          "client_id": "797239478378-bf1lus7d6epaqf7dc1puv0ufg6g863e6.apps.googleusercontent.com",
+          "client_id": "888183445557-04kf87s0int7qdk0c27oj1g40edpgn72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "88967569510ca313abdbfba6862531705af3bc74"
+          }
+        },
+        {
+          "client_id": "888183445557-5vn23l9u2ljr0g7pfautqbvss0h4ftad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "5aa66f99913572a8f2ca497e5d08c79702c519ac"
+          }
+        },
+        {
+          "client_id": "888183445557-cqbcc7pr0livmn4uavmm7kag07hghm2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "0abc173f4aca75ea39756f383788fb4b430da0d9"
+          }
+        },
+        {
+          "client_id": "888183445557-ltrn69csaatvdatc20phrtme1o1jjtbu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "8170d000232b0f02195c6293a05854ec69584496"
+          }
+        },
+        {
+          "client_id": "888183445557-np0hqq24t4b6ahthb4uruvuin9442fr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "560e5a405c1368589b7fcaed132057a995ca3cab"
+          }
+        },
+        {
+          "client_id": "888183445557-pokubnpoabtfci85o5q75uiabdcgccta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skynet.academ_gora",
+            "certificate_hash": "62a0c2bd60427e03d142eefbd7c9ed9e22d817da"
+          }
+        },
+        {
+          "client_id": "888183445557-vf2crm6d74vbnaane6f7d8ohp79i4l1r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDofE30ZgHnt4NvYmMXH5agGsnyBAXrkMo"
+          "current_key": "AIzaSyAIeIwz_NCSO7LNPB_DwOqBEbwIwgjrmDA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "797239478378-bf1lus7d6epaqf7dc1puv0ufg6g863e6.apps.googleusercontent.com",
+              "client_id": "888183445557-vf2crm6d74vbnaane6f7d8ohp79i4l1r.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "797239478378-ho3svf0sfss9i97r15pit6rjos0nioho.apps.googleusercontent.com",
+              "client_id": "888183445557-cjeojt6omlrh1htfnqourobdegesugjk.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ultimatum.academGoraTest"
+                "bundle_id": "com.skynet.academGora"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888183445557:android:48a074ce7afa245569b97c",
+        "android_client_info": {
+          "package_name": "com.ultimatum.academ_gora_release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888183445557-6aidpocla0kvb0c5mc3tua40e2c2d76p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "62a0c2bd60427e03d142eefbd7c9ed9e22d817da"
+          }
+        },
+        {
+          "client_id": "888183445557-fl7blaqmsi1v01jpg321o2dtteqr7ort.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "5aa66f99913572a8f2ca497e5d08c79702c519ac"
+          }
+        },
+        {
+          "client_id": "888183445557-fvqm0n3bkudp5d85kvvr7nkfchnpn0ns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "88967569510ca313abdbfba6862531705af3bc74"
+          }
+        },
+        {
+          "client_id": "888183445557-gmurpm166g7r5upg3n8j7f7j3mkjvcmu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "0abc173f4aca75ea39756f383788fb4b430da0d9"
+          }
+        },
+        {
+          "client_id": "888183445557-rg442u9e0ufcds3trsag4d12kpgon09f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "560e5a405c1368589b7fcaed132057a995ca3cab"
+          }
+        },
+        {
+          "client_id": "888183445557-thren81hr0d6fisgkn5sqnqumonor4nv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultimatum.academ_gora_release",
+            "certificate_hash": "8170d000232b0f02195c6293a05854ec69584496"
+          }
+        },
+        {
+          "client_id": "888183445557-vf2crm6d74vbnaane6f7d8ohp79i4l1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIeIwz_NCSO7LNPB_DwOqBEbwIwgjrmDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888183445557-vf2crm6d74vbnaane6f7d8ohp79i4l1r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "888183445557-cjeojt6omlrh1htfnqourobdegesugjk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.skynet.academGora"
               }
             }
           ]

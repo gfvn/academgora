@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>797239478378-hohli82aeur8c5ibvs5jff53ed0cs56t.apps.googleusercontent.com</string>
+	<string>888183445557-saqo743v5t5u6e8curt0h7262pjuah1e.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.797239478378-hohli82aeur8c5ibvs5jff53ed0cs56t</string>
+	<string>com.googleusercontent.apps.888183445557-saqo743v5t5u6e8curt0h7262pjuah1e</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>888183445557-04kf87s0int7qdk0c27oj1g40edpgn72.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA6fXOqkgYs0BfDixNujtdt2lUh9wtmGTo</string>
+	<string>AIzaSyCwdggh7IEDpisxvGJKB1wzqasnn0oeEnk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>797239478378</string>
+	<string>888183445557</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.ultimatum.academGora</string>
 	<key>PROJECT_ID</key>
-	<string>academdevelop</string>
+	<string>academgora-6be92</string>
 	<key>STORAGE_BUCKET</key>
-	<string>academdevelop.appspot.com</string>
+	<string>academgora-6be92.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:797239478378:ios:ff72b8617a0cf6a1f86213</string>
+	<string>1:888183445557:ios:cbeea2f74142f3d369b97c</string>
+	<key>DATABASE_URL</key>
+	<string>https://academgora-6be92-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

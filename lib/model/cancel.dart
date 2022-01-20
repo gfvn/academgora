@@ -6,8 +6,7 @@ class CancelModel {
   String? instructorName;
   String? instructorFcmToken;
   String? instructorPhoneNumber;
-  int? duration;
-  int? userNumber;
+  String? status;
   static CancelModel fromJson(String id, cancelModelApi) {
     CancelModel cancelModel = CancelModel();
     cancelModel.workoutId = cancelModelApi['workout_id'];
@@ -17,8 +16,7 @@ class CancelModel {
     cancelModel.instructorName = cancelModelApi['instructor_name'];
     cancelModel.instructorFcmToken = cancelModelApi['instructor_fcm_token'];
     cancelModel.instructorPhoneNumber = cancelModelApi['instructor_phone'];
-    cancelModel.duration = cancelModelApi['duration'];
-    cancelModel.userNumber = cancelModelApi['user_number'];
+    cancelModel.status=cancelModelApi['status'];
     return cancelModel;
   }
 }

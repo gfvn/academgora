@@ -176,13 +176,13 @@ class _CancelsScreenState extends State<CancelsScreen> {
             int.parse(cancelModel.date!.substring(4, 8)),
             int.parse(cancelModel.date!.substring(3, 4)),
             int.parse(cancelModel.date!.substring(0, 2)));
-        print("selected $selected");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (c) => SetWorkoutTimeScreen(
               phoneNumber: cancelModel.instructorPhoneNumber,
               selectedDateFrom: selected,
               time: cancelModel.time,
+              status: cancelModel.status,
             ),
           ),
         );
@@ -195,6 +195,7 @@ class _CancelsScreenState extends State<CancelsScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
+            // ignore: prefer_const_literals_to_create_immutables
             boxShadow: [
               const BoxShadow(
                 color: Colors.black,
@@ -224,7 +225,7 @@ class _CancelsScreenState extends State<CancelsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Вид занятия: "),
+                    const Text("Вид занятия: "),
                     Text("${cancelModel.workoutSportType}"),
                   ],
                 ),
@@ -238,10 +239,8 @@ class _CancelsScreenState extends State<CancelsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Продолжительность: "),
-                    cancelModel.duration == 1
-                        ? Text("${cancelModel.duration} час")
-                        : Text("${cancelModel.duration} часа"),
+                    const Text("Cтатус: "),
+                    Text("${cancelModel.status}"),
                   ],
                 ),
               ],

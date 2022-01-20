@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/model/administrator.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../data_keepers/admin_keeper.dart';
+import '../../../../../data_keepers/notification_api.dart';
 import '../../../../../main.dart';
 import 'instructor_data_view_model.dart';
 import 'instructor_data_view_model_impl.dart';
@@ -20,9 +23,14 @@ class SetWorkoutTimeScreen extends StatefulWidget {
   final String? phoneNumber;
   final DateTime? selectedDateFrom;
   final String? time;
+  final String? status;
 
   const SetWorkoutTimeScreen(
-      {Key? key, this.phoneNumber, this.selectedDateFrom, this.time})
+      {Key? key,
+      this.phoneNumber,
+      this.selectedDateFrom,
+      this.time,
+      this.status})
       : super(key: key);
 
   @override
@@ -38,6 +46,9 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   List<String> _openedTimesPerDay = [];
   List<String> _closedTimesPerDay = [];
   List<String> _notAvailableTimesPerDay = [];
+  List<Adminstrator> adminlist = [];
+  List<Adminstrator> filteredAdminList = [];
+  final AdminKeeper _adminKeeper = AdminKeeper();
 
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
 
@@ -51,11 +62,20 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   @override
   void initState() {
+    _getAdmins();
+    if (widget.status != null) {
+      _selectedTimeStatus = widget.status;
+    }
+    filteredAdminList = adminlist;
     if (widget.selectedDateFrom != null) {
       _selectedDate = widget.selectedDateFrom ?? DateTime.now();
     }
     super.initState();
     _instructorDataViewModel.getInstructorData(widget.phoneNumber);
+  }
+
+  void _getAdmins() {
+    adminlist = _adminKeeper.getAllPersons();
   }
 
   @override
@@ -372,6 +392,36 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     });
   }
 
+  void _sendNotificationsForAdmins() {
+    for (Adminstrator admin in filteredAdminList) {
+      if (admin.fcm_token != null && admin.fcm_token!.isNotEmpty) {
+        NotificationService().sendNotificationToFcm(
+          fcmToken: admin.fcm_token.toString(),
+          tittle: "Отмена занятия",
+          body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
+        );
+      }
+    }
+  }
+
+  void _createCancelOnDB(String time, String status) {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    String dateString = DateFormat('ddMMyyyy').format(_selectedDate);
+    _firebaseController.update(
+      "Отмена/$userId$dateString$time",
+      {
+        "workout_id": userId + dateString + time,
+        "workout_sportType": _currentInstructor?.kindOfSport,
+        "date": dateString,
+        "time": time,
+        "instructor_name": _currentInstructor?.name,
+        "instructor_fcm_token": _currentInstructor?.fcm_token,
+        "instructor_phone": _currentInstructor?.phone,
+        "status": status,
+      },
+    );
+  }
+
   void _sendOnce(String time, String status) async {
     UserRole.getUserRole().then(
       (userRole) {
@@ -403,7 +453,9 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
               );
             }
           } else {
-            _showWarningCancelDialog();
+            _createCancelOnDB(time, status);
+            _sendNotificationsForAdmins();
+            _showWarningCancelDialog(dateString, time);
           }
         }
         if (userRole == UserRole.administrator) {
@@ -488,15 +540,17 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     });
   }
 
-  void _showWarningCancelDialog() {
+  void _showWarningCancelDialog(String date, String time) {
+    String formattedDate =
+        "${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(0, 2)}";
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: const Text(
-            "На выбранное время назначено занятие",
+          content: Text(
+            "Запрос на отмену отправлен. \n $formattedDate и \n $time",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
           actions: [
             TextButton(

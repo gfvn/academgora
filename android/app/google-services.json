@@ -15,51 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "888183445557-04kf87s0int7qdk0c27oj1g40edpgn72.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.skynet.academ_gora",
-            "certificate_hash": "88967569510ca313abdbfba6862531705af3bc74"
-          }
-        },
-        {
-          "client_id": "888183445557-5vn23l9u2ljr0g7pfautqbvss0h4ftad.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.skynet.academ_gora",
-            "certificate_hash": "5aa66f99913572a8f2ca497e5d08c79702c519ac"
-          }
-        },
-        {
-          "client_id": "888183445557-cqbcc7pr0livmn4uavmm7kag07hghm2q.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.skynet.academ_gora",
-            "certificate_hash": "0abc173f4aca75ea39756f383788fb4b430da0d9"
-          }
-        },
-        {
-          "client_id": "888183445557-ltrn69csaatvdatc20phrtme1o1jjtbu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.skynet.academ_gora",
-            "certificate_hash": "8170d000232b0f02195c6293a05854ec69584496"
-          }
-        },
-        {
           "client_id": "888183445557-np0hqq24t4b6ahthb4uruvuin9442fr3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.skynet.academ_gora",
             "certificate_hash": "560e5a405c1368589b7fcaed132057a995ca3cab"
-          }
-        },
-        {
-          "client_id": "888183445557-pokubnpoabtfci85o5q75uiabdcgccta.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.skynet.academ_gora",
-            "certificate_hash": "62a0c2bd60427e03d142eefbd7c9ed9e22d817da"
           }
         },
         {
@@ -99,51 +59,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "888183445557-6aidpocla0kvb0c5mc3tua40e2c2d76p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ultimatum.academ_gora_release",
-            "certificate_hash": "62a0c2bd60427e03d142eefbd7c9ed9e22d817da"
-          }
-        },
-        {
-          "client_id": "888183445557-fl7blaqmsi1v01jpg321o2dtteqr7ort.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ultimatum.academ_gora_release",
-            "certificate_hash": "5aa66f99913572a8f2ca497e5d08c79702c519ac"
-          }
-        },
-        {
-          "client_id": "888183445557-fvqm0n3bkudp5d85kvvr7nkfchnpn0ns.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ultimatum.academ_gora_release",
-            "certificate_hash": "88967569510ca313abdbfba6862531705af3bc74"
-          }
-        },
-        {
-          "client_id": "888183445557-gmurpm166g7r5upg3n8j7f7j3mkjvcmu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ultimatum.academ_gora_release",
-            "certificate_hash": "0abc173f4aca75ea39756f383788fb4b430da0d9"
-          }
-        },
-        {
           "client_id": "888183445557-rg442u9e0ufcds3trsag4d12kpgon09f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ultimatum.academ_gora_release",
             "certificate_hash": "560e5a405c1368589b7fcaed132057a995ca3cab"
-          }
-        },
-        {
-          "client_id": "888183445557-thren81hr0d6fisgkn5sqnqumonor4nv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ultimatum.academ_gora_release",
-            "certificate_hash": "8170d000232b0f02195c6293a05854ec69584496"
           }
         },
         {

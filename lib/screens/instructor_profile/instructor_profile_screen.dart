@@ -15,6 +15,10 @@ class InstructorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("${instructor.name}"),
+        centerTitle: true,
+      ),
         body: Container(
       height: screenHeight,
       width: screenWidth,
@@ -37,7 +41,7 @@ class InstructorProfileScreen extends StatelessWidget {
                 _instructorInfoWidget(),
                 _instructorPhoneWidget(),
                 _socialNetworksList(),
-                _backButtons(context)
+                // _backButtons(context)
               ],
             ),
           ),
@@ -93,11 +97,9 @@ class InstructorProfileScreen extends StatelessWidget {
 
   Widget _socialNetworksList() {
     return Container(
-      height: instructor.socialNetworks != null
-            ? instructor.socialNetworks!.length*40
-            : 0.0,
+      height: screenHeight*0.3,
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        // physics: NeverScrollableScrollPhysics(),
         itemCount: instructor.socialNetworks != null
             ? instructor.socialNetworks!.length
             : 0,
@@ -247,7 +249,7 @@ class InstructorProfileScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Text(
-                      "НА ГЛАВНУЮ",
+                      "НА ГЛАВНУЮии",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

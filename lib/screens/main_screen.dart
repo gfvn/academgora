@@ -72,7 +72,6 @@ class _MainScreenState extends State<MainScreen> {
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
-        print('A new onMessageOpenedApp event was published!');
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         AppleNotification? ios = message.notification?.apple;
@@ -107,8 +106,6 @@ class _MainScreenState extends State<MainScreen> {
     });
     newsList = _newsKeeper.getAllPersons();
     imageUrls = _newsKeeper.getNewsUrls();
-    print("imageUrls $imageUrls");
-    print('newsList $newsList');
     createSliderWidget();
     setState(
       () {

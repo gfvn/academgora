@@ -116,7 +116,6 @@ class _AuthScreenState extends State<AuthScreen> {
       await _authController
           .saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!, token)
           .then((userRole) {
-        print(FirebaseAuth.instance.currentUser!.phoneNumber!);
         if (userRole == UserRole.user) {
           _firebaseRequestsController.addListener(
               "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",

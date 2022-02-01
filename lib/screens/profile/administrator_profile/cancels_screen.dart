@@ -32,7 +32,6 @@ class _CancelsScreenState extends State<CancelsScreen> {
   }
 
   Future<void> update() async {
-    print('update');
     await Future.delayed(const Duration(milliseconds: 1000));
     await _firebaseController.get("Отмена").then(
       (value) {

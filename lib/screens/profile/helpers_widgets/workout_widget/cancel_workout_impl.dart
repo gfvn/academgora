@@ -17,7 +17,6 @@ class CancelWorkoutImplementation implements CancelWorkout {
 
   @override
   void cancelWorkout(Workout workout) {
-    print("hero");
     _deleteWorkoutFromUser(workout);
     _deleteWorkoutFromInstructor(workout);
   }

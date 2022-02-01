@@ -120,7 +120,6 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   Widget _timeWidget() {
-    print("length ${_openedTimes.length}");
     return _openedTimes.isEmpty? const Padding(
       padding: EdgeInsets.only(top:16.0, bottom: 16),
       child: Center(child: Text("Нет доступного времени", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),

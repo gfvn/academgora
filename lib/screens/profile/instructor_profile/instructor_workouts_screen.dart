@@ -1,6 +1,10 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
+import 'package:academ_gora_release/core/components/dialogs/cancel_dialog.dart';
+import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/core/user_role.dart';
@@ -24,8 +28,10 @@ import 'instructor_profile_screen.dart';
 
 class InstructorWorkoutsScreen extends StatefulWidget {
   final String? instructorPhoneNumber;
+  final bool isFromAdmin;
 
-  const InstructorWorkoutsScreen({Key? key, this.instructorPhoneNumber})
+  const InstructorWorkoutsScreen(
+      {Key? key, this.instructorPhoneNumber, this.isFromAdmin = false})
       : super(key: key);
 
   @override
@@ -44,78 +50,112 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
 
+  late Instructor instructor;
+
+  @override
+  void initState() {
+    instructor = _instructorsKeeper
+        .findInstructorByPhoneNumber(widget.instructorPhoneNumber.toString())!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     _getAllWorkouts();
     _fillMarkedDateMap();
     return Scaffold(
-        body: Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: screenDecoration("assets/instructor_profile/bg.png"),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Column(
-          children: [
-            _titleRow(),
-            _changeRegistrationTimeButton(),
-            _calendar(),
-            _dateSliderWidget(),
-            _workoutsListWidget(),
-            _redactProfileButton(),
-            _backToMainButton()
-          ],
+        appBar: AppBar(
+          title: Text(
+            "${instructor.name}",
+            style: const TextStyle(fontSize: 14),
+          ),
+          centerTitle: true,
         ),
-      ),
-    ));
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: screenDecoration("assets/instructor_profile/bg.png"),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Column(
+              children: [
+                _titleRow(),
+                _changeRegistrationTimeButton(),
+                _calendar(),
+                _dateSliderWidget(),
+                _workoutsListWidget(),
+                _redactProfileButton(),
+                _backToMainButton()
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _titleRow() {
-    return Container(
-        margin: const EdgeInsets.only(top: 28, right: 28),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [_myRegistrationsTitle(), _logoutButton()],
-        ));
+    return !widget.isFromAdmin
+        ? Container(
+            margin: const EdgeInsets.only(top: 0, right: 28),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _myRegistrationsTitle(),
+                _logoutButton(),
+              ],
+            ),
+          )
+        : Container();
   }
 
   Widget _myRegistrationsTitle() {
     return Container(
-        margin: const EdgeInsets.only(right: 20),
-        child: const Text(
-          "Мои записи",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ));
+      margin: const EdgeInsets.only(right: 20),
+      child: const Text(
+        "Мои записи",
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Widget _logoutButton() {
     return GestureDetector(
-        onTap: () {
-          showLogoutDialog(context, _logout);
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "ВЫЙТИ",
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            Container(
-                margin: const EdgeInsets.only(left: 5),
-                height: 20,
-                width: 20,
-                child: const Icon(Icons.logout))
-          ],
-        ));
+      onTap: () {
+        Dialogs.showUnmodal(
+          context,
+          CancelDialog(
+            title: "ВЫХОД",
+            text: "Вы действительно хотите выйти ?",
+            onAcept: () {
+              _logout();
+            },
+          ),
+        );
+        // showLogoutDialog(context, _logout);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            "ВЫЙТИ",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 5),
+              height: 20,
+              width: 20,
+              child: const Icon(Icons.logout))
+        ],
+      ),
+    );
   }
 
   Widget _changeRegistrationTimeButton() {
     return Container(
-      width: screenWidth * 0.7,
-      height: screenHeight * 0.065,
+      width: screenWidth * 0.9,
+      height: 50,
       margin: const EdgeInsets.only(top: 12),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: kMainColor,
         child: InkWell(
             onTap: _openSetWorkoutTimeScreen,
@@ -128,7 +168,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold),
                     ),
                   ]),
@@ -145,7 +185,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
           onTap: _decreaseDate,
           child: SizedBox(
             height: screenWidth * 0.07,
-            width: screenWidth * 0.07,
+            width: screenWidth * 0.09,
             child: Image.asset("assets/instructors_list/e_6.png"),
           ),
         ),
@@ -190,59 +230,56 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
     }
   }
 
-  Widget _redactProfileButton() {
-    return Container(
-      width: screenWidth * 0.65,
-      height: screenHeight * 0.058,
-      margin: const EdgeInsets.only(top: 5),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-            onTap: _openRedactProfileScreen,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "РЕДАКТИРОВАТЬ ПРОФИЛЬ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
-      ),
+  // Widget _redactProfileButton() {
+  //   return Container(
+  //     width: screenWidth * 0.65,
+  //     height: screenHeight * 0.058,
+  //     margin: const EdgeInsets.only(top: 5),
+  //     child: Material(
+  //       borderRadius: const BorderRadius.all(Radius.circular(35)),
+  //       color: kMainColor,
+  //       child: InkWell(
+  //         onTap: _openRedactProfileScreen,
+  //         child: Center(
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: const [
+  //               Text(
+  //                 "РЕДАКТИРОВАТЬ ПРОФИЛЬ",
+  //                 textAlign: TextAlign.center,
+  //                 style: TextStyle(
+  //                     color: Colors.white,
+  //                     fontSize: 14,
+  //                     fontWeight: FontWeight.bold),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget _backToMainButton() {
+    return AcademButton(
+      tittle: 'НА ГЛАВНУЮ',
+      onTap: () {
+        FunctionsConsts.openMainScreen(context);
+      },
+      width: screenWidth * 0.9,
+      fontSize: 18,
+      borderColor: kMainColor,
+      colorButton: kWhite,
+      colorText: kMainColor,
     );
   }
 
-  Widget _backToMainButton() {
-    return Container(
-      width: screenWidth * 0.5,
-      height: screenHeight * 0.056,
-      margin: const EdgeInsets.only(top: 7),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-            onTap: _openMainScreen,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "НА ГЛАВНУЮ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
-      ),
+  Widget _redactProfileButton() {
+    return AcademButton(
+      tittle: 'Редактировать профиль',
+      onTap: _openRedactProfileScreen,
+      width: screenWidth * 0.9,
+      fontSize: 18,
     );
   }
 
@@ -255,7 +292,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       weekdayTextStyle: const TextStyle(color: Colors.black, fontSize: 14),
       locale: "ru",
       width: screenWidth * 0.69,
-      height: screenHeight * 0.43,
+      height: 270,
       todayBorderColor: Colors.transparent,
       todayButtonColor: Colors.transparent,
       todayTextStyle: const TextStyle(color: Colors.black, fontSize: 14),
@@ -299,10 +336,10 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       child: Text(
         dateTime.day.toString(),
         style: TextStyle(
-            color:
-                _compareDateWithSelected(dateTime) ? Colors.white : kMainColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 14),
+          color: _compareDateWithSelected(dateTime) ? Colors.white : kMainColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
       ),
     );
   }
@@ -315,8 +352,8 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   Widget _workoutsListWidget() {
     return SizedBox(
-      height: screenHeight * 0.20,
-      width: screenWidth * 0.6,
+      height: screenHeight * 0.24,
+      width: screenWidth * 0.8,
       child: ListView.builder(
         itemCount: _workoutsPerDay.length,
         itemBuilder: (context, index) {
@@ -421,11 +458,5 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SetWorkoutTimeScreen(
             phoneNumber: widget.instructorPhoneNumber ?? '')));
-  }
-
-  void _openMainScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const MainScreen()),
-        (route) => false);
   }
 }

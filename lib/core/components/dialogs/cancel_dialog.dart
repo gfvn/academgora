@@ -7,10 +7,11 @@ import 'package:flutter/cupertino.dart';
 class CancelDialog extends StatelessWidget {
   final String title;
   final String text;
-  final Function()? onAcept;
+  final Function onAcept;
 
   // ignore: use_key_in_widget_constructors
-  const CancelDialog({required this.title, required this.text, required this.onAcept});
+  const CancelDialog(
+      {required this.title, required this.text, required this.onAcept});
   Widget buildText() {
     return Container(
       alignment: Alignment.center,
@@ -25,7 +26,10 @@ class CancelDialog extends StatelessWidget {
   Widget buildButton(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return AcademButton(
-      onTap: () => Navigator.pop(context),
+      onTap: () {
+        Navigator.pop(context);
+        onAcept();
+      },
       tittle: "Выйти",
       width: width * 0.3,
       fontSize: 14,

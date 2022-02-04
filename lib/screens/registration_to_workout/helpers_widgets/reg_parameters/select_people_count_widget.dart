@@ -15,6 +15,7 @@ class SelectPeopleCountWidget extends StatefulWidget {
 
   @override
   _SelectPeopleCountWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectPeopleCountWidgetState(selectedCount);
 }
 
@@ -63,7 +64,7 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
         onTap: () => _selectCount(which),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             image: DecorationImage(
                 image: AssetImage(_createBackgroundOfCountButton(which)),
                 fit: BoxFit.fill),

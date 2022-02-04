@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 class TimesController {
   final _times = {
@@ -35,9 +34,7 @@ class TimesController {
     List<String> sortedTimes = [];
     List<int> priorities = [];
     for (var time in times) {
-      if (time != null) {
-        priorities.add(_times[time]!);
-      }
+      priorities.add(_times[time]!);
     }
     priorities.sort();
     for (var priority in priorities) {

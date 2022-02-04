@@ -1,6 +1,5 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
-import 'package:academ_gora_release/core/style/color.dart';
 import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';

@@ -11,6 +11,7 @@ import 'package:academ_gora_release/features/instructor/domain/enteties/instruct
 import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/material.dart';
+// ignore: library_prefixes
 import 'package:firebase_auth/firebase_auth.dart' as FireBaseAuth;
 import 'package:intl/intl.dart';
 import 'package:academ_gora_release/core/style/color.dart';
@@ -121,7 +122,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       instructor.id.toString(),
       instructor.phone.toString(),
       name,
-      instructor.fcm_token.toString(),
+      instructor.fcmToken.toString(),
     );
   }
 
@@ -131,7 +132,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     createUser(
       instructor.id.toString(),
       instructor.phone.toString(),
-      instructor.fcm_token.toString(),
+      instructor.fcmToken.toString(),
     );
   }
 
@@ -141,13 +142,13 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
   }
 
   void createInstructor(String phone, String uuid, String kindOfSport,
-      String name, String fcm_token) {
+      String name, String fcmToken) {
     _firebaseController.send(
       "${UserRole.instructor}/$uuid",
       {
         "Телефон": phone,
         "Вид спорта": kindOfSport,
-        "fcm_token": fcm_token,
+        "fcm_token": fcmToken,
         "ФИО": name
       },
     );
@@ -175,7 +176,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     createUser(
       administrator.id.toString(),
       administrator.phone.toString(),
-      administrator.fcm_token.toString(),
+      administrator.fcmToken.toString(),
     );
   }
 
@@ -188,7 +189,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         administrator.id.toString(),
         kindOfSport,
         name,
-        administrator.fcm_token.toString());
+        administrator.fcmToken.toString());
   }
 
   void deleteAdmin(String urlId, String name) {
@@ -196,12 +197,12 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     _firebaseController.delete("Телефоны администраторов/$name");
   }
 
-  void createAdmin(String uuid, String phone, String name, String fcm_token) {
+  void createAdmin(String uuid, String phone, String name, String fcmToken) {
     _firebaseController.send(
       "${UserRole.administrator}/$uuid",
       {
         "Телефон": phone,
-        "fcm_token": fcm_token,
+        "fcm_token": fcmToken,
         "ФИО": name,
       },
     );
@@ -221,7 +222,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       user.id.toString(),
       kindofSport,
       name,
-      user.fcm_token.toString(),
+      user.fcmToken.toString(),
     );
   }
 
@@ -232,7 +233,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       user.id.toString(),
       user.phone.toString(),
       name,
-      user.fcm_token.toString(),
+      user.fcmToken.toString(),
     );
   }
 
@@ -240,10 +241,10 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
     _firebaseController.delete("${UserRole.user}/$urlId");
   }
 
-  void createUser(String uid, String phone, String fcm_token) {
+  void createUser(String uid, String phone, String fcmToken) {
     _firebaseController.send(
       "${UserRole.user}/$uid",
-      {"Телефон": phone, "fcm_token": fcm_token},
+      {"Телефон": phone, "fcm_token": fcmToken},
     );
   }
 

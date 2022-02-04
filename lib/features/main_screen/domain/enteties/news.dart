@@ -1,4 +1,3 @@
-import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 
 class News {
   String? id;

@@ -19,6 +19,7 @@ class SelectDurationWidget extends StatefulWidget {
 
   @override
   _SelectDurationWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectDurationWidgetState(selectedDuration);
 }
 
@@ -69,7 +70,7 @@ class _SelectDurationWidgetState extends State<SelectDurationWidget> {
         onTap: () => _checkSelectionPossibility(which),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(const Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             image: DecorationImage(
                 image: AssetImage(_createBackgroundOfCountButton(which)),
                 fit: BoxFit.fill),

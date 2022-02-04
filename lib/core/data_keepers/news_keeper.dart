@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/news.dart';
@@ -20,6 +19,7 @@ class NewsKeeper {
 
   void _updateListeners() {
     for (var element in _listeners) {
+      // ignore: invalid_use_of_protected_member
       element.setState(() {});
     }
   }
@@ -55,7 +55,6 @@ class NewsKeeper {
       final String url = await saveImageUrl(imageName: news.photo.toString());
       newsUrl.add(url);
     }
-        log('urrrlUpdate $newsUrl');
 
   }
 

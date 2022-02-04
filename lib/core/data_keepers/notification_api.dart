@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/notification/notification_api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -39,7 +38,6 @@ class NotificationService {
 
   Future<void> showNotification(
       int id, String title, String body, int seconds) async {
-    log("hereeerrrrrrrrrrr $seconds");
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,

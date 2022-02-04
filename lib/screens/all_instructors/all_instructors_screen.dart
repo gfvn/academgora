@@ -10,6 +10,8 @@ import '../../core/consants/extension.dart';
 import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class AllInstructorsScreen extends StatefulWidget {
+  const AllInstructorsScreen({Key? key}) : super(key: key);
+
   @override
   _AllInstructorsScreenState createState() => _AllInstructorsScreenState();
 }
@@ -52,16 +54,14 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
   }
 
   Widget _instructorsList() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
-          _kindOfSportButton("СНОУБОРД"),
-          _instructorsListWidget(),
-          _backToMainScreenButton()
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
+        _kindOfSportButton("СНОУБОРД"),
+        _instructorsListWidget(),
+        _backToMainScreenButton()
+      ],
     );
   }
 
@@ -80,10 +80,10 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
           height: _checkKindOfSport(name)
               ? screenHeight * 0.06
               : screenHeight * 0.05,
-          margin: EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 15),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderRadius: const BorderRadius.all(Radius.circular(7)),
               color: _checkKindOfSport(name) ? kMainColor : Colors.white),
           child: Text(
             name,
@@ -105,13 +105,13 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
     return Container(
         height: screenHeight * 0.7,
         width: screenWidth * 0.78,
-        margin: EdgeInsets.only(top: 10, bottom: 10),
+        margin: const EdgeInsets.only(top: 10, bottom: 10),
         alignment: Alignment.center,
         child: CustomScrollView(
           primary: false,
           slivers: [
             SliverPadding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               sliver: SliverGrid.count(
                   mainAxisSpacing: 20,
                   crossAxisCount: 2,
@@ -134,17 +134,15 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
         onTap: () => _openInstructorProfileScreen(instructors[which]),
-        child: Container(
-          child: Column(
-            children: [
-              InstructorPhotoWidget(instructors[which]),
-              Text(
-                instructors[which].name ?? "",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            InstructorPhotoWidget(instructors[which]),
+            Text(
+              instructors[which].name ?? "",
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ],
         ));
   }
 
@@ -159,9 +157,9 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
     return Container(
       width: screenWidth * 0.4,
       height: screenHeight * 0.05,
-      margin: EdgeInsets.only(top: 18),
+      margin: const EdgeInsets.only(top: 18),
       child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
             onTap: () => {
@@ -172,8 +170,8 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
+                  children: const [
+                     Text(
                       "НА ГЛАВНУЮ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -196,6 +194,8 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
 }
 
 class KindsOfSport {
+  // ignore: constant_identifier_names
   static const String SKIES = "Горные лыжи";
+  // ignore: constant_identifier_names
   static const String SNOWBOARD = "Сноуборд";
 }

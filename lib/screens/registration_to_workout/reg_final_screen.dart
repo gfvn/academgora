@@ -63,7 +63,7 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
       height: screenHeight * 0.09,
       margin: EdgeInsets.only(top: marginTop),
       child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
           onTap: text == "В личный кабинет"

@@ -1,4 +1,3 @@
-import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
@@ -23,7 +22,6 @@ class UserAccountScreen extends StatefulWidget {
 
 class _UserAccountScreenState extends State<UserAccountScreen> {
   final WorkoutsViewModel _workoutsViewModel = WorkoutsViewModelImpl();
-  final TimesController _timesController = TimesController();
 
   @override
   void initState() {
@@ -115,7 +113,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         decoration: const BoxDecoration(
             color: kMainColor,
             borderRadius: BorderRadius.all(Radius.circular(26))),
-        child: Text(
+        child: const Text(
           "НА ГЛАВНУЮ",
           style: TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
@@ -188,61 +186,8 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
     );
   }
 
-  List<Workout> _sortWorkoutsByTime(List<Workout> list) {
-    if (list.isNotEmpty) {
-      list.sort((first, second) {
-        return _timesController.times[first.from] -
-            _timesController.times[second.from];
-      });
-    }
-    return list;
-  }
 
-  List<Workout> _sortWorkoutsByDate(List<Workout> list) {
-    if (list.isNotEmpty) {
-      list.sort((first, second) {
-        String firstDate =
-            "${first.date!.substring(4, 8)}-${second.date!.substring(2, 4)}-${second.date!.substring(0, 2)}";
-        DateTime dateTimeFirst = DateTime.parse(firstDate);
-        String secondDate =
-            "${first.date!.substring(4, 8)}-${second.date!.substring(2, 4)}-${second.date!.substring(0, 2)}";
-        DateTime dateTimeSecond = DateTime.parse(secondDate);
-        if (dateTimeFirst.isAfterDate(dateTimeSecond)) {
-          return 1;
-        } else if (dateTimeFirst.isBeforeDate(dateTimeSecond)) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-    }
-    return list;
-  }
 
-  List<Workout> _sortWorkoutsByDateAndTime(List<Workout> list) {
-    List<Workout> sorted = [];
-    List<Workout> workoutsPerDate = [];
-    if (list.isNotEmpty) {
-      String currentWorkoutDate = list[0].date!;
-      workoutsPerDate.add(list[0]);
-      List<Workout> sortedByDate = _sortWorkoutsByDate(list);
-      for (Workout workout in sortedByDate) {
-        if (workout.date == currentWorkoutDate &&
-            !workoutsPerDate.contains(workout)) {
-          workoutsPerDate.add(workout);
-        } else if (!workoutsPerDate.contains(workout)) {
-          sorted.addAll(_sortWorkoutsByTime(workoutsPerDate));
-          workoutsPerDate = [];
-          workoutsPerDate.add(workout);
-          currentWorkoutDate = workout.date!;
-          if (sortedByDate.last == workout) {
-            sorted.add(workout);
-          }
-        }
-      }
-    }
-    return sorted;
-  }
 
   @override
   void dispose() {

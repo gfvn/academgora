@@ -4,7 +4,7 @@ class User {
   String? id;
   String? phone;
   String? name;
-  String? fcm_token;
+  String? fcmToken;
   List<Workout>? workouts;
 
   static User fromJson(String id, map) {
@@ -12,7 +12,7 @@ class User {
     user.id = id;
     user.name=map['ФИО'];
     user.phone = map["Телефон"] ?? "";
-    user.fcm_token=map["fcm_token"]??"";
+    user.fcmToken=map["fcm_token"]??"";
     // user.workouts = _parseWorkouts(map["Занятия"])??[];
     return user;
   }
@@ -43,15 +43,6 @@ class User {
   //       .delete("Инструкторы/$UserId/График работы/$dateString");
   // }
 
-  static List<Workout> _parseWorkouts(Map? data) {
-    List<Workout> workouts = [];
-    if (data != null && data.isNotEmpty) {
-      data.forEach((key, value) {
-        workouts.add(Workout.fromJson((key as String).split(" ")[1], value));
-      });
-    }
-    return workouts;
-  }
 
   @override
   bool operator ==(Object other) =>

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/user_role.dart';
@@ -100,10 +99,6 @@ class FirebaseWorkoutsControllerImplementation
     DateTime workoutDateTime = DateTime.parse(formattedDate);
     DateTime now = DateTime.now();
     if (workoutDateTime.isAfter(now)
-        ///TODO Заменили тут
-        // workoutDateTime.year >= now.year &&
-        //   workoutDateTime.day >= now.day &&
-        //   workoutDateTime.month >= now.month
         ) {
       return true;
     } else {

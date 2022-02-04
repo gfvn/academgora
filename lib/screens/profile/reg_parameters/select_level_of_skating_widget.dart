@@ -15,6 +15,7 @@ class SelectLevelOfSkatingWidget extends StatefulWidget {
 
   @override
   _SelectLevelOfSkatingWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectLevelOfSkatingWidgetState(selectedLevelOfSkating);
 }
 
@@ -41,7 +42,7 @@ class _SelectLevelOfSkatingWidgetState
     return Container(
         alignment: Alignment.centerLeft,
         margin: EdgeInsets.only(left: screenWidth * 0.03),
-        child: Text(
+        child: const Text(
           "Выбор уровня катания:",
           style: TextStyle(fontSize: 12, color: kMainColor),
         ));
@@ -67,7 +68,7 @@ class _SelectLevelOfSkatingWidgetState
         onTap: () => _selectCount(which),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             image: DecorationImage(
                 image:
                     AssetImage(_createBackgroundOfLevelOfSkatingButton(which)),
@@ -75,7 +76,7 @@ class _SelectLevelOfSkatingWidgetState
           ),
           height: screenHeight * 0.045,
           width: width,
-          padding: EdgeInsets.only(right: 8),
+          padding: const EdgeInsets.only(right: 8),
           alignment: Alignment.center,
           child: Text(
             text,

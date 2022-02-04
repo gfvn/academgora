@@ -230,8 +230,7 @@ class RegistrationParametersScreenState
               borderRadius: const BorderRadius.all(Radius.circular(35)),
               color: _continueButtonBackgroundColor(),
               child: InkWell(
-                onTap: peopleCount != null &&
-                        levelOfSkating != null &&
+                onTap: levelOfSkating != null &&
                         duration != null &&
                         _checkTextControllers()
                     ? _sendData
@@ -381,21 +380,6 @@ class RegistrationParametersScreenState
   }
 
   Future<void> _sendWorkoutDataToUser() async {
-    // DateTime now = DateTime.now();
-    // final dbRef = FirebaseDatabase.instance.reference();
-    // String formattedDate = DateFormat('yyyy-MM-dd–kk:mm').format(now);
-    // dbRef.child("Log/Login").update(
-    //   {
-    //     now.millisecondsSinceEpoch.toString():
-    //         "$formattedDate Пользователь ${FirebaseAuth.instance.currentUser!.phoneNumber} записался к инструктору ${workoutSingleton.instructorName} в ${workoutSingleton.date} ${_getWorkoutTime()}",
-    //   },
-    // );
-    //  dbRef.child("Log/Login").update(
-    //       {
-    //         now.millisecondsSinceEpoch.toString():
-    //             "$formattedDate Пользователь ${FirebaseAuth.instance.currentUser!.phoneNumber} вошел в приложении",
-    //       },
-    //     );
     await UserRole.getUserRole().then(
       (userRole) => {
         if (userRole == UserRole.user)
@@ -486,8 +470,7 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonBackgroundColor() {
-    if (peopleCount != null &&
-        levelOfSkating != null &&
+    if (levelOfSkating != null &&
         duration != null &&
         _checkTextControllers()) {
       return kMainColor;
@@ -497,8 +480,7 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonTextColor() {
-    if (peopleCount != null &&
-        levelOfSkating != null &&
+    if (levelOfSkating != null &&
         duration != null &&
         _checkTextControllers()) {
       return Colors.white;
@@ -540,6 +522,7 @@ class RegistrationParametersScreenState
   }
 }
 
+// ignore: non_constant_identifier_names
 bool isNumericUsing_tryParse(String? string) {
   if (string == null || string.isEmpty) {
     return false;
@@ -552,7 +535,6 @@ bool isNumericUsing_tryParse(String? string) {
   return true;
 }
 
-//TODO: refactor move in other file
 class Pair {
   Pair(this.left, this.right);
 

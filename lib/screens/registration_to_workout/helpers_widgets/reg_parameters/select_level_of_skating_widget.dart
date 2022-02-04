@@ -15,6 +15,7 @@ class SelectLevelOfSkatingWidget extends StatefulWidget {
 
   @override
   _SelectLevelOfSkatingWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectLevelOfSkatingWidgetState(selectedLevelOfSkating);
 }
 

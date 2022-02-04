@@ -73,15 +73,6 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     ));
   }
 
-  Widget _warningText() {
-    return Container(
-        margin: EdgeInsets.only(top: screenHeight * 0.02, left: 10, right: 10),
-        child: const Text(
-          "Укажите конкретное время или желаемый интервал для начала занятия",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.lightBlue),
-        ));
-  }
 
   Widget _continueButton() {
     return Container(
@@ -178,7 +169,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
           border: Border.all(color: _selectCoachButtonColor()),
           borderRadius: const BorderRadius.all(Radius.circular(30))),
       child: Material(
-        borderRadius: const BorderRadius.all(const Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: Colors.transparent,
         child: InkWell(
             onTap: (kindOfSport != -1 && selectedDate == null)
@@ -202,7 +193,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     workoutDataKeeper.from = fromTime;
     workoutDataKeeper.to = toTime;
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => InstructorsListScreen()));
+        .push(MaterialPageRoute(builder: (c) => const InstructorsListScreen()));
   }
 
   Widget _selectCoachText(String text) {

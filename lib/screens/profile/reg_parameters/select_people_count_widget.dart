@@ -16,6 +16,7 @@ class SelectPeopleCountWidget extends StatefulWidget {
 
   @override
   _SelectPeopleCountWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectPeopleCountWidgetState(selectedCount);
 }
 
@@ -37,7 +38,7 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
   Widget _peoplesCountWidget() {
     return Container(
         margin: EdgeInsets.only(left: screenWidth * 0.03),
-        child: Text(
+        child: const Text(
           "Количество человек",
           style: TextStyle(fontSize: 12, color: kMainColor),
         ));
@@ -45,7 +46,7 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
 
   Widget _countButtons() {
     return Container(
-        margin: EdgeInsets.only(left: 10),
+        margin: const EdgeInsets.only(left: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -64,7 +65,7 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
         onTap: () => _selectCount(which),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             image: DecorationImage(
                 image: AssetImage(_createBackgroundOfCountButton(which)),
                 fit: BoxFit.fill),

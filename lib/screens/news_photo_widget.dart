@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/news.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
@@ -74,7 +72,6 @@ class _NewsPhotoImageState extends State<NewsPhotoImage> {
   }
 
   Future<NetworkImage> _getPhotoFromDb(String imageName) async {
-    log("noooooooooooooooo");
     NetworkImage? imageFromDb;
     await _firebaseRequestsController
         .getDownloadUrlFromFirebaseStorage("news_photos/$imageName")

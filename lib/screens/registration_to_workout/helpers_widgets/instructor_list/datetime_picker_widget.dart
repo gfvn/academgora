@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/style/color.dart';
@@ -263,7 +262,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         widget.instructorWidgetState.instructor!.phone!,
         _selectedDate!,
         time,
-        widget.instructorWidgetState.instructor!.fcm_token!);
+        widget.instructorWidgetState.instructor!.fcmToken!);
     if (widget.instructorWidgetState.regToInstructorData == null) {
       _updateRegToInstructorData(regToInstructorData);
     } else if (widget

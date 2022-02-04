@@ -21,12 +21,11 @@ class SmetaScreen extends StatefulWidget {
 
 class _SmetaScreenState extends State<SmetaScreen> {
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
-  List<Workout> _workoutsPerDay = [];
-  List<Workout> _allWorkouts = [];
+  final List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
   bool isUpdate = true;
 
-  final EventList<Event> _markedDateMap = EventList<Event>(events: Map());
+  final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
@@ -234,9 +233,6 @@ class _SmetaScreenState extends State<SmetaScreen> {
     );
   }
 
-  Widget _buildPersonListView() {
-    return Container();
-  }
 
   Event _createEvent(DateTime dateTime) {
     return Event(

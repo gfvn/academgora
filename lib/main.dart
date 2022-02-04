@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/loader/loader_widget.dart';
@@ -171,7 +170,6 @@ class MyAppState extends State<MyApp> {
 
   void _saveNewsrDataKeeper(Event? event) async {
     await _firebaseController.getAsList('Новости').then((value) async {
-      log("Новости ${value.toString()}");
       _newsDataKeeper.updateInstructors(value);
 
       setState(() {});

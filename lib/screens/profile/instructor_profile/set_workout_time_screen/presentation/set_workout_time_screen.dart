@@ -395,9 +395,9 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   void _sendNotificationsForAdmins() {
     for (Adminstrator admin in filteredAdminList) {
-      if (admin.fcm_token != null && admin.fcm_token!.isNotEmpty) {
+      if (admin.fcmToken != null && admin.fcmToken!.isNotEmpty) {
         NotificationService().sendNotificationToFcm(
-          fcmToken: admin.fcm_token.toString(),
+          fcmToken: admin.fcmToken.toString(),
           tittle: "Отмена занятия",
           body: "Инструктор отменил занятие, пожалуйста, утвердите!",
         );
@@ -416,7 +416,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         "date": dateString,
         "time": time,
         "instructor_name": _currentInstructor?.name,
-        "instructor_fcm_token": _currentInstructor?.fcm_token,
+        "instructor_fcm_token": _currentInstructor?.fcmToken,
         "instructor_phone": _currentInstructor?.phone,
         "status": status,
         "неок": 'ok'
@@ -513,12 +513,6 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     }
   }
 
-  void _sendNotification(String userPhone, String workoutId) {
-    // _firebaseController.send("Log", {
-    //   DateFormat('yyyy-MM-dd hh-mm-ss').format(DateTime.now()):
-    //       extensions.administratorCancelledWorkout(userPhone, workoutId)
-    // });
-  }
 
   void _findUserAndDeleteWorkout(String userPhoneNumber, String workoutId) {
     String userId = "";

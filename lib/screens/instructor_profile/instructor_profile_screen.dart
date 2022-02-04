@@ -1,12 +1,9 @@
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:expand_tap_area/expand_tap_area.dart';
-import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class InstructorProfileScreen extends StatelessWidget {
   final Instructor instructor;
@@ -98,7 +95,7 @@ class InstructorProfileScreen extends StatelessWidget {
   }
 
   Widget _socialNetworksList() {
-    return Container(
+    return SizedBox(
       height: screenHeight * 0.3,
       child: ListView.builder(
         // physics: NeverScrollableScrollPhysics(),
@@ -155,35 +152,6 @@ class InstructorProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _socialNetworkWidgetTelegram(String path, String url) {
-    return Container(
-      margin: const EdgeInsets.only(top: 3, bottom: 3),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 15),
-            height: 22,
-            width: 22,
-            child: Image.asset(path),
-          ),
-          GestureDetector(
-            onTap: () {
-              launchURL("https://t.me/" + url);
-            },
-            child: SizedBox(
-              width: screenWidth * 0.7,
-              child: Text(
-                url,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   String _getSocialNetworkImagePath(String socialNetworkName) {
     switch (socialNetworkName) {
@@ -208,58 +176,6 @@ class InstructorProfileScreen extends StatelessWidget {
     }
   }
 
-  Widget _backButtons(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 35, bottom: 35),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [_backButton(context), _backToMainScreenButton(context)],
-      ),
-    );
-  }
 
-  Widget _backButton(BuildContext context) {
-    return ExpandTapWidget(
-        tapPadding: const EdgeInsets.all(50),
-        onTap: () {
-          Navigator.of(context).pop();
-        },
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: Image.asset("assets/instructor_profile/4.png"),
-        ));
-  }
 
-  Widget _backToMainScreenButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.4,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(left: 20),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-            onTap: () => {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => const MainScreen()),
-                      (route) => false)
-                },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "НА ГЛАВНУЮии",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ]),
-            )),
-      ),
-    );
-  }
 }

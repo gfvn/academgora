@@ -3,7 +3,6 @@ import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
-import 'package:academ_gora_release/core/style/color.dart';
 
 class CallUsScreen extends StatefulWidget {
   const CallUsScreen({Key? key}) : super(key: key);

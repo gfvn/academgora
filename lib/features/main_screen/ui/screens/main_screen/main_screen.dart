@@ -1,7 +1,4 @@
-import 'dart:developer';
 
-import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
@@ -22,10 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_database/firebase_database.dart';
 import '../../../../../main.dart';
 import '../../../../../core/consants/extension.dart';
 
@@ -39,8 +34,6 @@ class MainScreen extends StatefulWidget {
 final NewsKeeper _newsKeeper = NewsKeeper();
 
 class _MainScreenState extends State<MainScreen> {
-  final FirebaseRequestsController _firebaseRequestsController =
-      FirebaseRequestsController();
   final List<Widget> buttons = [];
   int _current = 1;
   List<Widget> imageSliders = [];
@@ -57,12 +50,7 @@ class _MainScreenState extends State<MainScreen> {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
-        AndroidNotification? android = message.notification?.android;
-        AppleNotification? ios = message.notification?.apple;
         if (notification != null) {
-          log('notification');
-          log('Android $android');
-          log('IOS $ios');
           NotificationService().showNotification(
               123, "${notification.title}", "${notification.body}", 5);
         }
@@ -72,8 +60,6 @@ class _MainScreenState extends State<MainScreen> {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
-        AndroidNotification? android = message.notification?.android;
-        AppleNotification? ios = message.notification?.apple;
         if (notification != null) {
           showDialog(
             context: context,
@@ -369,17 +355,17 @@ class _MainScreenState extends State<MainScreen> {
 
   void _openPriceScreen() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => PriceScreen()));
+        .push(MaterialPageRoute(builder: (c) => const PriceScreen()));
   }
 
   void _openChillZoneScreen() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => ChillZoneScreen()));
+        .push(MaterialPageRoute(builder: (c) => const ChillZoneScreen()));
   }
 
   void _openRegimeScreen() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => RegimeScreen()));
+        .push(MaterialPageRoute(builder: (c) => const RegimeScreen()));
   }
 
   Widget _registrationToInstructorButton() {
@@ -389,7 +375,7 @@ class _MainScreenState extends State<MainScreen> {
       margin: EdgeInsets.only(top: screenHeight * 0.05),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(15)),
-        color: Color(0xFF003259),
+        color: const Color(0xFF003259),
         child: InkWell(
           onTap: _openRegistrationToInstructorScreen,
           child: Center(
@@ -454,12 +440,12 @@ class _MainScreenState extends State<MainScreen> {
           height: 40,
           margin: const EdgeInsets.only(top: 15),
           child: Material(
-            borderRadius: const BorderRadius.all(const Radius.circular(10)),
+            borderRadius: const BorderRadius.all( Radius.circular(10)),
             color: Colors.white,
             child: InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => AboutUsScreen()));
+                    .push(MaterialPageRoute(builder: (c) => const AboutUsScreen()));
               },
               child: const Center(
                 child: Text(
@@ -484,7 +470,7 @@ class _MainScreenState extends State<MainScreen> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => CallUsScreen()));
+                    .push(MaterialPageRoute(builder: (c) => const CallUsScreen()));
               },
               child: const Center(
                 child: Text(

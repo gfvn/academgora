@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:academ_gora_release/core/style/color.dart';
 
 import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
@@ -8,7 +7,6 @@ import 'package:academ_gora_release/features/administrator/domain/enteties/admin
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
-import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../../../../core/consants/extension.dart';
@@ -160,9 +158,9 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
     }
 
     for (Adminstrator admin in filteredAdminList) {
-      if (admin.fcm_token != null && admin.fcm_token!.isNotEmpty) {
+      if (admin.fcmToken != null && admin.fcmToken!.isNotEmpty) {
         NotificationService().sendNotificationToFcm(
-          fcmToken: admin.fcm_token.toString(),
+          fcmToken: admin.fcmToken.toString(),
           tittle: "Отмена занятия",
           body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
         );
@@ -238,7 +236,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                 width: screenWidth * 0.4,
                 margin: const EdgeInsets.only(left: 45),
                 child: Text(
-                  "${_instructor!.name ?? ""}",
+                  _instructor!.name ?? "",
                   style: const TextStyle(fontSize: 14),
                 )),
           ],

@@ -14,6 +14,7 @@ class SelectKindOfSportWidget extends StatefulWidget {
 
   @override
   _SelectKindOfSportWidgetState createState() =>
+      // ignore: no_logic_in_create_state
       _SelectKindOfSportWidgetState(kindOfSport);
 }
 

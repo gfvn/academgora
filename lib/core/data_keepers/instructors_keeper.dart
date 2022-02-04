@@ -16,6 +16,7 @@ class InstructorsKeeper {
 
   void _updateListeners() {
     for (var element in _listeners) {
+      // ignore: invalid_use_of_protected_member
       element.setState(() {});
     }
   }

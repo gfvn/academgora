@@ -4,7 +4,7 @@ class Adminstrator {
   String? id;
   String? phone;
   String? name;
-  String? fcm_token;
+  String? fcmToken;
   List<Workout>? workouts;
 
   static Adminstrator fromJson(String id, map) {
@@ -12,7 +12,7 @@ class Adminstrator {
     admin.id = id;
     admin.phone = map["Телефон"] ?? "";
     admin.name = map["ФИО"] ?? "";
-    admin.fcm_token=map["fcm_token"];
+    admin.fcmToken=map["fcm_token"];
     return admin;
   }
 
@@ -42,15 +42,6 @@ class Adminstrator {
   //       .delete("Инструкторы/$UserId/График работы/$dateString");
   // }
 
-  static List<Workout> _parseWorkouts(Map? data) {
-    List<Workout> workouts = [];
-    if (data != null && data.isNotEmpty) {
-      data.forEach((key, value) {
-        workouts.add(Workout.fromJson((key as String).split(" ")[1], value));
-      });
-    }
-    return workouts;
-  }
 
   @override
   bool operator ==(Object other) =>

@@ -59,19 +59,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     );
   }
 
-  Widget _title() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      child: const Text(
-        "СК \"АКАДЕМИЧЕСКИЙ\"",
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
 
   Widget _slider() {
     return Container(

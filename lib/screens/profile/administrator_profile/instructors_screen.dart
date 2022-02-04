@@ -232,6 +232,8 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
 }
 
 class KindsOfSport {
+  // ignore: constant_identifier_names
   static const String SKIES = "Горные лыжи";
+  // ignore: constant_identifier_names
   static const String SNOWBOARD = "Сноуборд";
 }

@@ -79,7 +79,7 @@ class _PriceScreenState extends State<PriceScreen> {
 
   Widget _table() {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       child: Table(
         border: TableBorder.all(color: Colors.white, width: 2),
         columnWidths: const <int, TableColumnWidth>{
@@ -140,27 +140,6 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  TableRow _tableMainRow(String holidayOnePrice, String holidayAllPrice,
-      {Color color = Colors.transparent, double leftPadding = 10}) {
-    return TableRow(
-      children: <Widget>[
-        _textInTable(
-          "",
-          Alignment.centerLeft,
-          '',
-          MainAxisAlignment.start,
-          color: color,
-          leftPadding: leftPadding,
-        ),
-        _textInTable(
-            holidayOnePrice, Alignment.center, "", MainAxisAlignment.center,
-            color: color),
-        _textInTable(
-            "", Alignment.center, holidayAllPrice, MainAxisAlignment.center,
-            color: color),
-      ],
-    );
-  }
 
   Widget _textInTable(String text, Alignment alignment, String holidayPrice,
       MainAxisAlignment alighment,

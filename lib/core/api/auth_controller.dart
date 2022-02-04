@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,8 +42,7 @@ class AuthController {
     return userRole;
   }
 
-  void _saveUserInDb(String userRole, String fcm_token) {
-    log("userrole $userRole, token $fcm_token");
+  void _saveUserInDb(String userRole, String fcmToken) {
     dbRef.child(userRole).once().then(
       (value) {
         bool userExists = false;
@@ -59,7 +57,7 @@ class AuthController {
               .set(
             {
               "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
-              "fcm_token": fcm_token
+              "fcm_token": fcmToken
             },
           );
           dbRef.child("Log/Registraion").update(
@@ -73,7 +71,7 @@ class AuthController {
           dbRef
               .child("$userRole/${FirebaseAuth.instance.currentUser!.uid}")
               .update(
-            {"fcm_token": fcm_token},
+            {"fcm_token": fcmToken},
           );
           dbRef.child("Log/Login").update(
             {

@@ -1,4 +1,3 @@
-import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -19,6 +18,7 @@ class DateWidget extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: no_logic_in_create_state
   _DateWidgetState createState() => _DateWidgetState(_selectedDate);
 }
 

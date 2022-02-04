@@ -2,6 +2,7 @@ import 'package:academ_gora_release/features/main_screen/domain/enteties/cancel.
 import 'package:flutter/material.dart';
 
 class CancelKeeper {
+  // ignore: non_constant_identifier_names
   static final CancelKeeper _CancelKeeper =
       CancelKeeper._internal();
 
@@ -16,6 +17,7 @@ class CancelKeeper {
 
   void _updateListeners() {
     for (var element in _listeners) {
+      // ignore: invalid_use_of_protected_member
       element.setState(() {});
     }
   }

@@ -55,7 +55,7 @@ class _TimeWidgetState extends State<TimeWidget> {
       children: [
         _timeNameWidget(),
         _timeField(20, 10, 1),
-        Text("-"),
+        const Text("-"),
         _timeField(10, 0, 2)
       ],
     );
@@ -86,7 +86,7 @@ class _TimeWidgetState extends State<TimeWidget> {
     return Container(
         width: screenWidth * 0.25,
         height: 30,
-        padding: EdgeInsets.only(left: 3),
+        padding: const EdgeInsets.only(left: 3),
         margin: EdgeInsets.only(left: leftMargin, right: rightMargin),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),

@@ -6,8 +6,11 @@ class SportType {
 }
 
 class TimeStatus {
+  // ignore: constant_identifier_names
   static const String OPENED = "открыто";
+  // ignore: constant_identifier_names
   static const String NOT_OPENED = "не открыто";
+  // ignore: constant_identifier_names
   static const String NOT_AVAILABLE = "недоступно";
 }
 

@@ -41,7 +41,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
-  final EventList<Event> _markedDateMap = EventList<Event>(events: Map());
+  final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
 
   @override
@@ -173,7 +173,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   void _increaseDate() {
     setState(() {
-      _selectedDate = _selectedDate.add(Duration(days: 1));
+      _selectedDate = _selectedDate.add(const Duration(days: 1));
     });
     _getAllWorkouts();
   }
@@ -184,7 +184,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       return;
     } else {
       setState(() {
-        _selectedDate = _selectedDate.subtract(Duration(days: 1));
+        _selectedDate = _selectedDate.subtract(const Duration(days: 1));
       });
       _getAllWorkouts();
     }
@@ -224,7 +224,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       height: screenHeight * 0.056,
       margin: const EdgeInsets.only(top: 7),
       child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
             onTap: _openMainScreen,

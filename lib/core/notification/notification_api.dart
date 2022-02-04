@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class NotificationApi {
   static const fireBaseKey =
@@ -17,11 +16,6 @@ class NotificationApi {
   factory NotificationApi() {
     return _notificationApi;
   }
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-    print('Handling a background message ${message.messageId}');
-  }
 
    AndroidNotificationChannel channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -33,7 +27,6 @@ class NotificationApi {
 
   Future<String> setupNotification() async {
     String token = '';
-    Stream<String> _tokenStream;
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -46,7 +39,6 @@ class NotificationApi {
     );
     FirebaseMessaging.instance.requestPermission();
     token = await FirebaseMessaging.instance.getToken() ?? "no token";
-    _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     return token;
   }
 

@@ -18,6 +18,7 @@ class DateWidget extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: no_logic_in_create_state
   _DateWidgetState createState() => _DateWidgetState(_selectedDate);
 }
 

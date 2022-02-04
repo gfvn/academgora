@@ -46,17 +46,17 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
 
   Widget _titleWidget(String text) {
     return Container(
-        margin: EdgeInsets.only(left: 8.0),
+        margin: const EdgeInsets.only(left: 8.0),
         child: Text(
           text,
-          style: TextStyle(color: kMainColor),
+          style: const TextStyle(color: kMainColor),
         ));
   }
 
   Widget _textFieldWidget(
       double width, int maxLength, TextInputType textInputType) {
     return Container(
-      margin: EdgeInsets.only(bottom: 3, left: 10),
+      margin: const EdgeInsets.only(bottom: 3, left: 10),
       height: screenHeight * 0.04,
       width: width,
       child: TextField(
@@ -69,7 +69,7 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
             ? widget.textEditingControllers[widget.which - 1].right
             : widget.textEditingControllers[widget.which - 1].left,
         style: TextStyle(fontSize: screenHeight * 0.025),
-        decoration: new InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
@@ -81,7 +81,7 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
       ),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.all(Radius.circular(5))),
+          borderRadius: const BorderRadius.all(Radius.circular(5))),
     );
   }
 }

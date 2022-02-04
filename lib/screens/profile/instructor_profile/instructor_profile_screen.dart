@@ -47,7 +47,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: EdgeInsets.only(top: 50, bottom: 50),
+          padding: const EdgeInsets.only(top: 50, bottom: 50),
           width: screenWidth,
           height: screenHeight,
           decoration: screenDecoration("assets/instructor_profile/bg.png"),
@@ -180,7 +180,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           children: [
             Text(
               _currentInstructor.info == null ? "" : _currentInstructor.info!,
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             )
           ],
         )));
@@ -368,7 +368,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
       height: screenHeight * 0.05,
       margin: const EdgeInsets.only(top: 25),
       child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
             onTap: () {

@@ -58,7 +58,7 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
           height: MediaQuery.of(context).size.height,
           decoration:
               screenDecoration("assets/registration_parameters/0_bg.png"),
-          child: Container(
+          child: SizedBox(
               width: screenWidth,
               child: SingleChildScrollView(
                 child: Column(
@@ -75,15 +75,15 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
                             SelectLevelOfSkatingWidget(levelOfSkating!, this)),
                     horizontalDivider(
                         10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                    Container(
+                    SizedBox(
                         height: screenHeight * 0.19,
                         child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.all(3),
                             itemCount: peopleCount,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
-                                margin: EdgeInsets.only(left: 25),
+                                margin: const EdgeInsets.only(left: 25),
                                 child: HumanInfoWidget(
                                     index + 1, textEditingControllers, this),
                               );
@@ -101,8 +101,8 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
         margin: EdgeInsets.only(top: screenHeight * 0.05),
         width: screenWidth * 0.9,
         height: screenHeight * 0.25,
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           image: DecorationImage(
             image: AssetImage("assets/registration_parameters/e_1.png"),
@@ -121,12 +121,11 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
                     margin: EdgeInsets.only(right: screenWidth * 0.16),
                     child:
                         Image.asset("assets/registration_parameters/e_2.png")),
-                Container(
-                    child: Text(
+                Text(
                   InfoText.getLevelText(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: screenHeight * 0.018),
-                ))
+                )
               ],
             ),
             Text(
@@ -145,10 +144,10 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
 
   Widget _commentFieldWidget() {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 10),
+      margin: const EdgeInsets.only(top: 10, left: 10),
       child: Row(
         children: [
-          Container(
+          SizedBox(
               height: 20,
               width: 20,
               child: Image.asset("assets/registration_parameters/e12.png")),
@@ -186,15 +185,14 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
               size: 40,
             ),
           ),
-          Container(
+          SizedBox(
             width: 170,
             height: screenHeight * 0.06,
             child: Material(
               borderRadius: const BorderRadius.all(Radius.circular(35)),
               color: _continueButtonBackgroundColor(),
               child: InkWell(
-                onTap: peopleCount != null &&
-                        levelOfSkating != null &&
+                onTap: levelOfSkating != null &&
                         _checkTextControllers()
                     ? _saveChanges
                     : null,
@@ -336,8 +334,9 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
   }
 }
 
+// ignore: non_constant_identifier_names
 bool isNumericUsing_tryParse(String string) {
-  if (string == null || string.isEmpty) {
+  if (string.isEmpty) {
     return false;
   }
   final number = num.tryParse(string);

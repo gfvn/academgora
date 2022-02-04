@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:academ_gora_release/screens/profile/user_profile/data/workouts_state_keeper.dart';

@@ -1,7 +1,7 @@
-import 'package:academ_gora_release/common/times_controller.dart';
 
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/data_keepers/notification_api.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
 import 'package:academ_gora_release/model/workout.dart';
@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_parameters/human_info_widget.dart';
 import 'helpers_widgets/reg_parameters/info_text.dart';

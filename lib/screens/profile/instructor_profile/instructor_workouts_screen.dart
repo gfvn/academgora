@@ -1,10 +1,10 @@
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/common/times_controller.dart';
-import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/auth/auth_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/workout_data_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 import '../../../main.dart';
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 import '../../main_screen.dart';
 import 'instructor_profile_screen.dart';
 

@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/screens/auth/auth_screen.dart';
+import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 import '../../main_screen.dart';
 
 class AdministratorProfileScreen extends StatefulWidget {

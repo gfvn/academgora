@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/main.dart';
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

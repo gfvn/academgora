@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import '../main_screen.dart';
 
 class PriceScreen extends StatefulWidget {

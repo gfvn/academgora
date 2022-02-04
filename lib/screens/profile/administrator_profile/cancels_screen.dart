@@ -1,11 +1,11 @@
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/data_keepers/cancel_keeper.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/cancel_keeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/model/cancel.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 import '../instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
 
 class CancelsScreen extends StatefulWidget {

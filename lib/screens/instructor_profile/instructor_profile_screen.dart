@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 
 import '../../main.dart';
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import '../main_screen.dart';
 
 class InstructorProfileScreen extends StatelessWidget {

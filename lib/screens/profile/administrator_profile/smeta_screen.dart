@@ -1,13 +1,13 @@
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/count_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data_keepers/instructors_keeper.dart';
 import '../../../main.dart';
 import '../../../model/instructor.dart';
 import '../../../model/workout.dart';
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 

@@ -2,7 +2,7 @@ import 'package:academ_gora_release/screens/all_instructors/all_instructors_scre
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import '../main_screen.dart';
 
 final List<String> imgList = [

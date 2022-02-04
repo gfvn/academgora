@@ -1,65 +1,28 @@
 import 'dart:developer';
-import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
-import 'package:academ_gora_release/data_keepers/cancel_keeper.dart';
-import 'package:academ_gora_release/data_keepers/news_keeper.dart';
-import 'package:academ_gora_release/data_keepers/notification_api.dart';
-import 'package:academ_gora_release/data_keepers/price_keeper.dart';
-import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
-import 'package:academ_gora_release/screens/auth/auth_screen.dart';
-import 'package:academ_gora_release/screens/main_screen.dart';
+
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/components/loader/loader_widget.dart';
+import 'package:academ_gora_release/core/components/others/logo.dart';
+import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/cancel_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
+import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/core/data_keepers/user_workouts_keeper.dart';
+import 'package:academ_gora_release/core/notification/notification_api.dart';
+import 'package:academ_gora_release/core/style/theme.dart';
+import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
+import 'package:academ_gora_release/features/auth/ui/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:academ_gora_release/screens/main_screen.dart';
 
-import 'api/firebase_requests_controller.dart';
-import 'data_keepers/instructors_keeper.dart';
-import 'data_keepers/user_workouts_keeper.dart';
 import 'model/user_role.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-}
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
-  importance: Importance.high,
-);
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<String> setupNotification() async {
-  String token = '';
-  void setToken(String? token) {
-    log('FCM Token: $token');
-  }
-
-  Stream<String> _tokenStream;
-  await Firebase.initializeApp();
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  FirebaseMessaging.instance.requestPermission();
-  token = await FirebaseMessaging.instance.getToken() ?? "no token";
-  setToken(token);
-  _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
-  _tokenStream.listen(setToken);
-  return token;
-}
 
 late double screenHeight;
 late double screenWidth;
@@ -68,11 +31,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   await Firebase.initializeApp();
+  NotificationApi().setupNotification();
   if (await UserRole.isFiresOpen()) {
     if (FirebaseAuth.instance.currentUser != null) {
       FirebaseAuth.instance.currentUser?.delete;
     }
-
     UserRole.changeIsFirst();
   }
   runApp(
@@ -82,7 +45,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   MyAppState createState() => MyAppState();
 }
@@ -91,17 +53,14 @@ class MyAppState extends State<MyApp> {
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
   final UsersKeeper usersKeepers = UsersKeeper();
-
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final CancelKeeper _cancelKeeper = CancelKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
-
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
-
   @override
   void initState() {
     super.initState();
@@ -121,9 +80,7 @@ class MyAppState extends State<MyApp> {
                       )
                     }
                   else if (userRole == UserRole.administrator)
-                    {
-                      
-                    }
+                    {}
                 };
               },
             );
@@ -165,22 +122,11 @@ class MyAppState extends State<MyApp> {
     });
   }
 
-  Widget _logo() {
-    return Container(
-      margin: EdgeInsets.only(top: screenHeight * 0.06),
-      height: screenHeight * 0.25,
-      width: screenWidth * 0.35,
-      child: Image.asset("assets/info_screens/call_us/4.png"),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'АкадемГора',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: appThemeData,
       debugShowCheckedModeBanner: false,
       home: Builder(
         builder: (context) {
@@ -199,20 +145,12 @@ class MyAppState extends State<MyApp> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _logo(),
-                          const SizedBox(
+                        children: const [
+                          LogoWidget(),
+                          SizedBox(
                             height: 16,
                           ),
-                          const Center(
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: CircularProgressIndicator(
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
+                          LoaderWidget(),
                         ],
                       ),
                     ),
@@ -270,7 +208,7 @@ class MyAppState extends State<MyApp> {
   }
 
   void _saveNewsrDataKeeper(Event? event) async {
-    await _firebaseController.getAsList('Новости').then((value) async{
+    await _firebaseController.getAsList('Новости').then((value) async {
       log("Новости ${value.toString()}");
       _newsDataKeeper.updateInstructors(value);
 
@@ -284,23 +222,5 @@ class MyAppState extends State<MyApp> {
     final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('price') ?? ['0', '0', '0', '0'];
     _priceDataKeeper.updateWorkouts(list);
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/profile/0_bg.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
   }
 }

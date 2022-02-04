@@ -1,16 +1,15 @@
-import 'dart:developer';
 
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/common/times_controller.dart';
-import 'package:academ_gora_release/data_keepers/price_keeper.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data_keepers/instructors_keeper.dart';
 import '../../../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

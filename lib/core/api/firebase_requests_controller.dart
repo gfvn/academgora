@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:academ_gora_release/main.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../main.dart';
 
 class FirebaseRequestsController {
   static final FirebaseRequestsController _firebaseRequestsController =

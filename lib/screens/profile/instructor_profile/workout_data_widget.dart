@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../main.dart';
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 
 class WorkoutDataWidget extends StatefulWidget {
   final Workout workout;

@@ -1,10 +1,11 @@
 import 'dart:developer';
 
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/data_keepers/admin_keeper.dart';
-import 'package:academ_gora_release/data_keepers/news_keeper.dart';
-import 'package:academ_gora_release/data_keepers/notification_api.dart';
-import 'package:academ_gora_release/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
+import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/model/news.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
@@ -20,8 +21,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../main.dart';
-import 'auth/auth_screen.dart';
-import 'extension.dart';
+import '../core/consants/extension.dart';
 import 'info_screens/about_us_screen.dart';
 import 'info_screens/call_us_screen.dart';
 import 'info_screens/chill_zone_screen.dart';

@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/visitor.dart';
@@ -15,7 +15,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 
 class UpdateWorkoutScreen extends StatefulWidget {
   final Workout workout;

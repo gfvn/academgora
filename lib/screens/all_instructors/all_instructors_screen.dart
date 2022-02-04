@@ -1,11 +1,11 @@
-import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import '../main_screen.dart';
 
 class AllInstructorsScreen extends StatefulWidget {

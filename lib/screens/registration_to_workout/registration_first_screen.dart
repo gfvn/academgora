@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 import '../../main.dart';
-import '../extension.dart';
+import '../../core/consants/extension.dart';
 import '../main_screen.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_to_instructor/date_widget.dart';

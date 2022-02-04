@@ -1,5 +1,5 @@
 import 'package:academ_gora_release/main.dart';
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/main_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/archive_screen.dart';

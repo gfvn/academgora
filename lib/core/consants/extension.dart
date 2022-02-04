@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 String userLoggedToApp(String phone) {
   return "Пользователь $phone вошел в приложении";

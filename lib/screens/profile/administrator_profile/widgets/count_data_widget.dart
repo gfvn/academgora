@@ -1,5 +1,5 @@
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';

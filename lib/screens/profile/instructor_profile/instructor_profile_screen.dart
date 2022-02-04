@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +11,7 @@ import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../main.dart';
-import '../../extension.dart';
+import '../../../core/consants/extension.dart';
 import 'instructor_photo_widget.dart';
 import 'instructor_workouts_screen.dart';
 

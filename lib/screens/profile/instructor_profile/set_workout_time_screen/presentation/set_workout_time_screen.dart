@@ -1,11 +1,13 @@
-import 'package:academ_gora_release/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/model/administrator.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/user_role.dart';
 import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/extension.dart' as extensions;
-import 'package:academ_gora_release/screens/extension.dart';
+import 'package:academ_gora_release/core/consants/extension.dart' as extensions;
+import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +15,6 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../data_keepers/admin_keeper.dart';
-import '../../../../../data_keepers/notification_api.dart';
 import '../../../../../main.dart';
 import 'instructor_data_view_model.dart';
 import 'instructor_data_view_model_impl.dart';

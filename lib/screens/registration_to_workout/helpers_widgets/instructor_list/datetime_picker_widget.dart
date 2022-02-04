@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:academ_gora_release/common/times_controller.dart';
+import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/model/instructor.dart';
 import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
 import 'package:academ_gora_release/model/workout.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../main.dart';
-import '../../../extension.dart';
+import '../../../../core/consants/extension.dart';
 import 'instructor_widget.dart';
 import 'package:intl/intl.dart';
 

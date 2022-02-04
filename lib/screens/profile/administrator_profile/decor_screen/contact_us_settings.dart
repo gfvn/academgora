@@ -1,23 +1,24 @@
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class CurrentScreen extends StatefulWidget {
-  const CurrentScreen({Key? key}) : super(key: key);
+class ContactUsSettings extends StatefulWidget {
+  const ContactUsSettings({Key? key}) : super(key: key);
 
   @override
-  _CurrentScreenState createState() => _CurrentScreenState();
+  _ContactUsSettingsState createState() => _ContactUsSettingsState();
 }
 
-class _CurrentScreenState extends State<CurrentScreen> {
+class _ContactUsSettingsState extends State<ContactUsSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Текущее",
+          "Настройка 'Связаться'",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,

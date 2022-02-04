@@ -36,6 +36,13 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        title: const Text(
+          "Новости",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         width: screenWidth,
         height: screenHeight,
@@ -43,7 +50,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.only(bottom: 30, top: 70, right: 16, left: 16),
+                const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

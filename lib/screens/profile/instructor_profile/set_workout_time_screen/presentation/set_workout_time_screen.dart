@@ -82,6 +82,13 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _currentInstructor!.name ?? "имя",
+            style: const TextStyle(fontSize: 14),
+          ),
+          centerTitle: true,
+        ),
         body: Container(alignment: Alignment.center, child: _body()));
   }
 
@@ -98,8 +105,8 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
           _getAllWorkoutsPerDay();
           return Column(
             children: [
-              _titleRow(),
-              horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
+              // _titleRow(),
+              // horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 10, 10),
               _calendar(),
               _indicatorsRow(),
               horizontalDivider(screenWidth * 0.1, screenWidth * 0.1, 15, 15),
@@ -137,11 +144,12 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Widget _instructorName() {
     return Container(
-        margin: EdgeInsets.only(top: screenHeight * 0.07),
-        child: Text(
-          _currentInstructor!.name ?? "имя",
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-        ));
+      margin: EdgeInsets.only(top: screenHeight * 0.07),
+      child: Text(
+        _currentInstructor!.name ?? "имя",
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+      ),
+    );
   }
 
   Widget workoutTime() {
@@ -155,7 +163,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     return CalendarCarousel<Event>(
       locale: "ru",
       width: screenWidth * 0.69,
-      height: screenHeight * 0.38,
+      height: screenHeight * 0.36,
       selectedDayButtonColor: kMainColor,
       headerMargin: const EdgeInsets.all(0),
       headerTextStyle:
@@ -512,7 +520,6 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       }
     }
   }
-
 
   void _findUserAndDeleteWorkout(String userPhoneNumber, String workoutId) {
     String userId = "";

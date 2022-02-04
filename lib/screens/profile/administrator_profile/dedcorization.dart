@@ -3,29 +3,29 @@ import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/archive_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/cancels_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/current_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/dedcorization.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/news_add_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/personal_screen.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/decor_screen/about_us_settings.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/decor_screen/chill_zone_settings.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/decor_screen/contact_us_settings.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/decor_screen/price_setting.dart';
+import 'package:academ_gora_release/screens/profile/administrator_profile/decor_screen/work_time_setting.dart';
+
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+class Decorzation extends StatefulWidget {
+  const Decorzation({Key? key}) : super(key: key);
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  _DecorzationState createState() => _DecorzationState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _DecorzationState extends State<Decorzation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Настройи",
+          "Оформление приложение",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,
@@ -48,8 +48,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // cancelButton(), 
-                      _backToMainScreenButton()],
+                      // cancelButton(),
+                      _backToMainScreenButton()
+                    ],
                   )),
             ],
           ),
@@ -64,21 +65,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
         AdminButton(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const NewsAddScreen()));
+                  MaterialPageRoute(builder: (c) => const PriceSetting()));
             },
-            text: "Новости"),
+            text: "Прайс"),
         AdminButton(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const Decorzation()));
+                  MaterialPageRoute(builder: (c) => const WorkTimeSetting()));
             },
-            text: "Оформление"),
+            text: "Режим работы"),
         AdminButton(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (c) => const PersonalScreeen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (c) => const ChillZoneSettings()));
           },
-          text: "Персонал",
+          text: "Зона отдыха",
+        ),
+        AdminButton(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (c) => const AboutUsSettings()));
+          },
+          text: "О нас",
+        ),
+        AdminButton(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (c) => const ContactUsSettings()));
+          },
+          text: "Связаться с нами",
         ),
       ],
     );

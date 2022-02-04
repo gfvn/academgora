@@ -45,9 +45,16 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
   Widget build(BuildContext context) {
     _getInstructorInfo();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Редактировать профиль",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: const EdgeInsets.only(top: 50, bottom: 50),
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
           width: screenWidth,
           height: screenHeight,
           decoration: screenDecoration("assets/instructor_profile/bg.png"),
@@ -65,7 +72,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                     _socialNetworksList(context),
                   ],
                 ),
-                _backButton(context)
+                // _backButton(context)
               ],
             ),
           ),

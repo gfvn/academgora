@@ -84,16 +84,23 @@ class _SmetaScreenState extends State<SmetaScreen> {
     _getAllWorkouts();
     _fillMarkedDateMap();
     return Scaffold(
+         appBar: AppBar(
+        title: const Text(
+          "Смета",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: RefreshIndicator(
           onRefresh: update,
           child: Container(
-            height: screenHeight,
+            height: screenHeight-50,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(color: Colors.white70),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 20, bottom: 50, right: 20, left: 20),
+                  top: 10, bottom: 50, right: 20, left: 20),
               child: Stack(
                 alignment: Alignment.center,
                 children: [

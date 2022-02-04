@@ -4,20 +4,20 @@ import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class CurrentScreen extends StatefulWidget {
-  const CurrentScreen({Key? key}) : super(key: key);
+class AboutUsSettings extends StatefulWidget {
+  const AboutUsSettings({Key? key}) : super(key: key);
 
   @override
-  _CurrentScreenState createState() => _CurrentScreenState();
+  _AboutUsSettingsState createState() => _AboutUsSettingsState();
 }
 
-class _CurrentScreenState extends State<CurrentScreen> {
+class _AboutUsSettingsState extends State<AboutUsSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Текущее",
+          "Настройка 'О нас'",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,

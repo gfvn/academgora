@@ -264,6 +264,13 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        title: const Text(
+          "Персонал",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: RefreshIndicator(
           onRefresh: onRefresh,
@@ -272,7 +279,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
             child: !isLoading
                 ? Padding(
                     padding: const EdgeInsets.only(
-                        top: 32, bottom: 20, left: 16, right: 16),
+                        top: 20, bottom: 20, left: 16, right: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

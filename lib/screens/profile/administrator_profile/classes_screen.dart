@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/core/components/buttons/admin_button.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
@@ -19,6 +20,13 @@ class _ClassesScreenState extends State<ClassesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Занятия",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         decoration: screenDecoration("assets/all_instructors/bg.png"),
         child: Center(
@@ -36,7 +44,10 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [cancelButton(), _backToMainScreenButton()],
+                    children: [
+                      // cancelButton(),
+                      _backToMainScreenButton(),
+                    ],
                   )),
             ],
           ),
@@ -48,22 +59,22 @@ class _ClassesScreenState extends State<ClassesScreen> {
   Widget buildButtons() {
     return Column(
       children: [
-        button(
+        AdminButton(
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (c) => const CancelsScreen()));
             },
             text: "Отмена"),
-        button(
+        AdminButton(
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (c) => const CurrentScreen()));
             },
             text: "Текущие"),
-        button(
+        AdminButton(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const ArchiveScreen()));
+                  MaterialPageRoute(builder: (c) => const ArchieveScreen()));
             },
             text: "Архив"),
       ],
@@ -76,7 +87,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
       height: screenHeight * 0.06,
       margin: const EdgeInsets.only(top: 18),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: kMainColor,
         child: InkWell(
           onTap: () {
@@ -110,7 +121,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
       height: screenHeight * 0.06,
       margin: const EdgeInsets.only(top: 18),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: kMainColor,
         child: InkWell(
           onTap: () {

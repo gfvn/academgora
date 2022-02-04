@@ -9,8 +9,6 @@ import 'package:academ_gora_release/features/main_screen/domain/enteties/workout
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
-import 'package:flutter/services.dart';
-
 import '../../main.dart';
 import '../../core/consants/extension.dart';
 import 'helpers_widgets/horizontal_divider.dart';

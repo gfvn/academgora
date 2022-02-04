@@ -4,20 +4,20 @@ import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class CurrentScreen extends StatefulWidget {
-  const CurrentScreen({Key? key}) : super(key: key);
+class WorkTimeSetting extends StatefulWidget {
+  const WorkTimeSetting({Key? key}) : super(key: key);
 
   @override
-  _CurrentScreenState createState() => _CurrentScreenState();
+  _WorkTimeSettingState createState() => _WorkTimeSettingState();
 }
 
-class _CurrentScreenState extends State<CurrentScreen> {
+class _WorkTimeSettingState extends State<WorkTimeSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Текущее",
+          "Настройка режим работы",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,

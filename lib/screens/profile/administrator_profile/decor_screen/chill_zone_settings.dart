@@ -1,23 +1,24 @@
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class CurrentScreen extends StatefulWidget {
-  const CurrentScreen({Key? key}) : super(key: key);
+class ChillZoneSettings extends StatefulWidget {
+  const ChillZoneSettings({Key? key}) : super(key: key);
 
   @override
-  _CurrentScreenState createState() => _CurrentScreenState();
+  _ChillZoneSettingsState createState() => _ChillZoneSettingsState();
 }
 
-class _CurrentScreenState extends State<CurrentScreen> {
+class _ChillZoneSettingsState extends State<ChillZoneSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Текущее",
+          "Настройка 'Зона отдыха'",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,

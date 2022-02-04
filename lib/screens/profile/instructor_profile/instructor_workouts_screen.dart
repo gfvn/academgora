@@ -315,14 +315,15 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   Widget _workoutsListWidget() {
     return SizedBox(
-        height: screenHeight * 0.20,
-        width: screenWidth * 0.6,
-        child: ListView.builder(
-          itemCount: _workoutsPerDay.length,
-          itemBuilder: (context, index) {
-            return WorkoutDataWidget(_workoutsPerDay[index]);
-          },
-        ));
+      height: screenHeight * 0.20,
+      width: screenWidth * 0.6,
+      child: ListView.builder(
+        itemCount: _workoutsPerDay.length,
+        itemBuilder: (context, index) {
+          return WorkoutDataWidget(_workoutsPerDay[index]);
+        },
+      ),
+    );
   }
 
   void _getAllWorkouts() async {

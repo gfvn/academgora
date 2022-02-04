@@ -15,7 +15,10 @@ class MessageDialog extends StatelessWidget {
       margin: const EdgeInsets.only(top: 30, bottom: 30),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+
+          fontSize: 14, fontWeight: FontWeight.w400),
       ),
     );
   }

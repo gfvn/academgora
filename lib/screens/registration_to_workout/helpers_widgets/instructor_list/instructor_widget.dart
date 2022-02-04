@@ -38,29 +38,30 @@ class InstructorWidgetState extends State<InstructorWidget> {
 
   Widget _header() {
     return SizedBox(
-        height: 65,
-        child: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (c) => InstructorProfileScreen(instructor!)));
-              },
-              child: InstructorPhotoWidget(
-                instructor!,
-                width: screenHeight * 0.1,
-                height: screenHeight * 0.1,
-              ),
+      height: 65,
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (c) => InstructorProfileScreen(instructor!)));
+            },
+            child: InstructorPhotoWidget(
+              instructor!,
+              width: screenHeight * 0.1,
+              height: screenHeight * 0.1,
             ),
-            Container(
-                width: screenWidth * 0.5,
-                margin: const EdgeInsets.only(left: 12),
-                child: Text(
-                  instructor!.name ??'',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-          ],
-        ));
+          ),
+          Container(
+              width: screenWidth * 0.5,
+              margin: const EdgeInsets.only(left: 12),
+              child: Text(
+                instructor!.name ?? '',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              )),
+        ],
+      ),
+    );
   }
 
   Widget _body() {

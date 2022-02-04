@@ -1,4 +1,3 @@
-
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/loader/loader_widget.dart';
 import 'package:academ_gora_release/core/components/others/logo.dart';
@@ -11,7 +10,7 @@ import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/core/data_keepers/user_workouts_keeper.dart';
 import 'package:academ_gora_release/core/notification/notification_api.dart';
-import 'package:academ_gora_release/core/style/theme.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -126,7 +125,6 @@ class MyAppState extends State<MyApp> {
     );
   }
 
-
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then(
       (value) {
@@ -194,7 +192,10 @@ class MyAppState extends State<MyApp> {
     );
     return MaterialApp(
       title: 'АкадемГора',
-      theme: appThemeData,
+      theme: ThemeData(
+        primaryColor: kMainColor,
+        appBarTheme: const AppBarTheme(backgroundColor: kMainColor),
+      ),
       debugShowCheckedModeBanner: false,
       home: Builder(
         builder: (context) {

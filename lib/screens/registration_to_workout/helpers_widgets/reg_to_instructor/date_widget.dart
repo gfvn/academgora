@@ -31,7 +31,10 @@ class _DateWidgetState extends State<DateWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [_dateNameWidget(), _dateFieldWidget()],
+      children: [
+        _dateNameWidget(),
+        _dateFieldWidget(),
+      ],
     );
   }
 
@@ -120,7 +123,7 @@ class _DateWidgetState extends State<DateWidget> {
               headerTextStyle: const TextStyle(fontSize: 20, color: kMainColor),
               locale: "ru",
               width: 300,
-              height: 350,
+              height: 250,
               todayBorderColor: Colors.transparent,
               todayButtonColor: Colors.transparent,
               todayTextStyle: const TextStyle(color: kMainColor),

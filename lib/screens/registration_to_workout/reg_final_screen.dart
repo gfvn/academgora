@@ -59,11 +59,11 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
 
   Widget _buttonWidget(String text, double marginTop) {
     return Container(
-      width: 280.0,
-      height: screenHeight * 0.09,
+      width: screenWidth*0.9,
+      height: 60,
       margin: EdgeInsets.only(top: marginTop),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: kMainColor,
         child: InkWell(
           onTap: text == "В личный кабинет"

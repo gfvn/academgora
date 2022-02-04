@@ -1,19 +1,13 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
-import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_ui/flutter_auth_ui.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:academ_gora_release/core/style/color.dart';
-
 import '../../../main.dart';
 import '../../../core/consants/extension.dart';
-import '../../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class InstructorsScreen extends StatefulWidget {
   const InstructorsScreen({Key? key}) : super(key: key);
@@ -74,7 +68,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
           ],
         ),
         _instructorsListWidget(),
-          AcademButton(
+        AcademButton(
           tittle: 'НА ГЛАВНУЮ',
           onTap: () {
             FunctionsConsts.openMainScreen(context);
@@ -82,7 +76,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
           width: screenWidth * 0.9,
           fontSize: 18,
         ),
-         AcademButton(
+        AcademButton(
           tittle: 'Выйти',
           onTap: () {
             FunctionsConsts.openMainScreen(context);
@@ -169,7 +163,6 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     return widgets;
   }
 
-
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
       onTap: () => _openInstructorWorkoutsScreen(instructors[which]),
@@ -179,23 +172,25 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InstructorPhotoWidget(instructors[which]),
-            const SizedBox(width: 16,),
+            const SizedBox(
+              width: 16,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   instructors[which].name ?? "",
                   textAlign: TextAlign.center,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   instructors[which].phone ?? "",
                   textAlign: TextAlign.center,
-                  style:
-                      const TextStyle(
-                        color: kBlackLight,
-                        fontSize: 14, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      color: kBlackLight,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -204,8 +199,6 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
       ),
     );
   }
-
-  
 
   // Widget _profileWidget(int which, List<Instructor> instructors) {
   //   return GestureDetector(
@@ -231,82 +224,6 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (c) =>
             InstructorWorkoutsScreen(instructorPhoneNumber: instructor.phone)));
-  }
-
-  Widget _backToMainScreenButton() {
-    return Container(
-      width: screenWidth * 0.4,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(top: 18),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () => {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => const MainScreen()),
-                (route) => false)
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "НА ГЛАВНУЮ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _logoutButton() {
-    return Container(
-      width: screenWidth * 0.4,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(top: 5),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () {
-            showLogoutDialog(context, _logout);
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "ВЫЙТИ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _logout() async {
-    FirebaseAuth.instance.currentUser!.delete;
-    FlutterAuthUi.signOut();
-    var pref = await SharedPreferences.getInstance();
-    pref.remove("userRole");
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const AuthScreen()),
-        (route) => false);
   }
 
   void _getInstructors() {

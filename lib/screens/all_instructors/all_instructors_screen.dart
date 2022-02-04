@@ -9,7 +9,6 @@ import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class AllInstructorsScreen extends StatefulWidget {
   const AllInstructorsScreen({Key? key}) : super(key: key);
@@ -207,39 +206,6 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
     );
   }
 
-  Widget _backToMainScreenButton() {
-    return Container(
-      width: screenWidth * 0.4,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(top: 18),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () => {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => const MainScreen()),
-                (route) => false)
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "НА ГЛАВНУЮ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   void _getInstructors() {
     _skiesInstructors =

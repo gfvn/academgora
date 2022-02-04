@@ -1,4 +1,6 @@
 import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
+import 'package:academ_gora_release/core/components/dialogs/message_dialog.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
@@ -105,8 +107,13 @@ class _SelectDurationWidgetState extends State<SelectDurationWidget> {
       if (possibility) {
         _updateStateAfterSelection(which);
       } else {
-        _showWarningDialog();
-      }
+    Dialogs.showUnmodal(
+        context,
+        const MessageDialog(
+          title: "Не доступно",
+          text: "На выбранное время запись возможна только на 1 час",
+        ),
+      );      }
     } else {
       _updateStateAfterSelection(which);
     }
@@ -122,7 +129,7 @@ class _SelectDurationWidgetState extends State<SelectDurationWidget> {
     setState(() {});
   }
 
-  void _showWarningDialog() {
+  void _showWarningxsxDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {

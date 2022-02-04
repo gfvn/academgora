@@ -38,14 +38,16 @@ class _SelectKindOfSportWidgetState extends State<SelectKindOfSportWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _kindOfSportImage("assets/registration_to_instructor/2_ski.png"),
-        _kindOfSportImage("assets/registration_to_instructor/2_snowboard.png",)
+        _kindOfSportImage(
+          "assets/registration_to_instructor/2_snowboard.png",
+        )
       ],
     );
   }
 
   Widget _kindOfSportImage(String imagePath, {double marginLeft = 0}) {
     return Container(
-      margin: EdgeInsets.only(top: screenHeight * 0.07, left: marginLeft),
+      margin: EdgeInsets.only(top: 15, left: marginLeft),
       alignment: Alignment.center,
       child: Image.asset(
         imagePath,
@@ -71,12 +73,13 @@ class _SelectKindOfSportWidgetState extends State<SelectKindOfSportWidget> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(_createBackgroundOfKindOfSportButton(which)),
-                fit: BoxFit.fill),
+              image: AssetImage(_createBackgroundOfKindOfSportButton(which)),
+              fit: BoxFit.fill,
+            ),
           ),
           height: screenHeight * 0.06,
           width: screenWidth * 0.4,
-          padding: const EdgeInsets.only(right: 7, left:7),
+          padding: const EdgeInsets.only(right: 12, left: 12),
           alignment: Alignment.centerRight,
           child: Text(
             which == 0 ? "ГОРНЫЕ ЛЫЖИ" : "СНОУБОРД",

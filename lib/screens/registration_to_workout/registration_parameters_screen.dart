@@ -1,5 +1,7 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
+import 'package:academ_gora_release/core/components/dialogs/message_dialog.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/features/main_screen/domain/enteties/visitor.dart';
@@ -7,6 +9,7 @@ import 'package:academ_gora_release/features/main_screen/domain/enteties/workout
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
+import 'package:flutter/services.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
@@ -53,6 +56,13 @@ class RegistrationParametersScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          _parseDateText(),
+          style: const TextStyle(fontSize: 12),
+        ),
+        centerTitle: true,
+      ),
       body: !isLoading
           ? Container(
               height: MediaQuery.of(context).size.height,
@@ -81,20 +91,22 @@ class RegistrationParametersScreenState
                       horizontalDivider(
                           10, 10, screenHeight * 0.015, screenHeight * 0.015),
                       SizedBox(
-                          height: screenHeight * 0.19,
-                          child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(3),
-                              itemCount: peopleCount,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(left: 25),
-                                  child: HumanInfoWidget(
-                                      index + 1, textEditingControllers, this),
-                                );
-                              })),
+                        height: screenHeight * 0.18,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(3),
+                          itemCount: peopleCount,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              margin: const EdgeInsets.only(left: 25),
+                              child: HumanInfoWidget(
+                                  index + 1, textEditingControllers, this),
+                            );
+                          },
+                        ),
+                      ),
                       _commentFieldWidget(),
-                      _dateFieldWidget(),
+                      // _dateFieldWidget(),
                       _continueButton()
                     ],
                   ),
@@ -115,54 +127,60 @@ class RegistrationParametersScreenState
 
   Widget _infoWidget() {
     return Container(
-        margin: EdgeInsets.only(top: screenHeight * 0.05),
-        width: screenWidth * 0.9,
-        height: screenHeight * 0.25,
-        padding: const EdgeInsets.all(5),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-            image: AssetImage("assets/registration_parameters/e_1.png"),
-            fit: BoxFit.cover,
-          ),
+      margin: const EdgeInsets.only(top: 15),
+      width: screenWidth * 0.9,
+      height: screenHeight * 0.21,
+      padding: const EdgeInsets.all(5),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        image: DecorationImage(
+          image: AssetImage("assets/registration_parameters/e_1.png"),
+          fit: BoxFit.cover,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Positioned(
+                child: Container(
                     height: 30,
                     width: 30,
                     margin: EdgeInsets.only(right: screenWidth * 0.16),
                     child:
                         Image.asset("assets/registration_parameters/e_2.png")),
-                Text(
+              ),
+              SizedBox(
+                width: screenWidth * 0.8,
+                child: Text(
                   InfoText.getLevelText(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: screenHeight * 0.018),
-                )
-              ],
-            ),
-            Text(
-              InfoText.getText(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: screenHeight * 0.018),
-            ),
-            Text(
-              InfoText.getAge(),
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: screenHeight * 0.018),
-            ),
-          ],
-        ));
+                  style: const TextStyle(fontSize: 14),
+                ),
+              )
+            ],
+          ),
+          Text(
+            InfoText.getText(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14),
+          ),
+          Text(
+            InfoText.getAge(),
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _commentFieldWidget() {
     return Container(
       margin: const EdgeInsets.only(top: 10, left: 10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
               height: 20,
@@ -212,48 +230,35 @@ class RegistrationParametersScreenState
   Widget _continueButton() {
     return Container(
       margin: const EdgeInsets.only(top: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: _onBackPressed,
-            child: const Icon(
-              Icons.chevron_left,
-              color: kMainColor,
-              size: 40,
-            ),
-          ),
-          SizedBox(
-            width: 170,
-            height: screenHeight * 0.05,
-            child: Material(
-              borderRadius: const BorderRadius.all(Radius.circular(35)),
-              color: _continueButtonBackgroundColor(),
-              child: InkWell(
-                onTap: levelOfSkating != null &&
-                        duration != null &&
-                        _checkTextControllers()
-                    ? _sendData
-                    : null,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "ПРОДОЛЖИТЬ",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: _continueButtonTextColor(),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+      child: SizedBox(
+        width: screenWidth * 0.9,
+        height: 50,
+        child: Material(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: _continueButtonBackgroundColor(),
+          child: InkWell(
+            onTap: levelOfSkating != null &&
+                    duration != null &&
+                    _checkTextControllers()
+                ? _sendData
+                : null,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "ПРОДОЛЖИТЬ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: _continueButtonTextColor(),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
+                ],
               ),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -322,35 +327,43 @@ class RegistrationParametersScreenState
         },
       );
     } else {
-      _showWarningDialog();
+      Dialogs.showUnmodal(
+        context,
+        const MessageDialog(
+          title: "Не доступно",
+          text:
+              "Извините, на данное время уже записались или инструктор отменил запись, пожалуйста, выберите другое время",
+        ),
+      );
+      // _showWarningDialog();
     }
   }
 
-  void _showWarningDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: const Text(
-            "Извините, на данное время уже записались или инструктор отменил запись, пожалуйста, выберите другое время",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                'ОК',
-                style: TextStyle(fontSize: 18),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showWarningDialog() {
+  //   showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         content: const Text(
+  //           "Извините, на данное время уже записались или инструктор отменил запись, пожалуйста, выберите другое время",
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(fontSize: 18),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text(
+  //               'ОК',
+  //               style: TextStyle(fontSize: 18),
+  //             ),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   int countWorkoutTime() {
     int seconds = 0;
@@ -470,9 +483,7 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonBackgroundColor() {
-    if (levelOfSkating != null &&
-        duration != null &&
-        _checkTextControllers()) {
+    if (levelOfSkating != null && duration != null && _checkTextControllers()) {
       return kMainColor;
     } else {
       return Colors.white;
@@ -480,9 +491,7 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonTextColor() {
-    if (levelOfSkating != null &&
-        duration != null &&
-        _checkTextControllers()) {
+    if (levelOfSkating != null && duration != null && _checkTextControllers()) {
       return Colors.white;
     } else {
       return Colors.grey;

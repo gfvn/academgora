@@ -4,7 +4,6 @@ import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_to_instructor/date_widget.dart';
 import 'helpers_widgets/reg_to_instructor/select_kind_of_sport.dart';
@@ -36,98 +35,100 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      decoration:
-          screenDecoration("assets/registration_to_instructor/1_bg.png"),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              SelectKindOfSportWidget(this, kindOfSport),
-              horizontalDivider(20, 20, 20, 20),
-              DateWidget(this, selectedDate),
-              horizontalDivider(20, 20, 20, 20),
-            ],
-          ),
-          // TimeWidget(this),
-          // _warningText(),
-          Column(
-            children: [
-              _buttons(),
-              Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: const Text("ИЛИ",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey))),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: _selectCoachButton(),
-              )
-            ],
-          ),
-        ],
+      appBar: AppBar(
+        title: const Text(
+          "Записаться",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
       ),
-    ));
+      body: Container(
+        decoration:
+            screenDecoration("assets/registration_to_instructor/1_bg.png"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                SelectKindOfSportWidget(this, kindOfSport),
+                horizontalDivider(20, 20, 20, 20),
+                DateWidget(this, selectedDate),
+                // horizontalDivider(20, 20, 20, 20),
+              ],
+            ),
+            // TimeWidget(this),
+            // _warningText(),
+            Column(
+              children: [
+                _buttons(),
+                Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: const Text(
+                    "ИЛИ",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: _selectCoachButton(),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
 
   Widget _continueButton() {
     return Container(
-      width: screenWidth * 0.75,
-      height: screenHeight * 0.08,
+      width: screenWidth * 0.9,
+      height: 60,
       margin: const EdgeInsets.only(top: 18),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: _continueButtonBackgroundColor(),
         child: InkWell(
-            onTap: (kindOfSport != -1 && selectedDate != null)
-                ? _openNextScreen
-                : null,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "ПРОДОЛЖИТЬ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: _continueButtonTextColor(),
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
+          onTap: (kindOfSport != -1 && selectedDate != null)
+              ? _openNextScreen
+              : null,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "ПРОДОЛЖИТЬ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: _continueButtonTextColor(),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
   Widget _buttons() {
     return Container(
-        margin: const EdgeInsets.only(top: 40),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [_backButton(), _continueButton()],
-        ));
-  }
-
-  Widget _backButton() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (c) => const MainScreen()),
-            (route) => false);
-      },
-      child: const Icon(
-        Icons.chevron_left,
-        color: kMainColor,
-        size: 50,
+      margin: const EdgeInsets.only(top: 40),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // _backButton(),
+          _continueButton(),
+        ],
       ),
     );
   }
+
 
   void _openNextScreen() {
     final DateTime now = selectedDate!;
@@ -162,27 +163,29 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
 
   Widget _selectCoachButton() {
     return Container(
-      width: screenWidth * 0.75,
-      height: screenHeight * 0.08,
+      width: screenWidth * 0.9,
+      height: 60,
       margin: const EdgeInsets.only(top: 15),
       decoration: BoxDecoration(
           border: Border.all(color: _selectCoachButtonColor()),
-          borderRadius: const BorderRadius.all(Radius.circular(30))),
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: Colors.transparent,
         child: InkWell(
-            onTap: (kindOfSport != -1 && selectedDate == null)
-                ? _openInstructorsListScreen
-                : null,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _selectCoachText("выбрать определенного"),
-                    _selectCoachText("инструктора")
-                  ]),
-            )),
+          onTap: (kindOfSport != -1 && selectedDate == null)
+              ? _openInstructorsListScreen
+              : null,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _selectCoachText("Выбрать определенного"),
+                _selectCoachText("инструктора")
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -192,8 +195,11 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
         kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
     workoutDataKeeper.from = fromTime;
     workoutDataKeeper.to = toTime;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const InstructorsListScreen()));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (c) => const InstructorsListScreen(),
+      ),
+    );
   }
 
   Widget _selectCoachText(String text) {
@@ -201,9 +207,10 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
-          color: _selectCoachButtonColor(),
-          fontSize: 16,
-          fontWeight: FontWeight.normal),
+        color: _selectCoachButtonColor(),
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+      ),
     );
   }
 

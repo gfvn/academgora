@@ -1,4 +1,3 @@
-
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
@@ -118,7 +117,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Center(
           child: !isLoading
               ? Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _titleAndAccButton(),
                     _socialNetworks(),
@@ -422,70 +421,71 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
     );
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (c) => const RegistrationFirstScreen(),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (c) => const RegistrationFirstScreen(),
+    //   ),
+    // );
   }
 
-
-
   Widget _infoButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: screenWidth * 0.4,
-          height: 40,
-          margin: const EdgeInsets.only(top: 15),
-          child: Material(
-            borderRadius: const BorderRadius.all( Radius.circular(10)),
-            color: Colors.white,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => const AboutUsScreen()));
-              },
-              child: const Center(
-                child: Text(
-                  "О нас",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: screenWidth * 0.4,
+            height: 40,
+            margin: const EdgeInsets.only(top: 15),
+            child: Material(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (c) => const AboutUsScreen()));
+                },
+                child: const Center(
+                  child: Text(
+                    "О нас",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        Container(
-          width: screenWidth * 0.4,
-          height: 40,
-          margin: const EdgeInsets.only(top: 25, left: 20),
-          child: Material(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            color: Colors.white,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (c) => const CallUsScreen()));
-              },
-              child: const Center(
-                child: Text(
-                  " Связаться с нами    ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
+          Container(
+            width: screenWidth * 0.4,
+            height: 40,
+            margin: const EdgeInsets.only(top: 15, left: 20),
+            child: Material(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (c) => const CallUsScreen()));
+                },
+                child: const Center(
+                  child: Text(
+                    " Связаться с нами    ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -43,18 +43,28 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Инструкторы",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         decoration:
             screenDecoration("assets/registration_to_instructor/1_bg.png"),
         child: Column(
           children: [
             Container(
-              height: screenHeight * 0.8,
+              height: screenHeight * 0.74,
               margin: const EdgeInsets.only(top: 30, left: 15, right: 15),
               child: ListView.builder(
                 itemCount: reversedList.length,
                 itemBuilder: (context, index) {
-                  return _instructorWidget(reversedList[index], index);
+                  return _instructorWidget(
+                    reversedList[index],
+                    index,
+                  );
                 },
               ),
             ),
@@ -140,34 +150,37 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: const BorderSide(width: 0.5, color: Colors.grey),
+          bottom: const BorderSide(
+            width: 0.5,
+            color: Colors.grey,
+          ),
           top: index == 0
-              ? const BorderSide(width: 0.5, color: Colors.grey)
-              : const BorderSide(color: Colors.transparent),
+              ? const BorderSide(
+                  width: 0.5,
+                  color: Colors.grey,
+                )
+              : const BorderSide(
+                  color: Colors.transparent,
+                ),
         ),
       ),
-      child: InstructorWidget(instructor, this),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: InstructorWidget(instructor, this),
+      ),
     );
   }
 
   Widget _buttons() {
     return Container(
-        margin: const EdgeInsets.only(top: 40),
+        margin: const EdgeInsets.only(top: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_backButton(), _continueButton()],
+          children: [
+            // _backButton(),
+            _continueButton(),
+          ],
         ));
-  }
-
-  Widget _backButton() {
-    return GestureDetector(
-      onTap: _onBackPressed,
-      child: const Icon(
-        Icons.chevron_left,
-        color: kMainColor,
-        size: 50,
-      ),
-    );
   }
 
   void _setSelectedDate() {
@@ -183,28 +196,31 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
   }
 
   Widget _continueButton() {
-    return Container(
-      width: 200,
-      height: 55,
-      margin: const EdgeInsets.only(right: 20),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: _continueButtonBackgroundColor(),
-        child: InkWell(
-          onTap: regToInstructorData == null ? null : _openRegParametersScreen,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "ПРОДОЛЖИТЬ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: _continueButtonTextColor(),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
+    return Center(
+      child: SizedBox(
+        width: screenWidth * 0.9,
+        height: 50,
+        // margin: const EdgeInsets.only(right: 20),
+        child: Material(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: _continueButtonBackgroundColor(),
+          child: InkWell(
+            onTap:
+                regToInstructorData == null ? null : _openRegParametersScreen,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "ПРОДОЛЖИТЬ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: _continueButtonTextColor(),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

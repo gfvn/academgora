@@ -3,7 +3,6 @@ import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/screens/all_instructors/all_instructors_screen.dart';
-import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 

@@ -13,6 +13,7 @@ class MainButton extends StatelessWidget {
   final Color textColor;
   final Color buttonColor;
 
+  // ignore: use_key_in_widget_constructors
   const MainButton(
       {required this.title,
       required this.width,

@@ -1,7 +1,6 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/dialogs/cancel_dialog.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
-import 'package:academ_gora_release/core/components/dialogs/message_dialog.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
@@ -14,9 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import '../../../../main.dart';
 import '../../../../core/consants/extension.dart';
-import '../../../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:academ_gora_release/core/style/color.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);

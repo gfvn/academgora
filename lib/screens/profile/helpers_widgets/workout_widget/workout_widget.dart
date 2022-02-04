@@ -68,22 +68,23 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   Widget _titleRow() {
     return Container(
-        color: kMainColor,
-        height: 40,
-        child: Row(
-          children: [
-            Container(
-                margin: const EdgeInsets.only(left: 20),
-                child: Text(
-                  _parseDate(widget.workout.date!),
-                  style: const TextStyle(color: Colors.white, fontSize: 22),
-                )),
-            Container(
-                margin: EdgeInsets.only(left: screenWidth / 7),
-                child: Text("${widget.workout.from}-${widget.workout.to}",
-                    style: const TextStyle(color: Colors.white, fontSize: 22)))
-          ],
-        ));
+      color: kMainColor,
+      height: 40,
+      child: Row(
+        children: [
+          Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Text(
+                _parseDate(widget.workout.date!),
+                style: const TextStyle(color: Colors.white, fontSize: 22),
+              )),
+          Container(
+              margin: EdgeInsets.only(left: screenWidth / 7),
+              child: Text("${widget.workout.from}-${widget.workout.to}",
+                  style: const TextStyle(color: Colors.white, fontSize: 22)))
+        ],
+      ),
+    );
   }
 
   String _parseDate(String date) {
@@ -92,38 +93,43 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   Widget _countOfPeople() {
     return Container(
-        margin: const EdgeInsets.only(top: 15),
-        child: Row(
-          children: [
-            Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: const Text(
-                  "Количество человек",
-                  style: TextStyle(fontSize: 18),
-                )),
-            Container(
-              margin: EdgeInsets.only(left: screenWidth / 6),
-              child: Text(widget.workout.peopleCount.toString(),
-                  style: const TextStyle(fontSize: 18)),
-            ),
-          ],
-        ));
+      margin: const EdgeInsets.only(top: 15),
+      child: Row(
+        children: [
+          Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: const Text(
+                "Количество человек",
+                style: TextStyle(fontSize: 18),
+              )),
+          Container(
+            margin: EdgeInsets.only(left: screenWidth / 6),
+            child: Text(widget.workout.peopleCount.toString(),
+                style: const TextStyle(fontSize: 18)),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _redactButtons() {
     return Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Row(
-          children: [
-            _button("РЕДАКТИРОВАТЬ", 10, _openUpdateWorkoutScreen),
-            _button("ОТМЕНИТЬ", screenWidth / 8, _showCancelWorkoutDialog),
-          ],
-        ));
+      margin: const EdgeInsets.only(top: 10),
+      child: Row(
+        children: [
+          _button("РЕДАКТИРОВАТЬ", 10, _openUpdateWorkoutScreen),
+          _button("ОТМЕНИТЬ", screenWidth / 8, _showCancelWorkoutDialog),
+        ],
+      ),
+    );
   }
 
   void _openUpdateWorkoutScreen() {
     Navigator.of(context).push(
-        MaterialPageRoute(builder: (c) => UpdateWorkoutScreen(widget.workout)));
+      MaterialPageRoute(
+        builder: (c) => UpdateWorkoutScreen(widget.workout),
+      ),
+    );
   }
 
   Widget _button(String text, double leftMargin, Function function) {
@@ -224,23 +230,24 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   Widget _instructorInfoWidget() {
     return Container(
-        width: screenWidth * 0.9,
-        margin: const EdgeInsets.only(left: 10, top: 5),
-        child: Row(
-          children: [
-            Text(
-              "Инструктор:\n(${widget.workout.sportType})",
-              style: const TextStyle(fontSize: 14),
-            ),
-            Container(
-                width: screenWidth * 0.4,
-                margin: const EdgeInsets.only(left: 45),
-                child: Text(
-                  _instructor!.name ?? "",
-                  style: const TextStyle(fontSize: 14),
-                )),
-          ],
-        ));
+      width: screenWidth * 0.9,
+      margin: const EdgeInsets.only(left: 10, top: 5),
+      child: Row(
+        children: [
+          Text(
+            "Инструктор:\n(${widget.workout.sportType})",
+            style: const TextStyle(fontSize: 14),
+          ),
+          Container(
+              width: screenWidth * 0.4,
+              margin: const EdgeInsets.only(left: 45),
+              child: Text(
+                _instructor!.name ?? "",
+                style: const TextStyle(fontSize: 14),
+              )),
+        ],
+      ),
+    );
   }
 
   Widget _callToInstructorButtons() {
@@ -252,44 +259,48 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   Widget _phoneNumberButton() {
     return GestureDetector(
-        onTap: () {
-          callNumber(widget.workout.instructorPhoneNumber!);
-        },
-        child: Container(
-            alignment: Alignment.center,
-            height: 30,
-            width: screenWidth * 0.45,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              image: DecorationImage(
-                image: AssetImage("assets/profile/phone.png"),
-              ),
-            ),
-            child: Text(
-              widget.workout.instructorPhoneNumber!,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-            )));
+      onTap: () {
+        callNumber(widget.workout.instructorPhoneNumber!);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        height: 30,
+        width: screenWidth * 0.45,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          image: DecorationImage(
+            image: AssetImage("assets/profile/phone.png"),
+          ),
+        ),
+        child: Text(
+          widget.workout.instructorPhoneNumber!,
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ),
+    );
   }
 
   Widget _whatsAppButton() {
     return GestureDetector(
-        onTap: () {
-          launchURL(whatsAppUrl(widget.workout.instructorPhoneNumber!));
-        },
-        child: Container(
-            alignment: Alignment.center,
-            height: 30,
-            width: screenWidth * 0.35,
-            margin: EdgeInsets.only(left: screenWidth * 0.05),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              image: DecorationImage(
-                image: AssetImage("assets/profile/wa.png"),
-              ),
-            ),
-            child: const Text(
-              "Написать",
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            )));
+      onTap: () {
+        launchURL(whatsAppUrl(widget.workout.instructorPhoneNumber!));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        height: 30,
+        width: screenWidth * 0.35,
+        margin: EdgeInsets.only(left: screenWidth * 0.05),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          image: DecorationImage(
+            image: AssetImage("assets/profile/wa.png"),
+          ),
+        ),
+        child: const Text(
+          "Написать",
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ),
+    );
   }
 }

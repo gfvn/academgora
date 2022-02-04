@@ -7,12 +7,20 @@ class AcademButton extends StatelessWidget {
       required this.onTap,
       required this.tittle,
       required this.width,
-      required this.fontSize})
+      required this.fontSize,
+      this.height = 50,
+      this.colorButton = kMainColor,
+      this.colorText = kWhite,
+      this.borderColor = Colors.transparent})
       : super(key: key);
   final Function onTap;
   final String tittle;
   final double width;
   final double fontSize;
+  final double height;
+  final Color colorButton;
+  final Color colorText;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +31,16 @@ class AcademButton extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 12),
         width: width,
-        height: 50,
-        decoration: const BoxDecoration(
-            color: kMainColor,
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        height: height,
+        decoration: BoxDecoration(
+            color: colorButton,
+            border: Border.all(color: borderColor),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0))),
         child: Center(
           child: Text(
             tittle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: fontSize),
+            style: TextStyle(color: colorText, fontSize: fontSize),
           ),
         ),
       ),

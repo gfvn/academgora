@@ -32,25 +32,37 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     _getInstructors();
     return Scaffold(
       body: Container(
-          decoration: screenDecoration("assets/all_instructors/bg.png"),
-          child: Center(
-            child: _instructorsList(),
-          )),
+        decoration: screenDecoration("assets/all_instructors/bg.png"),
+        child: Center(
+          child: _instructorsList(),
+        ),
+      ),
     );
   }
 
   void _checkoutKindOfSport(String value) {
-    setState(() {
-      _selectedKindOfSport = value;
-    });
+    setState(
+      () {
+        _selectedKindOfSport = value;
+      },
+    );
   }
 
   Widget _instructorsList() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
-        _kindOfSportButton("СНОУБОРД"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
+            const SizedBox(
+              width: 10,
+            ),
+            _kindOfSportButton("СНОУБОРД"),
+          ],
+        ),
         _instructorsListWidget(),
         _backToMainScreenButton(),
         _logoutButton()
@@ -60,33 +72,32 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
 
   Widget _kindOfSportButton(String name) {
     return GestureDetector(
-        onTap: () {
-          if (_selectedKindOfSport != name) {
-            _checkoutKindOfSport(_selectedKindOfSport == "ГОРНЫЕ ЛЫЖИ"
-                ? "СНОУБОРД"
-                : "ГОРНЫЕ ЛЫЖИ");
-          }
-        },
-        child: Container(
-          width:
-              _checkKindOfSport(name) ? screenWidth * 0.75 : screenWidth * 0.7,
-          height: _checkKindOfSport(name)
-              ? screenHeight * 0.06
-              : screenHeight * 0.05,
-          margin: const EdgeInsets.only(top: 15),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(7)),
-              color: _checkKindOfSport(name) ? kMainColor : Colors.white),
-          child: Text(
-            name,
-            style: TextStyle(
-                color: _checkKindOfSport(name) ? Colors.white : kMainColor,
-                fontSize: _checkKindOfSport(name)
-                    ? screenHeight * 0.034
-                    : screenHeight * 0.03),
+      onTap: () {
+        if (_selectedKindOfSport != name) {
+          _checkoutKindOfSport(_selectedKindOfSport == "ГОРНЫЕ ЛЫЖИ"
+              ? "СНОУБОРД"
+              : "ГОРНЫЕ ЛЫЖИ");
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.only(right: 3, left: 3),
+        width:
+            _checkKindOfSport(name) ? screenWidth * 0.45 : screenWidth * 0.45,
+        height: 50,
+        margin: const EdgeInsets.only(top: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(7)),
+            color: _checkKindOfSport(name) ? kMainColor : Colors.white),
+        child: Text(
+          name,
+          style: TextStyle(
+            color: _checkKindOfSport(name) ? Colors.white : kMainColor,
+            fontSize: 16,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   bool _checkKindOfSport(String name) {
@@ -96,24 +107,28 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
 
   Widget _instructorsListWidget() {
     return Container(
-        height: screenHeight * 0.65,
-        width: screenWidth * 0.78,
-        margin: const EdgeInsets.only(top: 10, bottom: 10),
-        alignment: Alignment.center,
-        child: CustomScrollView(
-          primary: false,
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverGrid.count(
-                  mainAxisSpacing: 20,
-                  crossAxisCount: 2,
-                  children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
-                      ? _snowboardInstructors
-                      : _skiesInstructors)),
-            )
-          ],
-        ));
+      height: screenHeight * 0.65,
+      width: screenWidth * 0.78,
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      alignment: Alignment.center,
+      child: CustomScrollView(
+        primary: false,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(10),
+            sliver: SliverGrid.count(
+              mainAxisSpacing: 20,
+              crossAxisCount: 2,
+              children: _profileWidgets(
+                _selectedKindOfSport == "СНОУБОРД"
+                    ? _snowboardInstructors
+                    : _skiesInstructors,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   List<Widget> _profileWidgets(List<Instructor> instructors) {
@@ -123,6 +138,8 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     }
     return widgets;
   }
+
+  
 
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
@@ -159,25 +176,27 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
-            onTap: () => {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => const MainScreen()),
-                      (route) => false)
-                },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "НА ГЛАВНУЮ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ]),
-            )),
+          onTap: () => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const MainScreen()),
+                (route) => false)
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "НА ГЛАВНУЮ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -191,30 +210,31 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
-            onTap: () {
-              showLogoutDialog(context, _logout);
-            },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "ВЫЙТИ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ]),
-            )),
+          onTap: () {
+            showLogoutDialog(context, _logout);
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "ВЫЙТИ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
   void _logout() async {
     FirebaseAuth.instance.currentUser!.delete;
-
     FlutterAuthUi.signOut();
     var pref = await SharedPreferences.getInstance();
     pref.remove("userRole");

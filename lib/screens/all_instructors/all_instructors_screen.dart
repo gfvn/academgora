@@ -133,24 +133,28 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
 
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
-        onTap: () => _openInstructorProfileScreen(instructors[which]),
-        child: Column(
-          children: [
-            InstructorPhotoWidget(instructors[which]),
-            Text(
-              instructors[which].name ?? "",
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ));
+      onTap: () => _openInstructorProfileScreen(instructors[which]),
+      child: Column(
+        children: [
+          InstructorPhotoWidget(instructors[which]),
+          Text(
+            instructors[which].name ?? "",
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 
   void _openInstructorProfileScreen(Instructor instructor) {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (c) => InstructorProfileScreen(
-              instructor,
-            )));
+          instructor,
+        ),
+      ),
+    );
   }
 
   Widget _backToMainScreenButton() {
@@ -162,25 +166,27 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(35)),
         color: kMainColor,
         child: InkWell(
-            onTap: () => {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (c) => const MainScreen()),
-                      (route) => false)
-                },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                     Text(
-                      "НА ГЛАВНУЮ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ]),
-            )),
+          onTap: () => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const MainScreen()),
+                (route) => false)
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "НА ГЛАВНУЮ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/data/firebase_workouts_controller.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/data/firebase_workouts_controller_impl.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/data/workouts_state_keeper.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/workouts_view_model.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
+import 'package:academ_gora_release/features/user/user_profile/data/firebase_workouts_controller.dart';
+import 'package:academ_gora_release/features/user/user_profile/data/firebase_workouts_controller_impl.dart';
+import 'package:academ_gora_release/features/user/user_profile/data/workouts_state_keeper.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/workouts_view_model.dart';
 
 class WorkoutsViewModelImpl implements WorkoutsViewModel, WorkoutsDataListener{
 

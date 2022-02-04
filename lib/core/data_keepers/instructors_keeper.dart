@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:flutter/material.dart';
 
 class InstructorsKeeper {

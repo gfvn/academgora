@@ -6,10 +6,10 @@ import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/loader/loader_widget.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/data_keepers/user_workouts_keeper.dart';
+import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/core/notification/notification_api.dart';
 import 'package:academ_gora_release/features/auth/ui/widgets/login_form.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/core/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -23,35 +23,13 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  //Variables and objects
   final AuthController _authController = AuthController();
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
-
   bool isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: !isLoading
-          ? Container(
-              width: screenWidth,
-              decoration: screenDecoration("assets/auth/1_background.png"),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const LoginFormWidget(),
-                  AcademButton(
-                    onTap: auth,
-                    tittle: "Вход",
-                    width: 200,
-                  ),
-                ],
-              ),
-            )
-          : const LoaderWidget(),
-    );
-  }
-
+  //Functions
   void auth() async {
     final providers = [
       AuthUiProvider.phone,
@@ -78,36 +56,36 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
     if (result) {
-      setState(() {
-        isLoading = true;
-      });
+      setState(
+        () {
+          isLoading = true;
+        },
+      );
       final token = await NotificationApi().setupNotification();
       await Future.delayed(const Duration(milliseconds: 3000));
 
       await _authController
           .saveUserRole(FirebaseAuth.instance.currentUser!.phoneNumber!, token)
-          .then((userRole) {
-        if (userRole == UserRole.user) {
-          _firebaseRequestsController.addListener(
-              "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
-              _saveWorkoutsIntoUserDataKeeper);
-        }
-        setState(() {
-          isLoading = false;
-        });
-        _openMainScreen();
-      });
+          .then(
+        (userRole) {
+          if (userRole == UserRole.user) {
+            _firebaseRequestsController.addListener(
+                "Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия",
+                _saveWorkoutsIntoUserDataKeeper);
+          }
+          setState(
+            () {
+              isLoading = false;
+            },
+          );
+          FunctionsConsts.openMainScreen(context);
+        },
+      );
     } else {
       log(
         'resullt is bad',
       );
     }
-  }
-
-  void _openMainScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const MainScreen()),
-        (route) => false);
   }
 
   void _saveWorkoutsIntoUserDataKeeper(Event? event) async {
@@ -120,6 +98,30 @@ class _AuthScreenState extends State<AuthScreen> {
           _firebaseRequestsController.myAppState!.setState(() {});
         }
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: !isLoading
+          ? Container(
+              width: screenWidth,
+              decoration: screenDecoration("assets/auth/1_background.png"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const LoginFormWidget(),
+                  AcademButton(
+                    onTap: auth,
+                    tittle: "Вход",
+                    width: 200,
+                    fontSize: 24,
+                  ),
+                ],
+              ),
+            )
+          : const LoaderWidget(),
     );
   }
 }

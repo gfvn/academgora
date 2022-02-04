@@ -1,14 +1,13 @@
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../main_screen.dart';
+import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'helpers_widgets/horizontal_divider.dart';
 import 'helpers_widgets/reg_to_instructor/date_widget.dart';
 import 'helpers_widgets/reg_to_instructor/select_kind_of_sport.dart';
-import 'helpers_widgets/reg_to_instructor/time_widget.dart';
 import 'instructors_list_screen.dart';
 
 import 'package:intl/intl.dart';
@@ -133,7 +132,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
       },
       child: const Icon(
         Icons.chevron_left,
-        color: Colors.blue,
+        color: kMainColor,
         size: 50,
       ),
     );
@@ -156,7 +155,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
 
   Color _continueButtonBackgroundColor() {
     if (kindOfSport != -1 && selectedDate != null) {
-      return Colors.blue;
+      return kMainColor;
     } else {
       return Colors.white;
     }
@@ -221,7 +220,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     if (kindOfSport == -1) {
       return Colors.grey;
     } else {
-      return selectedDate == null ? Colors.blue : Colors.grey;
+      return selectedDate == null ? kMainColor : Colors.grey;
     }
   }
 }

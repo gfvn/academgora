@@ -1,11 +1,12 @@
-import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../main_screen.dart';
+import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class InstructorProfileScreen extends StatelessWidget {
   final Instructor instructor;
@@ -15,39 +16,39 @@ class InstructorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("${instructor.name}"),
-        centerTitle: true,
-      ),
+        appBar: AppBar(
+          title: Text("${instructor.name}"),
+          centerTitle: true,
+        ),
         body: Container(
-      height: screenHeight,
-      width: screenWidth,
-      decoration: screenDecoration("assets/instructor_profile/bg.png"),
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: screenHeight * 0.06),
-                  child: InstructorPhotoWidget(
-                    instructor,
-                    width: screenHeight * 0.2,
-                    height: screenHeight * 0.2,
-                  ),
+          height: screenHeight,
+          width: screenWidth,
+          decoration: screenDecoration("assets/instructor_profile/bg.png"),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: screenHeight * 0.06),
+                      child: InstructorPhotoWidget(
+                        instructor,
+                        width: screenHeight * 0.2,
+                        height: screenHeight * 0.2,
+                      ),
+                    ),
+                    _instructorNameWidget(),
+                    _instructorInfoWidget(),
+                    _instructorPhoneWidget(),
+                    _socialNetworksList(),
+                    // _backButtons(context)
+                  ],
                 ),
-                _instructorNameWidget(),
-                _instructorInfoWidget(),
-                _instructorPhoneWidget(),
-                _socialNetworksList(),
-                // _backButtons(context)
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget _instructorNameWidget() {
@@ -85,7 +86,8 @@ class InstructorProfileScreen extends StatelessWidget {
         },
         child: Container(
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(left: screenWidth * 0.1, top: screenHeight * 0.02),
+          margin: EdgeInsets.only(
+              left: screenWidth * 0.1, top: screenHeight * 0.02),
           child: Text(
             "Телефон: ${instructor.phone}",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -97,7 +99,7 @@ class InstructorProfileScreen extends StatelessWidget {
 
   Widget _socialNetworksList() {
     return Container(
-      height: screenHeight*0.3,
+      height: screenHeight * 0.3,
       child: ListView.builder(
         // physics: NeverScrollableScrollPhysics(),
         itemCount: instructor.socialNetworks != null
@@ -236,7 +238,7 @@ class InstructorProfileScreen extends StatelessWidget {
       margin: const EdgeInsets.only(left: 20),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: () => {
                   Navigator.of(context).pushAndRemoveUntil(

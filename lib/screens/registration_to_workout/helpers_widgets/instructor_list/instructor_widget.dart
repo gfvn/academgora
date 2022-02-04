@@ -1,5 +1,5 @@
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/reg_to_instructor_data.dart';
 import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';

@@ -1,9 +1,9 @@
-import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../count_screen.dart';
@@ -105,7 +105,8 @@ class _DateWidgetState extends State<DateWidget> {
     } else {
       widget.registrationToInstructorScreenState.setState(
         () {
-          widget.registrationToInstructorScreenState.secondDate = _selectedDate!;
+          widget.registrationToInstructorScreenState.secondDate =
+              _selectedDate!;
         },
       );
     }
@@ -118,9 +119,6 @@ class _DateWidgetState extends State<DateWidget> {
       () {},
     );
   }
-  
-
-
 
   Future<void> _showDateDialog() async {
     return showDialog<void>(
@@ -135,13 +133,13 @@ class _DateWidgetState extends State<DateWidget> {
             ],
             content: CalendarCarousel<Event>(
               headerTextStyle: TextStyle(
-                  fontSize: screenHeight * 0.028, color: Colors.blueAccent),
+                  fontSize: screenHeight * 0.028, color: kMainColor),
               locale: "ru",
               width: 300,
               height: 270,
               todayBorderColor: Colors.transparent,
               todayButtonColor: Colors.transparent,
-              todayTextStyle: const TextStyle(color: Colors.blueAccent),
+              todayTextStyle: const TextStyle(color: kMainColor),
               onDayPressed: (DateTime date, List<Event> events) {
                 DateTime now = DateTime.now();
                 if (true) {

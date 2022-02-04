@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 
 class UserWorkoutsKeeper {
   static final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper._internal();

@@ -1,9 +1,10 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/cancel_keeper.dart';
 import 'package:academ_gora_release/main.dart';
-import 'package:academ_gora_release/model/cancel.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/cancel.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/classes_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../core/consants/extension.dart';
 import '../instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
@@ -137,7 +138,7 @@ class _CancelsScreenState extends State<CancelsScreen> {
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -238,17 +239,13 @@ class _CancelsScreenState extends State<CancelsScreen> {
                   children: [
                     const Text(
                       "Cтатус: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     Text(
                       "${cancelModel.status}",
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 ),

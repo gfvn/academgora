@@ -1,9 +1,10 @@
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/reg_to_instructor_data.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import 'package:intl/intl.dart';
 
@@ -163,7 +164,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
       onTap: _onBackPressed,
       child: const Icon(
         Icons.chevron_left,
-        color: Colors.blue,
+        color: kMainColor,
         size: 50,
       ),
     );
@@ -215,7 +216,7 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     if (regToInstructorData == null) {
       return Colors.white;
     } else {
-      return Colors.blue;
+      return kMainColor;
     }
   }
 

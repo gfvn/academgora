@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../../registration_parameters_screen.dart';
@@ -19,7 +20,6 @@ class HumanInfoWidget extends StatefulWidget {
 }
 
 class _HumanInfoWidgetState extends State<HumanInfoWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -48,7 +48,7 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
         margin: EdgeInsets.only(left: 8.0),
         child: Text(
           text,
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(color: kMainColor),
         ));
   }
 

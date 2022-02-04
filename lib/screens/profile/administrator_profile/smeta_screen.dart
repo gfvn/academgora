@@ -3,10 +3,11 @@ import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/count_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
-import '../../../model/instructor.dart';
-import '../../../model/workout.dart';
+import '../../../features/instructor/domain/enteties/instructor.dart';
+import '../../../features/main_screen/domain/enteties/workout.dart';
 import '../../../core/consants/extension.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -23,7 +24,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
   List<Workout> _workoutsPerDay = [];
   List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
-  bool isUpdate=true;
+  bool isUpdate = true;
 
   final EventList<Event> _markedDateMap = EventList<Event>(events: Map());
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
@@ -73,12 +74,10 @@ class _SmetaScreenState extends State<SmetaScreen> {
     );
     setState(
       () {
-        isUpdate=true;
+        isUpdate = true;
         _getInstructors();
       },
-      
     );
-
   }
 
   @override
@@ -209,7 +208,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         margin: const EdgeInsets.only(top: 16),
         child: Material(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: Colors.blue,
+          color: kMainColor,
           child: InkWell(
             onTap: () {
               onTap();
@@ -263,7 +262,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         dateTime.day.toString(),
         style: TextStyle(
             color:
-                _compareDateWithSelected(dateTime) ? Colors.white : Colors.blue,
+                _compareDateWithSelected(dateTime) ? Colors.white : kMainColor,
             fontWeight: FontWeight.bold,
             fontSize: 14),
       ),
@@ -281,10 +280,10 @@ class _SmetaScreenState extends State<SmetaScreen> {
       child: Padding(
         padding: const EdgeInsets.only(right: 16, left: 16),
         child: CalendarCarousel<Event>(
-          selectedDayButtonColor: Colors.blue,
+          selectedDayButtonColor: kMainColor,
           headerMargin: const EdgeInsets.all(0),
           headerTextStyle:
-              TextStyle(fontSize: screenHeight * 0.023, color: Colors.blue),
+              TextStyle(fontSize: screenHeight * 0.023, color: kMainColor),
           weekdayTextStyle: const TextStyle(color: Colors.black, fontSize: 14),
           locale: "ru",
           width: screenWidth * 0.69,

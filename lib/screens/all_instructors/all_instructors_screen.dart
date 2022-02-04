@@ -1,12 +1,13 @@
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../main_screen.dart';
+import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class AllInstructorsScreen extends StatefulWidget {
   @override
@@ -83,11 +84,11 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(7)),
-              color: _checkKindOfSport(name) ? Colors.blue : Colors.white),
+              color: _checkKindOfSport(name) ? kMainColor : Colors.white),
           child: Text(
             name,
             style: TextStyle(
-                color: _checkKindOfSport(name) ? Colors.white : Colors.blue,
+                color: _checkKindOfSport(name) ? Colors.white : kMainColor,
                 fontSize: _checkKindOfSport(name)
                     ? screenHeight * 0.034
                     : screenHeight * 0.03),
@@ -138,7 +139,7 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
             children: [
               InstructorPhotoWidget(instructors[which]),
               Text(
-                instructors[which].name??"",
+                instructors[which].name ?? "",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
@@ -161,7 +162,7 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
       margin: EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: () => {
                   Navigator.of(context).pushAndRemoveUntil(
@@ -172,7 +173,7 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     const Text(
+                    const Text(
                       "НА ГЛАВНУЮ",
                       textAlign: TextAlign.center,
                       style: TextStyle(

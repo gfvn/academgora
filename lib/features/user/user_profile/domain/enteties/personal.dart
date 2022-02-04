@@ -1,19 +1,20 @@
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 
-class Adminstrator {
+class User {
   String? id;
   String? phone;
   String? name;
   String? fcm_token;
   List<Workout>? workouts;
 
-  static Adminstrator fromJson(String id, map) {
-    Adminstrator admin = Adminstrator();
-    admin.id = id;
-    admin.phone = map["Телефон"] ?? "";
-    admin.name = map["ФИО"] ?? "";
-    admin.fcm_token=map["fcm_token"];
-    return admin;
+  static User fromJson(String id, map) {
+    User user = User();
+    user.id = id;
+    user.name=map['ФИО'];
+    user.phone = map["Телефон"] ?? "";
+    user.fcm_token=map["fcm_token"]??"";
+    // user.workouts = _parseWorkouts(map["Занятия"])??[];
+    return user;
   }
 
   // static Map<dynamic, dynamic> _parseDates(
@@ -55,7 +56,7 @@ class Adminstrator {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Adminstrator &&
+      other is User &&
           runtimeType == other.runtimeType &&
           phone == other.phone;
 

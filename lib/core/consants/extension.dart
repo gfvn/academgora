@@ -53,14 +53,6 @@ String adminAddInstructor(String phone, String instructorName) {
   return "Администратор $phone добавил нового Инструктора $instructorName";
 }
 
-// String userCancelledWorkoutForInstructor(String phone) {
-//   return "user cancelled workout for instructor $phone";
-// }
-
-// String administratorCancelledWorkout(String userPhone, String workoutId) {
-//   return "administrator cancelled workout of user $userPhone;workoutId=$workoutId";
-// }
-
 extension DateOnlyCompare on DateTime {
   bool isAfterDate(DateTime other) {
     bool isDayAfter =
@@ -81,23 +73,6 @@ extension DateOnlyCompare on DateTime {
     bool isYearBefore = year < other.year;
     return isDayBefore || isMonthBefore || isYearBefore;
   }
-}
-
-Widget defaultButton(String text, Function()? onPressed,
-    {double width = 200, double height = 45}) {
-  return Container(
-      margin: const EdgeInsets.all(2),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          textStyle: const TextStyle(fontSize: 18),
-          fixedSize: Size(width, height),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-        ),
-        onPressed: onPressed,
-        child: Text(text),
-      ));
 }
 
 String whatsAppUrl(String phoneNumber) {
@@ -170,12 +145,12 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-          content: SizedBox(
-        height: screenHeight * 0.15,
-        child: Column(
-          children: [
-            const Text("Выйти из аккаунта?"),
-            Container(
+        content: SizedBox(
+          height: screenHeight * 0.15,
+          child: Column(
+            children: [
+              const Text("Выйти из аккаунта?"),
+              Container(
                 margin: const EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -192,10 +167,12 @@ void showLogoutDialog(BuildContext context, Function()? logoutFunction) {
                       },
                     ),
                   ],
-                ))
-          ],
+                ),
+              )
+            ],
+          ),
         ),
-      ));
+      );
     },
   );
 }
@@ -451,21 +428,22 @@ void showDeleteNotifications(BuildContext context,
           children: [
             const Text("Вы точно хотите удалить?"),
             Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      child: OutlinedButton(
-                          child: const Text('ДА'), onPressed: confirmFunction),
-                    ),
-                    OutlinedButton(
-                      child: const Text('ОТМЕНА'),
-                      onPressed: cancelFunction,
-                    ),
-                  ],
-                ))
+              margin: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 20),
+                    child: OutlinedButton(
+                        child: const Text('ДА'), onPressed: confirmFunction),
+                  ),
+                  OutlinedButton(
+                    child: const Text('ОТМЕНА'),
+                    onPressed: cancelFunction,
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ));

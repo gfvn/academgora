@@ -1,11 +1,12 @@
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
-import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/archive_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/cancels_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/current_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 class ClassesScreen extends StatefulWidget {
   const ClassesScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [cancelButton(),_backToMainScreenButton()],
+                    children: [cancelButton(), _backToMainScreenButton()],
                   )),
             ],
           ),
@@ -76,7 +77,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -103,20 +104,21 @@ class _ClassesScreenState extends State<ClassesScreen> {
     );
   }
 
- Widget cancelButton() {
+  Widget cancelButton() {
     return Container(
       width: screenWidth * 0.6,
       height: screenHeight * 0.06,
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
-    Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => const AdministratorProfileScreen()),
-                (route) => false);          
-                },
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (c) => const AdministratorProfileScreen()),
+                (route) => false);
+          },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +146,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
       margin: const EdgeInsets.only(top: 16),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             onTap();

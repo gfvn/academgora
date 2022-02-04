@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/model/administrator.dart';
+import 'package:academ_gora_release/features/administrator/domain/enteties/administrator.dart';
 import 'package:flutter/material.dart';
 
 class AdminKeeper {

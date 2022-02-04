@@ -1,7 +1,7 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';

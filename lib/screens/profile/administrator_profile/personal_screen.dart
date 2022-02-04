@@ -4,15 +4,16 @@ import 'package:academ_gora_release/core/components/search_widget.dart';
 import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/features/user/user_profile/domain/enteties/personal.dart';
 import 'package:academ_gora_release/main.dart';
-import 'package:academ_gora_release/model/administrator.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/personal.dart';
-import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/features/administrator/domain/enteties/administrator.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FireBaseAuth;
 import 'package:intl/intl.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 class PersonalScreeen extends StatefulWidget {
   const PersonalScreeen({Key? key}) : super(key: key);
@@ -342,7 +343,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
                         width: 40,
                         height: 40,
                         child: CircularProgressIndicator(
-                          color: Colors.blue,
+                          color: kMainColor,
                         ),
                       ),
                     ),
@@ -360,7 +361,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () => {Navigator.pop(context)},
           child: Center(
@@ -390,7 +391,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         (int index) {
           return Dismissible(
               background: Container(
-                color: Colors.blue,
+                color: kMainColor,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -455,7 +456,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         (int index) {
           return Dismissible(
             background: Container(
-              color: Colors.blue,
+              color: kMainColor,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -522,7 +523,7 @@ class _PersonalScreeenState extends State<PersonalScreeen> {
         (int index) {
           return Dismissible(
             background: Container(
-              color: Colors.blue,
+              color: kMainColor,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(

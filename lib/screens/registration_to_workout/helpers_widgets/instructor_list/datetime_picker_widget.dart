@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/reg_to_instructor_data.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/core/style/color.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/reg_to_instructor_data.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../main.dart';
@@ -120,34 +121,39 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   Widget _timeWidget() {
-    return _openedTimes.isEmpty? const Padding(
-      padding: EdgeInsets.only(top:16.0, bottom: 16),
-      child: Center(child: Text("Нет доступного времени", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
-    ):
-     Container(
-      margin: EdgeInsets.only(left: screenWidth * 0.1, top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: _fillTimes(0, 4),
-          ),
-          Row(children: _fillTimes(4, 8)),
-          Row(
-            children: _fillTimes(8, 12),
-          ),
-          Row(
-            children: _fillTimes(12, 16),
-          ),
-          Row(
-            children: _fillTimes(16, 20),
-          ),
-          Row(
-            children: _fillTimes(20, 23),
-          ),
-        ],
-      ),
-    );
+    return _openedTimes.isEmpty
+        ? const Padding(
+            padding: EdgeInsets.only(top: 16.0, bottom: 16),
+            child: Center(
+                child: Text(
+              "Нет доступного времени",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            )),
+          )
+        : Container(
+            margin: EdgeInsets.only(left: screenWidth * 0.1, top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: _fillTimes(0, 4),
+                ),
+                Row(children: _fillTimes(4, 8)),
+                Row(
+                  children: _fillTimes(8, 12),
+                ),
+                Row(
+                  children: _fillTimes(12, 16),
+                ),
+                Row(
+                  children: _fillTimes(16, 20),
+                ),
+                Row(
+                  children: _fillTimes(20, 23),
+                ),
+              ],
+            ),
+          );
   }
 
   void _fillOpenedTimes() {
@@ -290,7 +296,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
             _regToInstructorDataCurrent!.instructorName &&
         _regToInstructorDataCurrent!.date == _selectedDate &&
         _regToInstructorDataCurrent!.time == time) {
-      return Colors.blue;
+      return kMainColor;
     } else {
       return Colors.white;
     }

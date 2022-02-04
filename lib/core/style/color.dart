@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const kBlack = Color(0xFF313131);
 const kBlackLight = Color(0xFF4B5664);
+const kMainColor = Color(0xFF003259);
+
 const kViolet = Color(0xFF6E62E4);
 const kVioletPale = Color(0xFFF9F9FE);
 const kVioletVeryPale = Color(0xFFF6F6FD);

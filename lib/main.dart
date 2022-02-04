@@ -20,10 +20,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:flutter/services.dart';
+import 'core/user_role.dart';
 
-import 'model/user_role.dart';
-
+//screenSizedApp
 late double screenHeight;
 late double screenWidth;
 
@@ -50,6 +51,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  //Variables and objects
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
   final UsersKeeper usersKeepers = UsersKeeper();
@@ -116,55 +118,15 @@ class MyAppState extends State<MyApp> {
     _savePriceInDataKeeper(null);
   }
 
+//Functions anm methods
   void isloded() async {
-    setState(() {
-      _dataisloded = true;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'АкадемГора',
-      theme: appThemeData,
-      debugShowCheckedModeBanner: false,
-      home: Builder(
-        builder: (context) {
-          screenHeight = MediaQuery.of(context).size.height;
-          screenWidth = MediaQuery.of(context).size.width;
-          if (_isUserAuthorized != null) {
-            if (_dataisloded!) {
-              return _isUserAuthorized!
-                  ? const MainScreen()
-                  : const AuthScreen();
-            } else {
-              return Scaffold(
-                body: Stack(
-                  children: [
-                    Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          LogoWidget(),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          LoaderWidget(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          } else {
-            return const SplashScreen();
-          }
-        },
-      ),
+    setState(
+      () {
+        _dataisloded = true;
+      },
     );
   }
+
 
   void _saveInstructorsIntoKeeper(Event? event) async {
     await _firebaseController.get("Инструкторы").then(
@@ -222,5 +184,55 @@ class MyAppState extends State<MyApp> {
     final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('price') ?? ['0', '0', '0', '0'];
     _priceDataKeeper.updateWorkouts(list);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ],
+    );
+    return MaterialApp(
+      title: 'АкадемГора',
+      theme: appThemeData,
+      debugShowCheckedModeBanner: false,
+      home: Builder(
+        builder: (context) {
+          screenHeight = MediaQuery.of(context).size.height;
+          screenWidth = MediaQuery.of(context).size.width;
+          if (_isUserAuthorized != null) {
+            if (_dataisloded!) {
+              return _isUserAuthorized!
+                  ? const MainScreen()
+                  : const AuthScreen();
+            } else {
+              return Scaffold(
+                body: Stack(
+                  children: [
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          LogoWidget(),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          LoaderWidget(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          } else {
+            return const SplashScreen();
+          }
+        },
+      ),
+    );
   }
 }

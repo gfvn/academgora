@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 

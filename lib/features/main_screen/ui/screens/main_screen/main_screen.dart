@@ -6,11 +6,17 @@ import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
-import 'package:academ_gora_release/model/news.dart';
-import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/info_screens/about_us_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/info_screens/call_us_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/info_screens/chill_zone_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/info_screens/price_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/info_screens/regime_screen.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/news.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/widgets/image_view_widget.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,21 +26,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_database/firebase_database.dart';
-import '../main.dart';
-import '../core/consants/extension.dart';
-import 'info_screens/about_us_screen.dart';
-import 'info_screens/call_us_screen.dart';
-import 'info_screens/chill_zone_screen.dart';
-import 'info_screens/price_screen.dart';
-import 'info_screens/regime_screen.dart';
+import '../../../../../main.dart';
+import '../../../../../core/consants/extension.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
-
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
+//Variables and objects
 final NewsKeeper _newsKeeper = NewsKeeper();
 
 class _MainScreenState extends State<MainScreen> {
@@ -47,9 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   String phoneNumber = "+73952657066";
   bool isLoading = false;
   List<String> imageUrls = [];
-
   final UsersKeeper usersKeepers = UsersKeeper();
-  final AdminKeeper _adminDataKeeper = AdminKeeper();
 
   @override
   void initState() {
@@ -76,10 +75,6 @@ class _MainScreenState extends State<MainScreen> {
         AndroidNotification? android = message.notification?.android;
         AppleNotification? ios = message.notification?.apple;
         if (notification != null) {
-          log('notification');
-          log('Android $android');
-          log('IOS $ios');
-
           showDialog(
             context: context,
             builder: (_) {
@@ -100,10 +95,13 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+//Functions
   void _getNews() async {
-    setState(() {
-      isLoading = true;
-    });
+    setState(
+      () {
+        isLoading = true;
+      },
+    );
     newsList = _newsKeeper.getAllPersons();
     imageUrls = _newsKeeper.getNewsUrls();
     createSliderWidget();
@@ -118,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
     for (String news in imageUrls) {
       String url = news;
       imageSliders.add(
-        imageView(
+        ImageViewWidget(
           imageUrl: url.toString(),
           assetPath: "assets/main/10_pic${imageUrls.indexOf(news) + 1}.png",
         ),
@@ -126,48 +124,15 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Widget imageView({required String imageUrl, required String assetPath}) {
-    double? height = screenWidth * 0.4;
-    double? width = screenWidth * 0.75;
-    return imageUrl == "" || imageUrl.isEmpty
-        ? buildLocalWidget(
-            assetPath: assetPath,
-          )
-        : CachedNetworkImage(
-            width: width,
-            height: height,
-            fit: BoxFit.fill,
-            imageUrl: imageUrl,
-            placeholder: (context, url) {
-              return buildLocalWidget(
-                assetPath: assetPath,
-              );
-            },
-          );
-  }
-
-  Widget buildLocalWidget({required String assetPath}) {
-    double? height = screenWidth * 0.5;
-    double? width = screenWidth * 0.8;
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(assetPath), fit: BoxFit.fill),
-        borderRadius: BorderRadius.circular(8),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    // _getNews();
     return Scaffold(
       body: Container(
         decoration: screenDecoration("assets/main/background.svg"),
         child: Center(
           child: !isLoading
               ? Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _titleAndAccButton(),
                     _socialNetworks(),
@@ -178,7 +143,10 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 )
               : const SizedBox(
-                  width: 30, height: 30, child: CircularProgressIndicator()),
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(),
+                ),
         ),
       ),
     );
@@ -197,31 +165,17 @@ class _MainScreenState extends State<MainScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 14),
               )),
           GestureDetector(
-              onTap: _openAccountScreen,
-              child: Container(
-                  width: 26,
-                  height: 26,
-                  margin: const EdgeInsets.only(left: 40),
-                  child: Image.asset("assets/main/lk.svg"))),
+            onTap: _openAccountScreen,
+            child: Container(
+              width: 26,
+              height: 26,
+              margin: const EdgeInsets.only(left: 40),
+              child: Image.asset("assets/main/lk.svg"),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  void _saveUsersIntoKeeper(Event? event) async {
-    await _firebaseRequestsController.get("Пользователи").then((value) {
-      usersKeepers.updateInstructors(value);
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
-
-  void _saveAdminsIntoKeeper(Event? event) async {
-    await _firebaseRequestsController.get("Администраторы").then((value) {
-      _adminDataKeeper.updateInstructors(value);
-      setState(() {});
-    });
   }
 
   void _openAccountScreen() async {
@@ -229,41 +183,33 @@ class _MainScreenState extends State<MainScreen> {
       (prefs) async {
         String userRole = prefs.getString("userRole") ?? "";
         if (userRole == UserRole.administrator) {
-          // setState(() {
-          //   isLoading = true;
-          // });
-          // await _firebaseRequestsController.get("Пользователи").then((value) {
-          //   usersKeepers.updateInstructors(value);
-          //   setState(() {
-          //     isLoading = false;
-          //   });
-          // });
-
-          // if (_adminDataKeeper.userList.isEmpty) {
-          //   _saveAdminsIntoKeeper(null);
-          //   _firebaseRequestsController.addListener(
-          //       "Администраторы", _saveAdminsIntoKeeper);
-          // }
-          // if (usersKeepers.userList.isEmpty) {
-          //   _saveUsersIntoKeeper(null);
-          //   _firebaseRequestsController.addListener(
-          //       "Пользователи", _saveUsersIntoKeeper);
-          // }
           if (!isLoading) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (c) => const AdministratorProfileScreen()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (c) => const AdministratorProfileScreen(),
+              ),
+            );
           }
         } else if (userRole == UserRole.instructor) {
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).push(
+            MaterialPageRoute(
               builder: (c) => InstructorWorkoutsScreen(
                   instructorPhoneNumber:
-                      FirebaseAuth.instance.currentUser!.phoneNumber!)));
+                      FirebaseAuth.instance.currentUser!.phoneNumber!),
+            ),
+          );
         } else if (userRole == UserRole.user) {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+            MaterialPageRoute(
+              builder: (c) => const UserAccountScreen(),
+            ),
+          );
         } else {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (c) => const AuthScreen()));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (c) => const AuthScreen(),
+            ),
+          );
         }
       },
     );
@@ -439,32 +385,34 @@ class _MainScreenState extends State<MainScreen> {
   Widget _registrationToInstructorButton() {
     return Container(
       width: screenWidth * 0.9,
-      height: screenHeight * 0.1,
+      height: screenHeight * 0.09,
       margin: EdgeInsets.only(top: screenHeight * 0.05),
       child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.lightBlue,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        color: Color(0xFF003259),
         child: InkWell(
-            onTap: _openRegistrationToInstructorScreen,
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "ЗАПИСАТЬСЯ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "на занятие",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ]),
-            )),
+          onTap: _openRegistrationToInstructorScreen,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "ЗАПИСАТЬСЯ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "на занятие",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -489,19 +437,26 @@ class _MainScreenState extends State<MainScreen> {
       },
     );
     Navigator.of(context).push(
-        MaterialPageRoute(builder: (c) => const RegistrationFirstScreen()));
+      MaterialPageRoute(
+        builder: (c) => const RegistrationFirstScreen(),
+      ),
+    );
   }
 
+
+
   Widget _infoButtons() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Container(
-        width: 50.0,
-        height: 25,
-        margin: const EdgeInsets.only(top: 25),
-        child: Material(
-          borderRadius: const BorderRadius.all(const Radius.circular(35)),
-          color: Colors.white,
-          child: InkWell(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: screenWidth * 0.4,
+          height: 40,
+          margin: const EdgeInsets.only(top: 15),
+          child: Material(
+            borderRadius: const BorderRadius.all(const Radius.circular(10)),
+            color: Colors.white,
+            child: InkWell(
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (c) => AboutUsScreen()));
@@ -515,16 +470,18 @@ class _MainScreenState extends State<MainScreen> {
                     fontSize: 14,
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
-      ),
-      Container(
-        height: 25,
-        margin: const EdgeInsets.only(top: 25, left: 20),
-        child: Material(
-          borderRadius: const BorderRadius.all(Radius.circular(35)),
-          color: Colors.white,
-          child: InkWell(
+        Container(
+          width: screenWidth * 0.4,
+          height: 40,
+          margin: const EdgeInsets.only(top: 25, left: 20),
+          child: Material(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Colors.white,
+            child: InkWell(
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (c) => CallUsScreen()));
@@ -538,9 +495,11 @@ class _MainScreenState extends State<MainScreen> {
                     fontSize: 14,
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

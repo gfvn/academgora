@@ -1,18 +1,19 @@
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/visitor.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/visitor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/profile/reg_parameters/human_info_widget.dart';
 import 'package:academ_gora_release/screens/profile/reg_parameters/select_level_of_skating_widget.dart';
 import 'package:academ_gora_release/screens/profile/reg_parameters/select_people_count_widget.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/reg_parameters/info_text.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/registration_parameters_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
@@ -181,7 +182,7 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
             onTap: _onBackPressed,
             child: const Icon(
               Icons.chevron_left,
-              color: Colors.blue,
+              color: kMainColor,
               size: 40,
             ),
           ),
@@ -293,7 +294,7 @@ class UpdateWorkoutScreenState extends State<UpdateWorkoutScreen> {
 
   Color _continueButtonBackgroundColor() {
     if (peopleCount != 0 && levelOfSkating != null && _checkTextControllers()) {
-      return Colors.blue;
+      return kMainColor;
     } else {
       return Colors.white;
     }

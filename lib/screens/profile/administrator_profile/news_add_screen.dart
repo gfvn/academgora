@@ -4,11 +4,12 @@ import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
-import 'package:academ_gora_release/screens/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 class NewsAddScreen extends StatefulWidget {
   const NewsAddScreen({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
       margin: const EdgeInsets.only(top: 10),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             _selectOption(context);
@@ -131,7 +132,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
       margin: const EdgeInsets.only(top: 10),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             _updateDatabase(image, choosedNumber);
@@ -316,7 +317,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () => {
             Navigator.of(context).pushAndRemoveUntil(

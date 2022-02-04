@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
 import '../../../core/consants/extension.dart';
@@ -87,7 +88,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
       margin: const EdgeInsets.only(top: 10),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: () {
               _selectOption(context);
@@ -191,7 +192,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           _showRedactInfoDialog(context, _currentInstructor.info ?? "", false),
       child: const Text(
         "Редактировать информацию о себе",
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(color: kMainColor),
       ),
     );
   }
@@ -368,7 +369,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
       margin: const EdgeInsets.only(top: 25),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: () {
               _openInstructorWorkoutsScreen(context);

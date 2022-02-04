@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/core/style/color.dart';
 import 'package:flutter/material.dart';
 
 class LoaderWidget extends StatelessWidget {
@@ -10,7 +11,7 @@ class LoaderWidget extends StatelessWidget {
         width: 30,
         height: 30,
         child: CircularProgressIndicator(
-          color: Colors.blue,
+          color: kMainColor,
         ),
       ),
     );

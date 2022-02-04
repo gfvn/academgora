@@ -1,12 +1,12 @@
-
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/visitor.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/visitor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
@@ -106,7 +106,7 @@ class RegistrationParametersScreenState
                 width: 30,
                 height: 30,
                 child: CircularProgressIndicator(
-                  color: Colors.blue,
+                  color: kMainColor,
                 ),
               ),
             ),
@@ -219,7 +219,7 @@ class RegistrationParametersScreenState
             onTap: _onBackPressed,
             child: const Icon(
               Icons.chevron_left,
-              color: Colors.blue,
+              color: kMainColor,
               size: 40,
             ),
           ),
@@ -326,7 +326,8 @@ class RegistrationParametersScreenState
       _showWarningDialog();
     }
   }
-    void _showWarningDialog() {
+
+  void _showWarningDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -489,7 +490,7 @@ class RegistrationParametersScreenState
         levelOfSkating != null &&
         duration != null &&
         _checkTextControllers()) {
-      return Colors.blue;
+      return kMainColor;
     } else {
       return Colors.white;
     }

@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/screens/registration_to_workout/registration_parameters_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
 import '../update_workout_screen.dart';
@@ -38,7 +39,7 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
         margin: EdgeInsets.only(left: screenWidth * 0.03),
         child: Text(
           "Количество человек",
-          style: TextStyle(fontSize: 12, color: Colors.blue),
+          style: TextStyle(fontSize: 12, color: kMainColor),
         ));
   }
 
@@ -86,18 +87,18 @@ class _SelectPeopleCountWidgetState extends State<SelectPeopleCountWidget> {
   void _selectCount(int which) {
     _selectedCount = which;
     widget.updateWorkoutScreenState.setState(() {
-      widget.updateWorkoutScreenState.peopleCount =
-          _selectedCount;
-      if (widget
-          .updateWorkoutScreenState.textEditingControllers.isEmpty) {
+      widget.updateWorkoutScreenState.peopleCount = _selectedCount;
+      if (widget.updateWorkoutScreenState.textEditingControllers.isEmpty) {
         widget.updateWorkoutScreenState.textEditingControllers = [];
         for (var i = 0; i < which; ++i) {
           widget.updateWorkoutScreenState.textEditingControllers
               .add(Pair(TextEditingController(), TextEditingController()));
         }
-      }
-      else{
-        for (var i = widget.updateWorkoutScreenState.textEditingControllers.length; i < which; ++i) {
+      } else {
+        for (var i =
+                widget.updateWorkoutScreenState.textEditingControllers.length;
+            i < which;
+            ++i) {
           widget.updateWorkoutScreenState.textEditingControllers
               .add(Pair(TextEditingController(), TextEditingController()));
         }

@@ -1,9 +1,10 @@
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../../registration_first_screen.dart';
@@ -115,14 +116,13 @@ class _DateWidgetState extends State<DateWidget> {
                   child: const Text('OK'), onPressed: _applyAndCloseDialog),
             ],
             content: CalendarCarousel<Event>(
-              headerTextStyle: TextStyle(
-                  fontSize: 20, color: Colors.blueAccent),
+              headerTextStyle: const TextStyle(fontSize: 20, color: kMainColor),
               locale: "ru",
               width: 300,
               height: 350,
               todayBorderColor: Colors.transparent,
               todayButtonColor: Colors.transparent,
-              todayTextStyle: const TextStyle(color: Colors.blueAccent),
+              todayTextStyle: const TextStyle(color: kMainColor),
               onDayPressed: (DateTime date, List<Event> events) {
                 DateTime now = DateTime.now();
                 if (date.isAfter(now) || date.isSameDate(now)) {

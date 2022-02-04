@@ -1,14 +1,15 @@
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/user_account_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/administrator_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/user_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../main.dart';
 import '../../core/consants/extension.dart';
-import '../main_screen.dart';
+import '../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class RegistrationFinalScreen extends StatefulWidget {
   const RegistrationFinalScreen({Key? key}) : super(key: key);
@@ -63,48 +64,58 @@ class _RegistrationFinalScreenState extends State<RegistrationFinalScreen> {
       margin: EdgeInsets.only(top: marginTop),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
-            onTap: text == "В личный кабинет"
-                ? () => _openAccount()
-                : () => _openMain(),
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
+          onTap: text == "В личный кабинет"
+              ? () => _openAccount()
+              : () => _openMain(),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
   void _openAccount() async {
-    await SharedPreferences.getInstance().then((prefs) {
-      String userRole = prefs.getString("userRole")!;
-      if (userRole == UserRole.user) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (c) => const UserAccountScreen()));
-      } else if (userRole == UserRole.instructor) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (c) => const InstructorWorkoutsScreen()));
-      } else {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (c) => const AdministratorProfileScreen()));
-      }
-    });
+    await SharedPreferences.getInstance().then(
+      (prefs) {
+        String userRole = prefs.getString("userRole")!;
+        if (userRole == UserRole.user) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (c) => const UserAccountScreen()));
+        } else if (userRole == UserRole.instructor) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (c) => const InstructorWorkoutsScreen()));
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (c) => const AdministratorProfileScreen(),
+            ),
+          );
+        }
+      },
+    );
   }
 
   void _openMain() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => const MainScreen()),
-        (route) => false);
+      MaterialPageRoute(
+        builder: (c) => const MainScreen(),
+      ),
+      (route) => false,
+    );
   }
 }

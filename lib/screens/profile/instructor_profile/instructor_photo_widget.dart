@@ -1,5 +1,5 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

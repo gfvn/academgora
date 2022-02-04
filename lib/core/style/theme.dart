@@ -2,6 +2,7 @@ import 'package:academ_gora_release/core/style/color.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData appThemeData = ThemeData(
+  appBarTheme: const AppBarTheme(backgroundColor: kMainColor),
   fontFamily: 'Montserrat',
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: kViolet,

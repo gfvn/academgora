@@ -2,10 +2,10 @@ import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
-import 'package:academ_gora_release/model/administrator.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/administrator/domain/enteties/administrator.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/core/consants/extension.dart' as extensions;
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/registration_to_workout/helpers_widgets/horizontal_divider.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../../main.dart';
 import 'instructor_data_view_model.dart';
@@ -155,10 +156,10 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
       locale: "ru",
       width: screenWidth * 0.69,
       height: screenHeight * 0.38,
-      selectedDayButtonColor: Colors.blue,
+      selectedDayButtonColor: kMainColor,
       headerMargin: const EdgeInsets.all(0),
       headerTextStyle:
-          TextStyle(fontSize: screenHeight * 0.023, color: Colors.blue),
+          TextStyle(fontSize: screenHeight * 0.023, color: kMainColor),
       weekdayTextStyle: const TextStyle(color: Colors.black),
       todayBorderColor: Colors.transparent,
       todayButtonColor: Colors.transparent,
@@ -700,7 +701,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
         dateTime.day.toString(),
         style: TextStyle(
             color:
-                dateTime.isSameDate(_selectedDate) ? Colors.white : Colors.blue,
+                dateTime.isSameDate(_selectedDate) ? Colors.white : kMainColor,
             fontWeight: FontWeight.bold,
             fontSize: 14),
       ),
@@ -713,7 +714,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
 
   Color _getTimeTextColor(String time) {
     if (_openedTimesPerDay.contains(time)) {
-      return Colors.blue;
+      return kMainColor;
     } else if (_closedTimesPerDay.contains(time)) {
       return Colors.red;
     } else {

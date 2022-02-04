@@ -1,7 +1,9 @@
+import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
+import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/consants/extension.dart';
-import '../main_screen.dart';
+import '../main_screen/main_screen.dart';
 
 class PriceScreen extends StatefulWidget {
   const PriceScreen({Key? key}) : super(key: key);
@@ -14,22 +16,28 @@ class _PriceScreenState extends State<PriceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Прайс"),
+        centerTitle: true,
+      ),
       body: Container(
         decoration: screenDecoration("assets/info_screens/prices/bg.png"),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            child: Flex(
-              direction: Axis.vertical,
-              children: [
-                _priceTitle(),
-                _pricePriceInfo(),
-                _table(),
-                _info(),
-                defaultButton('НА ГЛАВНУЮ', _openMainScreen),
-              ],
-            ),
+        child: Container(
+          margin: const EdgeInsets.only(right: 10, left: 10, bottom: 10, top:0),
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
+              _priceTitle(),
+              _pricePriceInfo(),
+              _table(),
+              _info(),
+              AcademButton(
+                tittle: 'НА ГЛАВНУЮ',
+                onTap: _openMainScreen,
+                width: screenWidth*0.9,
+                fontSize: 18,
+              ),
+            ],
           ),
         ),
       ),
@@ -54,12 +62,12 @@ class _PriceScreenState extends State<PriceScreen> {
       margin: const EdgeInsets.only(top: 0, bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
+        children: const [
+          Text(
             "Будни / ",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          const Text(
+          Text(
             "Выходные и праздничные дни",
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
@@ -190,20 +198,24 @@ class _PriceScreenState extends State<PriceScreen> {
               "2.После 20:00 инвентарь не выдается\n"
               "3.Работник проката вправе отказать в выдаче инвентаря без объяснения причин.\n"
               "Подробный прайс и другая полезная информация -  в нашей группе,\n",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
             ),
             GestureDetector(
                 onTap: () {
                   launchURL("https://vk.com/akademgora");
                 },
-                child: Text(
-                  "https://vk.com/akademgora\n",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                child: Row(
+                  children: const [
+                     Text(
+                      "https://vk.com/akademgora\n",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ],
                 )),
-            Text(
+            const Text(
               "Уважаемые гости. В нашем комплексе вы можете приобрести подарочные сертификаты на любую сумму и услуги комплекса. А также, есть возможность приобрести депозитный сертификат на любую сумму с возможностью частичного (не разового) использования на протяжении всего сезона.\n"
               "Сертификаты не обналичиваются. На оплату услуг парковки и буфета не распространяются.",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
             ),
           ])),
     );

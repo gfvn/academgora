@@ -1,12 +1,14 @@
 import 'dart:developer';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import 'package:academ_gora_release/core/data_keepers/admin_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
-import 'package:academ_gora_release/model/administrator.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/administrator/domain/enteties/administrator.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../../../../core/consants/extension.dart';
@@ -68,7 +70,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   Widget _titleRow() {
     return Container(
-        color: Colors.blue,
+        color: kMainColor,
         height: 40,
         child: Row(
           children: [
@@ -136,7 +138,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
         height: 30,
         padding: const EdgeInsets.all(5),
         margin: EdgeInsets.only(left: leftMargin),
-        decoration: const BoxDecoration(color: Colors.blue),
+        decoration: const BoxDecoration(color: kMainColor),
         child: Text(
           text,
           style: const TextStyle(color: Colors.white),

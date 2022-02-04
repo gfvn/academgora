@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:academ_gora_release/model/personal.dart';
+import 'package:academ_gora_release/features/user/user_profile/domain/enteties/personal.dart';
 import 'package:flutter/material.dart';
 
 class UsersKeeper {

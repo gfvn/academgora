@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
 import '../../../core/consants/extension.dart';
-import '../../main_screen.dart';
+import '../../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 
 class AdministratorProfileScreen extends StatefulWidget {
   const AdministratorProfileScreen({Key? key}) : super(key: key);
@@ -138,7 +139,7 @@ class _AdministratorProfileScreenState
       margin: const EdgeInsets.only(top: 18),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -172,7 +173,7 @@ class _AdministratorProfileScreenState
       margin: const EdgeInsets.only(top: 16),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
           onTap: () {
             onTap();

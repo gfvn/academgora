@@ -1,6 +1,7 @@
 import 'package:academ_gora_release/screens/registration_to_workout/registration_parameters_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
 import '../update_workout_screen.dart';
@@ -10,8 +11,8 @@ class HumanInfoWidget extends StatefulWidget {
   final List<Pair> textEditingControllers;
   final UpdateWorkoutScreenState updateWorkoutScreenState;
 
-  const HumanInfoWidget(this.which, this.textEditingControllers,
-      this.updateWorkoutScreenState,
+  const HumanInfoWidget(
+      this.which, this.textEditingControllers, this.updateWorkoutScreenState,
       {Key? key})
       : super(key: key);
 
@@ -20,7 +21,6 @@ class HumanInfoWidget extends StatefulWidget {
 }
 
 class _HumanInfoWidgetState extends State<HumanInfoWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -49,7 +49,7 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
         margin: EdgeInsets.only(left: 8.0),
         child: Text(
           text,
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(color: kMainColor),
         ));
   }
 
@@ -60,8 +60,7 @@ class _HumanInfoWidgetState extends State<HumanInfoWidget> {
       height: screenHeight * 0.04,
       width: width,
       child: TextField(
-        onSubmitted: (s) =>
-            {widget.updateWorkoutScreenState.setState(() {})},
+        onSubmitted: (s) => {widget.updateWorkoutScreenState.setState(() {})},
         keyboardType: textInputType,
         inputFormatters: [
           LengthLimitingTextInputFormatter(maxLength),

@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/core/style/color.dart';
 import 'package:flutter/material.dart';
 
 class AcademButton extends StatelessWidget {
@@ -5,11 +6,13 @@ class AcademButton extends StatelessWidget {
       {Key? key,
       required this.onTap,
       required this.tittle,
-      required this.width})
+      required this.width,
+      required this.fontSize})
       : super(key: key);
   final Function onTap;
   final String tittle;
   final double width;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +23,15 @@ class AcademButton extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 12),
         width: width,
-        height: 45,
+        height: 50,
         decoration: const BoxDecoration(
-            color: Colors.blue,
+            color: kMainColor,
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Center(
           child: Text(
             tittle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 24),
+            style: TextStyle(color: Colors.white, fontSize: fontSize),
           ),
         ),
       ),

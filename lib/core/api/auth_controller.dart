@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:academ_gora_release/model/user_role.dart';
+import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';

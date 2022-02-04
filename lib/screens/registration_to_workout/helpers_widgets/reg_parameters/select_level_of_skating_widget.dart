@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../../main.dart';
 import '../../registration_parameters_screen.dart';
@@ -42,7 +43,7 @@ class _SelectLevelOfSkatingWidgetState
         margin: EdgeInsets.only(left: screenWidth * 0.03),
         child: const Text(
           "Выбор уровня катания:",
-          style: TextStyle(fontSize: 12, color: Colors.blue),
+          style: TextStyle(fontSize: 12, color: kMainColor),
         ));
   }
 

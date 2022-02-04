@@ -1,14 +1,14 @@
-
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/widgets/smeta_instructord.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import '../../../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +76,6 @@ class CountScreenState extends State<CountScreen> {
   int threePrice = 0;
   int fourPrice = 0;
 
-
   TextEditingController onePeopleController = TextEditingController();
   TextEditingController twoPeopleController = TextEditingController();
   TextEditingController threePeopleController = TextEditingController();
@@ -90,7 +89,7 @@ class CountScreenState extends State<CountScreen> {
       FirebaseRequestsController();
   DateTime firstDate = DateTime.now();
   DateTime secondDate = DateTime.now();
-  bool isUpdate=true;
+  bool isUpdate = true;
 
   final PriceKeeper _priceDataKeeper = PriceKeeper();
 
@@ -103,7 +102,7 @@ class CountScreenState extends State<CountScreen> {
     await Future.delayed(const Duration(milliseconds: 2000));
     setState(
       () {
-        isUpdate=true;
+        isUpdate = true;
         _getInstructors();
         _getAllPrices();
       },
@@ -483,7 +482,7 @@ class CountScreenState extends State<CountScreen> {
         margin: const EdgeInsets.only(top: 16),
         child: Material(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: Colors.blue,
+          color: kMainColor,
           child: InkWell(
             onTap: () {
               onTap();

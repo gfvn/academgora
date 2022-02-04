@@ -1,17 +1,18 @@
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
-import 'package:academ_gora_release/model/workout.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/workouts_view_model.dart';
-import 'package:academ_gora_release/screens/profile/user_profile/presentation/workouts_view_model_impl.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/workouts_view_model.dart';
+import 'package:academ_gora_release/features/user/user_profile/presentation/workouts_view_model_impl.dart';
+import 'package:academ_gora_release/screens/profile/helpers_widgets/workout_widget/workout_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import '../../../../main.dart';
 import '../../../../core/consants/extension.dart';
-import '../../../main_screen.dart';
-import '../../helpers_widgets/workout_widget/workout_widget.dart';
+import '../../../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);
@@ -112,7 +113,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         height: screenHeight * 0.07,
         margin: EdgeInsets.only(top: screenHeight * 0.01),
         decoration: const BoxDecoration(
-            color: Colors.blue,
+            color: kMainColor,
             borderRadius: BorderRadius.all(Radius.circular(26))),
         child: Text(
           "НА ГЛАВНУЮ",
@@ -161,9 +162,6 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                   itemCount: (snap.data as List<Workout>).length,
                   itemBuilder: (context, index) {
                     List<Workout> workouts = snap.data as List<Workout>;
-
-                    ///TODO change here
-                    //     _sortWorkoutsByDateAndTime(snap.data as List<Workout>);
                     return Column(
                       children: [
                         WorkoutWidget(

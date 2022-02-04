@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:academ_gora_release/model/instructor.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_data_controller.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_data_controller_impl.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/data/instructor_state_keeper.dart';

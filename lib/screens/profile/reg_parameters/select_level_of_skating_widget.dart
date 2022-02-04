@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../main.dart';
 import '../update_workout_screen.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 class SelectLevelOfSkatingWidget extends StatefulWidget {
   final int selectedLevelOfSkating;
@@ -42,7 +43,7 @@ class _SelectLevelOfSkatingWidgetState
         margin: EdgeInsets.only(left: screenWidth * 0.03),
         child: Text(
           "Выбор уровня катания:",
-          style: TextStyle(fontSize: 12, color: Colors.blue),
+          style: TextStyle(fontSize: 12, color: kMainColor),
         ));
   }
 

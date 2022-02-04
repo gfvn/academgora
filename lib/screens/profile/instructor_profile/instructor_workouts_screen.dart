@@ -2,9 +2,9 @@ import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
-import 'package:academ_gora_release/model/instructor.dart';
-import 'package:academ_gora_release/model/user_role.dart';
-import 'package:academ_gora_release/model/workout.dart';
+import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/core/user_role.dart';
+import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/set_workout_time_screen/presentation/set_workout_time_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/workout_data_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,12 +13,13 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:academ_gora_release/core/style/color.dart';
 
 import 'package:intl/intl.dart';
 
 import '../../../main.dart';
 import '../../../core/consants/extension.dart';
-import '../../main_screen.dart';
+import '../../../features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'instructor_profile_screen.dart';
 
 class InstructorWorkoutsScreen extends StatefulWidget {
@@ -115,7 +116,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       margin: const EdgeInsets.only(top: 12),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: _openSetWorkoutTimeScreen,
             child: Center(
@@ -196,7 +197,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       margin: const EdgeInsets.only(top: 5),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: _openRedactProfileScreen,
             child: Center(
@@ -224,7 +225,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
       margin: const EdgeInsets.only(top: 7),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(35)),
-        color: Colors.blue,
+        color: kMainColor,
         child: InkWell(
             onTap: _openMainScreen,
             child: Center(
@@ -247,10 +248,10 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
 
   Widget _calendar() {
     return CalendarCarousel<Event>(
-      selectedDayButtonColor: Colors.blue,
+      selectedDayButtonColor: kMainColor,
       headerMargin: const EdgeInsets.all(0),
       headerTextStyle:
-          TextStyle(fontSize: screenHeight * 0.023, color: Colors.blue),
+          TextStyle(fontSize: screenHeight * 0.023, color: kMainColor),
       weekdayTextStyle: const TextStyle(color: Colors.black, fontSize: 14),
       locale: "ru",
       width: screenWidth * 0.69,
@@ -299,7 +300,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
         dateTime.day.toString(),
         style: TextStyle(
             color:
-                _compareDateWithSelected(dateTime) ? Colors.white : Colors.blue,
+                _compareDateWithSelected(dateTime) ? Colors.white : kMainColor,
             fontWeight: FontWeight.bold,
             fontSize: 14),
       ),
@@ -402,7 +403,7 @@ class _InstructorWorkoutsScreenState extends State<InstructorWorkoutsScreen> {
   void _logout() async {
     FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
-      var pref = await SharedPreferences.getInstance();
+    var pref = await SharedPreferences.getInstance();
     pref.remove("userRole");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const AuthScreen()),

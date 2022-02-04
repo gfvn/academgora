@@ -1,4 +1,6 @@
+import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/screens/instructor_profile/instructor_profile_screen.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
@@ -33,6 +35,13 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Инструкторы",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         height: screenHeight,
         width: screenWidth,
@@ -57,43 +66,57 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
-        _kindOfSportButton("СНОУБОРД"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _kindOfSportButton("ГОРНЫЕ ЛЫЖИ"),
+            const SizedBox(
+              width: 8,
+            ),
+            _kindOfSportButton("СНОУБОРД"),
+          ],
+        ),
         _instructorsListWidget(),
-        _backToMainScreenButton()
+        AcademButton(
+          tittle: 'НА ГЛАВНУЮ',
+          onTap: () {
+            FunctionsConsts.openMainScreen(context);
+          },
+          width: screenWidth * 0.9,
+          fontSize: 18,
+        ),
       ],
     );
   }
 
   Widget _kindOfSportButton(String name) {
     return GestureDetector(
-        onTap: () {
-          if (_selectedKindOfSport != name) {
-            _checkoutKindOfSport(_selectedKindOfSport == "ГОРНЫЕ ЛЫЖИ"
-                ? "СНОУБОРД"
-                : "ГОРНЫЕ ЛЫЖИ");
-          }
-        },
-        child: Container(
-          width:
-              _checkKindOfSport(name) ? screenWidth * 0.75 : screenWidth * 0.7,
-          height: _checkKindOfSport(name)
-              ? screenHeight * 0.06
-              : screenHeight * 0.05,
-          margin: const EdgeInsets.only(top: 15),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(7)),
-              color: _checkKindOfSport(name) ? kMainColor : Colors.white),
-          child: Text(
-            name,
-            style: TextStyle(
-                color: _checkKindOfSport(name) ? Colors.white : kMainColor,
-                fontSize: _checkKindOfSport(name)
-                    ? screenHeight * 0.034
-                    : screenHeight * 0.03),
+      onTap: () {
+        if (_selectedKindOfSport != name) {
+          _checkoutKindOfSport(_selectedKindOfSport == "ГОРНЫЕ ЛЫЖИ"
+              ? "СНОУБОРД"
+              : "ГОРНЫЕ ЛЫЖИ");
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.only(right: 3, left: 3),
+        width:
+            _checkKindOfSport(name) ? screenWidth * 0.45 : screenWidth * 0.45,
+        height: 50,
+        margin: const EdgeInsets.only(top: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(7)),
+            color: _checkKindOfSport(name) ? kMainColor : Colors.white),
+        child: Text(
+          name,
+          style: TextStyle(
+            color: _checkKindOfSport(name) ? Colors.white : kMainColor,
+            fontSize: 16,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   bool _checkKindOfSport(String name) {
@@ -103,24 +126,32 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
 
   Widget _instructorsListWidget() {
     return Container(
-        height: screenHeight * 0.7,
-        width: screenWidth * 0.78,
-        margin: const EdgeInsets.only(top: 10, bottom: 10),
-        alignment: Alignment.center,
-        child: CustomScrollView(
-          primary: false,
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverGrid.count(
-                  mainAxisSpacing: 20,
-                  crossAxisCount: 2,
-                  children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
-                      ? _snowboardInstructors
-                      : _skiesInstructors)),
-            )
-          ],
-        ));
+      height: screenHeight * 0.68,
+      width: screenWidth * 0.95,
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      alignment: Alignment.center,
+      child: ListView(
+        children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
+            ? _snowboardInstructors
+            : _skiesInstructors),
+      ),
+
+      ///Todo change here
+      // child: CustomScrollView(
+      //   primary: false,
+      //   slivers: [
+      //     SliverPadding(
+      //       padding: const EdgeInsets.all(10),
+      //       sliver: SliverGrid.count(
+      //           mainAxisSpacing: 20,
+      //           crossAxisCount: 2,
+      //           children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
+      //               ? _snowboardInstructors
+      //               : _skiesInstructors)),
+      //     )
+      //   ],
+      // ),
+    );
   }
 
   List<Widget> _profileWidgets(List<Instructor> instructors) {
@@ -134,15 +165,34 @@ class _AllInstructorsScreenState extends State<AllInstructorsScreen> {
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
       onTap: () => _openInstructorProfileScreen(instructors[which]),
-      child: Column(
-        children: [
-          InstructorPhotoWidget(instructors[which]),
-          Text(
-            instructors[which].name ?? "",
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InstructorPhotoWidget(instructors[which]),
+            const SizedBox(width: 16,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  instructors[which].name ?? "",
+                  textAlign: TextAlign.center,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  instructors[which].phone ?? "",
+                  textAlign: TextAlign.center,
+                  style:
+                      const TextStyle(
+                        color: kBlackLight,
+                        fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

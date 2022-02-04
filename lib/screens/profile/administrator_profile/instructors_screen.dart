@@ -1,6 +1,9 @@
+import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
+import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_photo_widget.dart';
 import 'package:academ_gora_release/screens/profile/instructor_profile/instructor_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_ui/flutter_auth_ui.dart';
@@ -31,6 +34,13 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
   Widget build(BuildContext context) {
     _getInstructors();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Инструкторы",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         decoration: screenDecoration("assets/all_instructors/bg.png"),
         child: Center(
@@ -64,8 +74,24 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
           ],
         ),
         _instructorsListWidget(),
-        _backToMainScreenButton(),
-        _logoutButton()
+          AcademButton(
+          tittle: 'НА ГЛАВНУЮ',
+          onTap: () {
+            FunctionsConsts.openMainScreen(context);
+          },
+          width: screenWidth * 0.9,
+          fontSize: 18,
+        ),
+         AcademButton(
+          tittle: 'Выйти',
+          onTap: () {
+            FunctionsConsts.openMainScreen(context);
+          },
+          width: screenWidth * 0.9,
+          fontSize: 18,
+        ),
+        // _backToMainScreenButton(),
+        // _logoutButton()
       ],
     );
   }
@@ -107,27 +133,31 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
 
   Widget _instructorsListWidget() {
     return Container(
-      height: screenHeight * 0.65,
-      width: screenWidth * 0.78,
+      height: screenHeight * 0.6,
+      width: screenWidth * 0.95,
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       alignment: Alignment.center,
-      child: CustomScrollView(
-        primary: false,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.all(10),
-            sliver: SliverGrid.count(
-              mainAxisSpacing: 20,
-              crossAxisCount: 2,
-              children: _profileWidgets(
-                _selectedKindOfSport == "СНОУБОРД"
-                    ? _snowboardInstructors
-                    : _skiesInstructors,
-              ),
-            ),
-          )
-        ],
+      child: ListView(
+        children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
+            ? _snowboardInstructors
+            : _skiesInstructors),
       ),
+
+      ///Todo change here
+      // child: CustomScrollView(
+      //   primary: false,
+      //   slivers: [
+      //     SliverPadding(
+      //       padding: const EdgeInsets.all(10),
+      //       sliver: SliverGrid.count(
+      //           mainAxisSpacing: 20,
+      //           crossAxisCount: 2,
+      //           children: _profileWidgets(_selectedKindOfSport == "СНОУБОРД"
+      //               ? _snowboardInstructors
+      //               : _skiesInstructors)),
+      //     )
+      //   ],
+      // ),
     );
   }
 
@@ -139,27 +169,63 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     return widgets;
   }
 
-  
 
   Widget _profileWidget(int which, List<Instructor> instructors) {
     return GestureDetector(
       onTap: () => _openInstructorWorkoutsScreen(instructors[which]),
-      child: Column(
-        children: [
-          SizedBox(
-            width: screenWidth * 0.3,
-            height: screenHeight * 0.13,
-            child: Image.asset("assets/all_instructors/2.png"),
-          ),
-          Text(
-            instructors[which].name ?? "",
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InstructorPhotoWidget(instructors[which]),
+            const SizedBox(width: 16,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  instructors[which].name ?? "",
+                  textAlign: TextAlign.center,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  instructors[which].phone ?? "",
+                  textAlign: TextAlign.center,
+                  style:
+                      const TextStyle(
+                        color: kBlackLight,
+                        fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  
+
+  // Widget _profileWidget(int which, List<Instructor> instructors) {
+  //   return GestureDetector(
+  //     onTap: () => _openInstructorWorkoutsScreen(instructors[which]),
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           width: screenWidth * 0.3,
+  //           height: screenHeight * 0.13,
+  //           child: Image.asset("assets/all_instructors/2.png"),
+  //         ),
+  //         Text(
+  //           instructors[which].name ?? "",
+  //           textAlign: TextAlign.center,
+  //           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _openInstructorWorkoutsScreen(Instructor instructor) {
     Navigator.of(context).push(MaterialPageRoute(

@@ -29,8 +29,8 @@ class _InstructorPhotoWidgetState extends State<InstructorPhotoWidget> {
   }
 
   Widget _photoWidget(ImageProvider<Object> imageProvider) {
-    double? height = widget.height ?? screenHeight * 0.14;
-    double? width = widget.width ?? screenHeight * 0.14;
+    double? height = widget.height ?? screenHeight * 0.1;
+    double? width = widget.width ?? screenHeight * 0.1;
     return Container(
       width: width,
       height: height,

@@ -2,6 +2,7 @@ import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/main.dart';
+import 'package:academ_gora_release/screens/all_instructors/all_instructors_screen.dart';
 import 'package:academ_gora_release/screens/profile/administrator_profile/instructors_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   tittle: 'НАШИ ИНСТРУКТОРЫ',
                   onTap: () {
                     FunctionsConsts.openPushScreen(
-                        context, const InstructorsScreen());
+                      context,
+                      const AllInstructorsScreen(),
+                    );
+                    
                   },
                   width: screenWidth * 0.9,
                   fontSize: 18,
@@ -58,7 +62,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       ),
     );
   }
-
 
   Widget _slider() {
     return Container(

@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/screens/all_instructors/all_instructors_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/all_instructors/all_instructors_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';

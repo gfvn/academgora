@@ -1,6 +1,6 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 
 class Instructor {
   String? id;

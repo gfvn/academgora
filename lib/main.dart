@@ -13,12 +13,12 @@ import 'package:academ_gora_release/core/notification/notification_api.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/splash_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:flutter/services.dart';
 import 'core/user_role.dart';
 

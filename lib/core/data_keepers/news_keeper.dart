@@ -1,6 +1,6 @@
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
-import 'package:academ_gora_release/features/main_screen/domain/enteties/news.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/news.dart';
 import 'package:flutter/material.dart';
 
 class NewsKeeper {

@@ -1,7 +1,7 @@
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/user_role.dart';
-import 'package:academ_gora_release/features/main_screen/domain/enteties/workout.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/features/user/user_profile/data/workouts_state_keeper.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';

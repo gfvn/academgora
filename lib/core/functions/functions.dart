@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/features/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:flutter/material.dart';
 
 class FunctionsConsts {

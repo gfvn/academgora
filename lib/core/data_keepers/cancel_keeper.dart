@@ -1,4 +1,4 @@
-import 'package:academ_gora_release/features/main_screen/domain/enteties/cancel.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/cancel.dart';
 import 'package:flutter/material.dart';
 
 class CancelKeeper {

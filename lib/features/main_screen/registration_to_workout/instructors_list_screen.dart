@@ -240,9 +240,6 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     return regToInstructorData == null ? Colors.grey : Colors.white;
   }
 
-  void _onBackPressed() {
-    Navigator.of(context).pop();
-  }
 
   void _openRegParametersScreen() {
     WorkoutDataKeeper workoutSingleton = WorkoutDataKeeper();

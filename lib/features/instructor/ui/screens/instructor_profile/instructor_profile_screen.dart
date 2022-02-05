@@ -14,7 +14,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
 import 'instructor_photo_widget.dart';
-import 'instructor_workouts_screen.dart';
 
 class InstructorProfileScreen extends StatefulWidget {
   final String? instructorPhoneNumber;
@@ -371,35 +370,6 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     );
   }
 
-  Widget _backButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.6,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(top: 25),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-            onTap: () {
-              _openInstructorWorkoutsScreen(context);
-            },
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "НАЗАД",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            )),
-      ),
-    );
-  }
 
   void _getInstructorInfo() {
     if (widget.instructorPhoneNumber != null) {
@@ -411,15 +381,6 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
     }
   }
 
-  void _openInstructorWorkoutsScreen(BuildContext context) {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => InstructorWorkoutsScreen(
-            instructorPhoneNumber: widget.instructorPhoneNumber,
-          ),
-        ),
-        (route) => false);
-  }
 
   @override
   void dispose() {

@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
+import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
-import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,222 +24,16 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
-
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
   bool isDeleteLoading = false;
-
   bool isChaged = false;
   String photoUrl = '';
   File image = File("");
   List<String> numberList = ["1", "2", "3", "4"];
   String choosedNumber = "1";
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-       appBar: AppBar(
-        title: const Text(
-          "Новости",
-          style: TextStyle(fontSize: 18),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: screenDecoration("assets/all_instructors/bg.png"),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      buildRoleText("Добавить новости"),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _newsPhoto(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _redactPhotoButton(context),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      buildRoleText("Выберите число"),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      buildDroppButton(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      buildInstructionText(),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      _saveButton(context),
-                      _saveDeleteButton(context),
-                      _backToMainScreenButton(context),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _redactPhotoButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.6,
-      height: screenHeight * 0.05,
-      margin: const EdgeInsets.only(top: 10),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () {
-            _selectOption(context);
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Выбрать фото",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _saveButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.8,
-      height: screenHeight * 0.07,
-      margin: const EdgeInsets.only(top: 10),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () {
-            _updateDatabase(image, choosedNumber);
-          },
-          child: !isLoading
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Опубликовать",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                )
-              : const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-        ),
-      ),
-    );
-  }
-
-  Widget _saveDeleteButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.8,
-      height: screenHeight * 0.07,
-      margin: const EdgeInsets.only(top: 10),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: Colors.red,
-        child: InkWell(
-          onTap: () {
-            _deleteNews(choosedNumber);
-          },
-          child: !isDeleteLoading
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Удалить",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                )
-              : const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-        ),
-      ),
-    );
-  }
-
-  void _selectOption(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            child: const Text('Выбрать из галереи'),
-            onPressed: () {
-              _makePhoto(ImageSource.gallery);
-              Navigator.of(context).pop();
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: const Text('Сделать фото'),
-            onPressed: () {
-              _makePhoto(ImageSource.camera);
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ),
-    );
-  }
+  //functions
 
   void _makePhoto(ImageSource imageSource) async {
     final pickedFile = await picker.pickImage(source: imageSource);
@@ -307,46 +102,131 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Добавить новости",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: screenWidth,
+        height: screenHeight,
+        decoration: screenDecoration("assets/all_instructors/bg.png"),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      // buildRoleText("Добавить новости"),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      _newsPhoto(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      AcademButton(
+                          onTap: () {
+                            _selectOption(context);
+                          },
+                          tittle: "выбрать фото",
+                          width: screenWidth * 0.6,
+                          fontSize: 18),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      buildRoleText("Выберите число"),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      buildDroppButton(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      buildInstructionText(),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      AcademButton(
+                        onTap: () {
+                          _updateDatabase(image, choosedNumber);
+                        },
+                        tittle: "Опубликовать",
+                        width: screenWidth * 0.9,
+                        fontSize: 18,
+                      ),
+                      AcademButton(
+                        onTap: () {
+                          _deleteNews(choosedNumber);
+                        },
+                        tittle: "Удалить",
+                        width: screenWidth * 0.9,
+                        fontSize: 18,
+                        colorButton: kRed,
+                      ),
+                      AcademButton(
+                        onTap: () {
+                          FunctionsConsts.openMainScreen(context);
+                        },
+                        tittle: "На главную",
+                        width: screenWidth * 0.6,
+                        fontSize: 18,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _selectOption(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            child: const Text('Выбрать из галереи'),
+            onPressed: () {
+              _makePhoto(ImageSource.gallery);
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: const Text('Сделать фото'),
+            onPressed: () {
+              _makePhoto(ImageSource.camera);
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   Widget buildRoleText(String text) {
     return Text(
       text,
       style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-
-  Widget _backToMainScreenButton(BuildContext context) {
-    return Container(
-      width: screenWidth * 0.6,
-      height: screenHeight * 0.06,
-      margin: const EdgeInsets.only(top: 18),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
-        color: kMainColor,
-        child: InkWell(
-          onTap: () => {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => const MainScreen()),
-                (route) => false)
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "НА ГЛАВНУЮ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -387,7 +267,7 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         child: DropdownButton(
           hint: const Text("Выберите число"),
           dropdownColor: Colors.white,

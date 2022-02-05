@@ -128,7 +128,6 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
   }
 
   void _logout() async {
-    print("hellow");
     FirebaseAuth.instance.currentUser!.delete;
     FlutterAuthUi.signOut();
     var pref = await SharedPreferences.getInstance();

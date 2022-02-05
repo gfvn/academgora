@@ -119,29 +119,7 @@ class _SetWorkoutTimeScreenState extends State<SetWorkoutTimeScreen> {
     );
   }
 
-  Widget _backButton() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Container(
-        margin: EdgeInsets.only(left: 10, right: 20, top: screenHeight * 0.07),
-        child: Row(
-          children: const [Icon(Icons.arrow_back_ios), Text("НАЗАД")],
-        ),
-      ),
-    );
-  }
 
-  Widget _instructorName() {
-    return Container(
-      margin: EdgeInsets.only(top: screenHeight * 0.07),
-      child: Text(
-        _currentInstructor!.name ?? "имя",
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-      ),
-    );
-  }
 
   Widget workoutTime() {
     return Text(

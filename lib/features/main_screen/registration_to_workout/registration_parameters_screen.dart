@@ -85,7 +85,7 @@ class RegistrationParametersScreenState
                       Container(
                           margin: const EdgeInsets.only(left: 5),
                           child:
-                              SelectLevelOfSkatingWidget(levelOfSkating!, this)),
+                              SelectLevelOfSkatingWidget(levelOfSkating, this)),
                       horizontalDivider(
                           10, 10, screenHeight * 0.015, screenHeight * 0.015),
                       SizedBox(
@@ -127,7 +127,7 @@ class RegistrationParametersScreenState
     return Container(
       margin: const EdgeInsets.only(top: 15),
       width: screenWidth * 0.9,
-      height: screenHeight * 0.21,
+      height: screenHeight * 0.22,
       padding: const EdgeInsets.all(5),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -204,16 +204,6 @@ class RegistrationParametersScreenState
     );
   }
 
-  Widget _dateFieldWidget() {
-    return Container(
-      alignment: Alignment.bottomLeft,
-      margin: const EdgeInsets.only(left: 15, top: 5),
-      child: Text(
-        _parseDateText(),
-        style: const TextStyle(fontSize: 12),
-      ),
-    );
-  }
 
   String _parseDateText() {
     String dateFromSingleton = workoutSingleton.date!;
@@ -524,9 +514,6 @@ class RegistrationParametersScreenState
     if (!visitors.contains(visitor)) visitors.add(visitor);
   }
 
-  void _onBackPressed() {
-    Navigator.of(context).pop();
-  }
 }
 
 // ignore: non_constant_identifier_names

@@ -98,14 +98,14 @@ class MyAppState extends State<MyApp> {
         _isUserAuthorized = false;
       },
     );
-    _saveUsersIntoKeeper(null);
+    // _saveUsersIntoKeeper(null);
     // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
 
     _saveAdminsIntoKeeper(null);
     // _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
 
     _saveInstructorsIntoKeeper(null);
-    _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
+    // _firebaseController.addListener("Инструкторы", _saveInstructorsIntoKeeper);
 
     _saveNewsrDataKeeper(null);
     // _firebaseController.addListener("Новоти", _saveNewsrDataKeeper);

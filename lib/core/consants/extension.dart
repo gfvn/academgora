@@ -186,7 +186,8 @@ Widget buildOneInputs({required TextEditingController controller}) {
 }
 
 Widget _textFieldWidget(
-    {required double width,
+    {
+      required double width,
     required TextInputType textInputType,
     required TextEditingController controller}) {
   return Container(

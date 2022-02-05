@@ -43,15 +43,16 @@ class _DecorzationState extends State<Decorzation> {
                 ],
               ),
               Positioned(
-                  bottom: 32,
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // cancelButton(),
-                      _backToMainScreenButton()
-                    ],
-                  )),
+                bottom: 32,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // cancelButton(),
+                    _backToMainScreenButton()
+                  ],
+                ),
+              ),
             ],
           ),
         ),

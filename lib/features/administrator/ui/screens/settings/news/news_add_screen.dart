@@ -161,23 +161,31 @@ class _NewsAddScreenState extends State<NewsAddScreen> {
                   ),
                   Column(
                     children: [
-                      AcademButton(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                           AcademButton(
                         onTap: () {
                           _updateDatabase(image, choosedNumber);
                         },
-                        tittle: "Опубликовать",
-                        width: screenWidth * 0.9,
+                        tittle: "Сохранить",
+                        width: screenWidth * 0.4,
                         fontSize: 18,
                       ),
+                      const SizedBox(width: 10,),
                       AcademButton(
                         onTap: () {
                           _deleteNews(choosedNumber);
                         },
                         tittle: "Удалить",
-                        width: screenWidth * 0.9,
+                        width: screenWidth * 0.4,
                         fontSize: 18,
                         colorButton: kRed,
                       ),
+                        ],
+                      ),
+
+                     
                       AcademButton(
                         onTap: () {
                           FunctionsConsts.openMainScreen(context);

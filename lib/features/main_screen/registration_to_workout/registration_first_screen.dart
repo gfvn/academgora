@@ -7,13 +7,13 @@ import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-
 import 'instructors_list_screen.dart';
 
 import 'package:intl/intl.dart';
 
 class RegistrationFirstScreen extends StatefulWidget {
-  const RegistrationFirstScreen({Key? key}) : super(key: key);
+ final bool isAdmin;
+  const RegistrationFirstScreen({Key? key,  this.isAdmin=false}) : super(key: key);
 
   @override
   RegistrationFirstScreenState createState() => RegistrationFirstScreenState();
@@ -130,7 +130,6 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     );
   }
 
-
   void _openNextScreen() {
     final DateTime now = selectedDate!;
     final DateFormat formatter = DateFormat('ddMMyyyy');
@@ -143,7 +142,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     workoutDataKeeper.sportType =
         kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) => const InstructorsListScreen()));
+        .push(MaterialPageRoute(builder: (c) =>  InstructorsListScreen(isAdmin: widget.isAdmin,)));
   }
 
   Color _continueButtonBackgroundColor() {
@@ -198,7 +197,7 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     workoutDataKeeper.to = toTime;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (c) => const InstructorsListScreen(),
+        builder: (c) =>  InstructorsListScreen(isAdmin: widget.isAdmin,),
       ),
     );
   }

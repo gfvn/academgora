@@ -69,7 +69,11 @@ class _MainScreenState extends State<MainScreen> {
                 content: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body.toString())],
+                    children: [
+                      Text(
+                        notification.body.toString(),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -408,8 +412,13 @@ class _MainScreenState extends State<MainScreen> {
       (prefs) {
         String userRole = prefs.getString("userRole") ?? "";
         if (userRole == UserRole.administrator) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (c) => const RegistrationFirstScreen()));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (c) => const RegistrationFirstScreen(
+                isAdmin: true,
+              ),
+            ),
+          );
         } else if (userRole == UserRole.instructor) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (c) => const RegistrationFirstScreen()));
@@ -474,7 +483,7 @@ class _MainScreenState extends State<MainScreen> {
                 },
                 child: const Center(
                   child: Text(
-                    " Связаться с нами    ",
+                    " Связаться с нами",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,

@@ -14,7 +14,10 @@ import 'package:intl/intl.dart';
 import 'registration_parameters_screen.dart';
 
 class InstructorsListScreen extends StatefulWidget {
-  const InstructorsListScreen({Key? key}) : super(key: key);
+  const InstructorsListScreen({Key? key, this.isAdmin = false})
+      : super(key: key);
+
+  final bool isAdmin;
 
   @override
   InstructorsListScreenState createState() => InstructorsListScreenState();
@@ -240,7 +243,6 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
     return regToInstructorData == null ? Colors.grey : Colors.white;
   }
 
-
   void _openRegParametersScreen() {
     WorkoutDataKeeper workoutSingleton = WorkoutDataKeeper();
     workoutSingleton.instructorName = regToInstructorData!.instructorName;
@@ -255,6 +257,6 @@ class InstructorsListScreenState extends State<InstructorsListScreen> {
         .findInstructorByPhoneNumber(regToInstructorData!.phoneNumber)!
         .id;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (c) => const RegistrationParametersScreen()));
+        builder: (c) =>  RegistrationParametersScreen(isAdmin: widget.isAdmin,)));
   }
 }

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/components/dialogs/message_dialog.dart';
+import 'package:academ_gora_release/core/components/inputs/main_input.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/user_role.dart';
@@ -22,7 +25,9 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/intl.dart';
 
 class RegistrationParametersScreen extends StatefulWidget {
-  const RegistrationParametersScreen({Key? key}) : super(key: key);
+  const RegistrationParametersScreen({Key? key, required this.isAdmin})
+      : super(key: key);
+  final bool isAdmin;
 
   @override
   RegistrationParametersScreenState createState() =>
@@ -41,6 +46,8 @@ class RegistrationParametersScreenState
   bool isLoading = false;
 
   final TextEditingController _commentController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
   final TimesController _timesController = TimesController();
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
@@ -62,54 +69,64 @@ class RegistrationParametersScreenState
         centerTitle: true,
       ),
       body: !isLoading
-          ? Container(
-              height: MediaQuery.of(context).size.height,
-              decoration:
-                  screenDecoration("assets/registration_parameters/0_bg.png"),
-              child: SizedBox(
-                width: screenWidth,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _infoWidget(),
-                      Container(
-                          margin: const EdgeInsets.only(top: 12, left: 5),
-                          child: SelectPeopleCountWidget(peopleCount, this)),
-                      horizontalDivider(
-                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                      Container(
-                          margin: const EdgeInsets.only(left: 5),
-                          child: SelectDurationWidget(duration, this)),
-                      horizontalDivider(
-                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                      Container(
-                          margin: const EdgeInsets.only(left: 5),
-                          child:
-                              SelectLevelOfSkatingWidget(levelOfSkating, this)),
-                      horizontalDivider(
-                          10, 10, screenHeight * 0.015, screenHeight * 0.015),
-                      SizedBox(
-                        height: screenHeight * 0.18,
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(3),
-                          itemCount: peopleCount,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              margin:  const EdgeInsets.only(left: 25),
-                              child: HumanInfoWidget(
-                                  index + 1, textEditingControllers, this),
-                            );
-                          },
-                        ),
+          ? Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: screenDecoration(
+                      "assets/registration_parameters/0_bg.png"),
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _infoWidget(),
+                          buildphoneTextField(),
+                          Container(
+                              margin: const EdgeInsets.only(top: 12, left: 5),
+                              child:
+                                  SelectPeopleCountWidget(peopleCount, this)),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          SizedBox(
+                            height: peopleCount * 40,
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(3),
+                              itemCount: peopleCount,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(left: 25),
+                                  child: HumanInfoWidget(
+                                      index + 1, textEditingControllers, this),
+                                );
+                              },
+                            ),
+                          ),
+                          horizontalDivider(10, 10, screenHeight * 0.015,
+                              screenHeight * 0.015),
+                          Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              child: SelectDurationWidget(duration, this)),
+                          horizontalDivider(10, 10, screenHeight * 0.015,
+                              screenHeight * 0.015),
+                          Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              child: SelectLevelOfSkatingWidget(
+                                  levelOfSkating, this)),
+                          horizontalDivider(10, 10, screenHeight * 0.015,
+                              screenHeight * 0.015),
+                          _commentFieldWidget(),
+                          // _dateFieldWidget(),
+                        ],
                       ),
-                      _commentFieldWidget(),
-                      // _dateFieldWidget(),
-                      _continueButton()
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                    bottom: 20, left: 20, right: 20, child: _continueButton())
+              ],
             )
           : const Center(
               child: SizedBox(
@@ -121,6 +138,48 @@ class RegistrationParametersScreenState
               ),
             ),
     );
+  }
+
+  // Future<bool> checkAdminRole() async =>
+  //     await SharedPreferences.getInstance().then(
+  //       (prefs) {
+  //         String userRole = prefs.getString("userRole") ?? "";
+  //         if (userRole == UserRole.administrator) {
+  //           return true;
+  //         }
+  //       },
+  //     );
+
+  Widget buildphoneTextField() {
+    // bool isAdmin = await checkAdminRole();
+    return widget.isAdmin
+        ? Padding(
+            padding: const EdgeInsets.only(right: 16, left: 16),
+            child: Column(
+              children: [
+                horizontalDivider(
+                    10, 10, screenHeight * 0.015, screenHeight * 0.015),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Телеофн \nпользователья:",
+                      textAlign: TextAlign.start,
+                    ),
+                    MainTextField(
+                      height: 30,
+                      width: screenWidth * 0.5,
+                      textInputType: TextInputType.phone,
+                      controller: _phoneController,
+                    ),
+                  ],
+                ),
+                horizontalDivider(
+                    10, 10, screenHeight * 0.015, screenHeight * 0.015),
+              ],
+            ),
+          )
+        : Container();
   }
 
   Widget _infoWidget() {
@@ -193,17 +252,19 @@ class RegistrationParametersScreenState
               maxLines: 10,
               style: const TextStyle(fontSize: 12),
               decoration: const InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
-                  hintText: "Добавить комментарий",
-                  hintStyle: TextStyle(fontSize: 12)),
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
+                hintText: "Добавить комментарий",
+                hintStyle: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
             ),
           )
         ],
       ),
     );
   }
-
 
   String _parseDateText() {
     String dateFromSingleton = workoutSingleton.date!;
@@ -227,7 +288,8 @@ class RegistrationParametersScreenState
           child: InkWell(
             onTap: levelOfSkating != null &&
                     duration != null &&
-                    _checkTextControllers()
+                    _checkTextControllers() &&
+                    _phoneController.text.isNotEmpty
                 ? _sendData
                 : null,
             child: Center(
@@ -327,32 +389,6 @@ class RegistrationParametersScreenState
     }
   }
 
-  // void _showWarningDialog() {
-  //   showDialog<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         content: const Text(
-  //           "Извините, на данное время уже записались или инструктор отменил запись, пожалуйста, выберите другое время",
-  //           textAlign: TextAlign.center,
-  //           style: TextStyle(fontSize: 18),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             child: const Text(
-  //               'ОК',
-  //               style: TextStyle(fontSize: 18),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   int countWorkoutTime() {
     int seconds = 0;
     DateTime now = DateTime.now();
@@ -386,41 +422,44 @@ class RegistrationParametersScreenState
         if (userRole == UserRole.user)
           {
             _firebaseRequestsController.send(
-                "$userRole/${FirebaseAuth.instance.currentUser!.uid}/Занятия/${workoutSingleton.id}",
-                {
-                  "id": workoutSingleton.id,
-                  "Телефон инструктора": workoutSingleton.instructorPhoneNumber,
-                  "Вид спорта": workoutSingleton.sportType,
-                  "Время": _getWorkoutTime(),
-                  "Дата": workoutSingleton.date,
-                  "Инструктор": workoutSingleton.instructorName,
-                  "Количество человек": workoutSingleton.peopleCount,
-                  "Посетители": _humansMap(),
-                  "Уровень катания": levelOfSkating,
-                  "Продолжительность": workoutSingleton.workoutDuration,
-                  "Комментарий": _commentController.text,
-                  "instructor_fcm_token": workoutSingleton.instructorfcmToken,
-                })
+              "$userRole/${FirebaseAuth.instance.currentUser!.uid}/Занятия/${workoutSingleton.id}",
+              {
+                "id": workoutSingleton.id,
+                "Телефон инструктора": workoutSingleton.instructorPhoneNumber,
+                "Вид спорта": workoutSingleton.sportType,
+                "Время": _getWorkoutTime(),
+                "Дата": workoutSingleton.date,
+                "Инструктор": workoutSingleton.instructorName,
+                "Количество человек": workoutSingleton.peopleCount,
+                "Посетители": _humansMap(),
+                "Уровень катания": levelOfSkating,
+                "Продолжительность": workoutSingleton.workoutDuration,
+                "Комментарий": _commentController.text,
+                "instructor_fcm_token": workoutSingleton.instructorfcmToken,
+              },
+            )
           },
       },
     );
   }
 
   Future<void> _sendWorkoutDataToInstructor() async {
+    log("Телеоын: ${FirebaseAuth.instance.currentUser!.phoneNumber}");
     _firebaseRequestsController.send(
-        "${UserRole.instructor}/${workoutSingleton.instructorId}/Занятия/Занятие ${workoutSingleton.id}",
-        {
-          "Вид спорта": workoutSingleton.sportType,
-          "Время": _getWorkoutTime(),
-          "Дата": workoutSingleton.date,
-          "Количество человек": workoutSingleton.peopleCount,
-          "Посетители": _humansMap(),
-          "Уровень катания": levelOfSkating,
-          "Комментарий": _commentController.text,
-          "Продолжительность": workoutSingleton.workoutDuration,
-          "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
-          "instructor_fcm_token": workoutSingleton.instructorfcmToken,
-        });
+      "${UserRole.instructor}/${workoutSingleton.instructorId}/Занятия/Занятие ${workoutSingleton.id}",
+      {
+        "Вид спорта": workoutSingleton.sportType,
+        "Время": _getWorkoutTime(),
+        "Дата": workoutSingleton.date,
+        "Количество человек": workoutSingleton.peopleCount,
+        "Посетители": _humansMap(),
+        "Уровень катания": levelOfSkating,
+        "Комментарий": _commentController.text,
+        "Продолжительность": workoutSingleton.workoutDuration,
+        "Телефон": !widget.isAdmin? FirebaseAuth.instance.currentUser!.phoneNumber: _phoneController.text,
+        "instructor_fcm_token": workoutSingleton.instructorfcmToken,
+      },
+    );
     _firebaseRequestsController.update(
         "${UserRole.instructor}/${workoutSingleton.instructorId}/График работы/${workoutSingleton.date}",
         _timesController.setTimesStatus(
@@ -471,7 +510,8 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonBackgroundColor() {
-    if (levelOfSkating != null && duration != null && _checkTextControllers()) {
+    if (levelOfSkating != null && duration != null && _checkTextControllers() &&                    _phoneController.text.isNotEmpty
+) {
       return kMainColor;
     } else {
       return Colors.white;
@@ -479,7 +519,8 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonTextColor() {
-    if (levelOfSkating != null && duration != null && _checkTextControllers()) {
+    if (levelOfSkating != null && duration != null && _checkTextControllers()&&                    _phoneController.text.isNotEmpty
+) {
       return Colors.white;
     } else {
       return Colors.grey;
@@ -513,7 +554,6 @@ class RegistrationParametersScreenState
     Visitor visitor = Visitor(name, age);
     if (!visitors.contains(visitor)) visitors.add(visitor);
   }
-
 }
 
 // ignore: non_constant_identifier_names

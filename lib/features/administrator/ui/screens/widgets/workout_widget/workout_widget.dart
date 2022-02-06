@@ -163,15 +163,15 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
       );
     }
 
-    for (Adminstrator admin in filteredAdminList) {
-      if (admin.fcmToken != null && admin.fcmToken!.isNotEmpty) {
-        NotificationService().sendNotificationToFcm(
-          fcmToken: admin.fcmToken.toString(),
-          tittle: "Отмена занятия",
-          body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
-        );
-      }
-    }
+    // for (Adminstrator admin in filteredAdminList) {
+    //   if (admin.fcmToken != null && admin.fcmToken!.isNotEmpty) {
+    //     NotificationService().sendNotificationToFcm(
+    //       fcmToken: admin.fcmToken.toString(),
+    //       tittle: "Отмена занятия",
+    //       body: "Инструктор отменил занятие, пожалуйста, утвердите!,",
+    //     );
+    //   }
+    // }
   }
 
   void _showCancelWorkoutDialog() {

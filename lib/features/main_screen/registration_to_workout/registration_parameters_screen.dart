@@ -359,10 +359,11 @@ class RegistrationParametersScreenState
                     int.tryParse(workoutSingleton.id.toString()) ?? 0,
                     "Скоро занятия",
                     "Через 4 часа у вас будет занятие в АкадемГора",
-                    norificationTime);
+                    norificationTime,
+                    "Скоро занятия");
               } else {
                 NotificationService().showNotification(2, "Скоро занятия",
-                    "Вы записались на занятие в АкадемГора", 10);
+                    "Вы записались на занятие в АкадемГора", 10, "Скоро занятия");
               }
               String formattedDate =
                   "${workoutSingleton.date!.substring(4, 8)}-${workoutSingleton.date!.substring(2, 4)}-${workoutSingleton.date!.substring(0, 2)}";
@@ -456,7 +457,9 @@ class RegistrationParametersScreenState
         "Уровень катания": levelOfSkating,
         "Комментарий": _commentController.text,
         "Продолжительность": workoutSingleton.workoutDuration,
-        "Телефон": !widget.isAdmin? FirebaseAuth.instance.currentUser!.phoneNumber: _phoneController.text,
+        "Телефон": !widget.isAdmin
+            ? FirebaseAuth.instance.currentUser!.phoneNumber
+            : _phoneController.text,
         "instructor_fcm_token": workoutSingleton.instructorfcmToken,
       },
     );
@@ -510,8 +513,10 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonBackgroundColor() {
-    if (levelOfSkating != null && duration != null && _checkTextControllers() &&                    _phoneController.text.isNotEmpty
-) {
+    if (levelOfSkating != null &&
+        duration != null &&
+        _checkTextControllers() &&
+        _phoneController.text.isNotEmpty) {
       return kMainColor;
     } else {
       return Colors.white;
@@ -519,8 +524,10 @@ class RegistrationParametersScreenState
   }
 
   Color _continueButtonTextColor() {
-    if (levelOfSkating != null && duration != null && _checkTextControllers()&&                    _phoneController.text.isNotEmpty
-) {
+    if (levelOfSkating != null &&
+        duration != null &&
+        _checkTextControllers() &&
+        _phoneController.text.isNotEmpty) {
       return Colors.white;
     } else {
       return Colors.grey;

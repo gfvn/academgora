@@ -37,7 +37,7 @@ class NotificationService {
   }
 
   Future<void> showNotification(
-      int id, String title, String body, int seconds) async {
+      int id, String title, String body, int seconds, String payload) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -57,6 +57,7 @@ class NotificationService {
           presentSound: true,
         ),
       ),
+      payload:payload,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
@@ -74,7 +75,8 @@ class NotificationService {
   Future<void> sendNotificationToFcm(
       {required String fcmToken,
       required String tittle,
-      required String body}) async {
+      required String body,
+     }) async {
     await NotificationApi().sendFcmNotification(
       fcmToken,
       tittle,

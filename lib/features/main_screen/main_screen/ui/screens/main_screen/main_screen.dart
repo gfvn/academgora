@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/notification_api.dart';
 import 'package:academ_gora_release/core/data_keepers/user_keepaers.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/classes/cancel/cancels_screen.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:academ_gora_release/core/user_role.dart';
 import 'package:academ_gora_release/features/instructor/ui/screens/instructor_profile/instructor_workouts_screen.dart';
@@ -42,20 +46,88 @@ class _MainScreenState extends State<MainScreen> {
   bool isLoading = false;
   List<String> imageUrls = [];
   final UsersKeeper usersKeepers = UsersKeeper();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  ///!!! дернуть getNotificationAppLaunchDetails
+  void onNotificationClick() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: (payload) async {
+        log("payload $payload");
+        log("Android Notification");
+        if (payload == "Скоро занятия" ||
+            payload == "Новая запись" ||
+            payload == "Запись отменена") {
+          _openAccountScreen();
+        }
+        if (payload == "Отмена занятия") {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (c) => const CancelsScreen()));
+        }
+      },
+    );
+  }
+
+  ///!!! iOS screen redirect
+  Future<void> onDidReceiveLocalNotification(
+    int? id,
+    String? title,
+    String? body,
+    String? payload,
+  ) async {
+    log("payload $payload");
+    log("Ios Notification");
+    if (payload == "Скоро занятия" ||
+        payload == "Новая запись" ||
+        payload == "Запись отменена") {
+      _openAccountScreen();
+    }
+    if (payload == "Отмена занятия") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (c) => const CancelsScreen()));
+    }
+  }
 
   @override
   void initState() {
     _getNews();
+    onNotificationClick();
     tz.initializeTimeZones();
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
         if (notification != null) {
           NotificationService().showNotification(
-              123, "${notification.title}", "${notification.body}", 5);
+            123,
+            "${notification.title}",
+            "${notification.body}",
+            5,
+            "${notification.title}",
+          );
         }
       },
     );
+    // FirebaseMessaging.onBackgroundMessage.listen(
+    //   (RemoteMessage message) {
+    //     RemoteNotification? notification = message.notification;
+    //     if (notification != null) {
+    //       NotificationService().showNotification(
+    //           123, "${notification.title}", "${notification.body}", 5);
+    //     }
+    //   },
+    // );
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {

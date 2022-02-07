@@ -5,6 +5,7 @@ import 'package:academ_gora_release/features/administrator/ui/screens/widgets/sm
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
+import 'package:expandable/expandable.dart';
 
 import '../../../../../main.dart';
 import '../../../../instructor/domain/enteties/instructor.dart';
@@ -24,11 +25,13 @@ class _SmetaScreenState extends State<SmetaScreen> {
   final List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
   bool isUpdate = true;
+  bool showAllInstructors = false;
 
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final FirebaseRequestsController _firebaseController =
       FirebaseRequestsController();
+  final ExpandableController _expandableController = ExpandableController();
 
   @override
   void initState() {
@@ -84,7 +87,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
     _getAllWorkouts();
     _fillMarkedDateMap();
     return Scaffold(
-         appBar: AppBar(
+      appBar: AppBar(
         title: const Text(
           "Смета",
           style: TextStyle(fontSize: 18),
@@ -95,7 +98,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         child: RefreshIndicator(
           onRefresh: update,
           child: Container(
-            height: screenHeight-50,
+            height: screenHeight - 50,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(color: Colors.white70),
             child: Padding(
@@ -109,7 +112,35 @@ class _SmetaScreenState extends State<SmetaScreen> {
                       _myRegistrationsTitle(text: "Смета"),
                       _calendar(),
                       _dateSliderWidget(),
-                      _myRegistrationsTitle(text: "Инструкторы"),
+                      Stack(
+                        children: [
+                          _myRegistrationsTitle(text: "Инструкторы"),
+                          Positioned(
+                            right: 10,
+                            bottom: 0,
+                            child: InkWell(
+                              onTap: () => setState(() {
+                                showAllInstructors = !showAllInstructors;
+                                _expandableController.toggle();
+                              }),
+                              child: Container(
+                                decoration: const BoxDecoration(),
+                                height: 40,
+                                width: 40,
+                                child: showAllInstructors
+                                    ? const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 32,
+                                      )
+                                    : const Icon(
+                                        Icons.arrow_drop_up,
+                                        size: 32,
+                                      ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       _instructorListWidget(),
                     ],
                   ),
@@ -133,6 +164,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
             isNeedCount: false,
             isUpdate: isUpdate,
             selectedDate: _selectedDate,
+            expandedController: _expandableController,
           );
         }),
       ),
@@ -239,7 +271,6 @@ class _SmetaScreenState extends State<SmetaScreen> {
       ),
     );
   }
-
 
   Event _createEvent(DateTime dateTime) {
     return Event(

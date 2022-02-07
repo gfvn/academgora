@@ -16,13 +16,14 @@ class InstructorDataWidget extends StatefulWidget {
   final DateTime selectedDate;
   final bool isNeedCount;
   final bool isUpdate;
+  final ExpandableController expandedController;
 
   const InstructorDataWidget(
     this.instructor, {
     Key? key,
     required this.selectedDate,
     required this.isNeedCount,
-    required this.isUpdate,
+    required this.isUpdate, required this.expandedController,
   }) : super(key: key);
 
   @override
@@ -36,7 +37,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   int twoPrice = 0;
   int threePrice = 0;
   int fourPrice = 0;
-  final ExpandableController _expandableController = ExpandableController();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
   // List<Workout> filteredDayWorkOut = [];
   bool showISInstructor = true;
@@ -67,11 +67,11 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
     final filteredDayWorkOut =
         _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
     log("filteredDayWorkOut ${filteredDayWorkOut.length}");
-    return filteredDayWorkOut.length!=0
+    return filteredDayWorkOut.length != 0
         ? ExpandablePanel(
             header: _header(),
             expanded: _body(),
-            controller: _expandableController,
+            controller: widget.expandedController,
             collapsed: Container(),
           )
         : Container();

@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 import '../../../../../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:expandable/expandable.dart';
 
 class CountScreen extends StatefulWidget {
   final DateTime choosedDateTime;
@@ -27,6 +28,8 @@ class CountScreenState extends State<CountScreen> {
       FirebaseRequestsController();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
+  final ExpandableController _expandableController = ExpandableController();
+
   int sumOneDay = 0;
   int sumAllDay = 0;
   int onePrice = 0;
@@ -339,6 +342,7 @@ class CountScreenState extends State<CountScreen> {
             selectedDate: selectedDate,
             isNeedCount: true,
             isUpdate: isUpdate,
+            expandedController: _expandableController,
           );
         }),
       ),

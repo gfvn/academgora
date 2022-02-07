@@ -362,8 +362,12 @@ class RegistrationParametersScreenState
                     norificationTime,
                     "Скоро занятия");
               } else {
-                NotificationService().showNotification(2, "Скоро занятия",
-                    "Вы записались на занятие в АкадемГора", 10, "Скоро занятия");
+                NotificationService().showNotification(
+                    2,
+                    "Скоро занятия",
+                    "Вы записались на занятие в АкадемГора",
+                    10,
+                    "Скоро занятия");
               }
               String formattedDate =
                   "${workoutSingleton.date!.substring(4, 8)}-${workoutSingleton.date!.substring(2, 4)}-${workoutSingleton.date!.substring(0, 2)}";

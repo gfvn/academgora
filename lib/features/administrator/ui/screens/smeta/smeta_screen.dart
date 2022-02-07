@@ -20,7 +20,7 @@ class SmetaScreen extends StatefulWidget {
 }
 
 class _SmetaScreenState extends State<SmetaScreen> {
-  DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
+  DateTime _selectedDate = DateTime.now();
   final List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
   bool isUpdate = true;

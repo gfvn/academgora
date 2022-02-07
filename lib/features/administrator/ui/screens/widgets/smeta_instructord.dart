@@ -1,5 +1,6 @@
-
 // ignore_for_file: unused_element
+
+import 'dart:developer';
 
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
@@ -8,9 +9,7 @@ import 'package:academ_gora_release/features/main_screen/main_screen/domain/ente
 import 'package:academ_gora_release/main.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-
 
 class InstructorDataWidget extends StatefulWidget {
   final Instructor instructor;
@@ -18,12 +17,12 @@ class InstructorDataWidget extends StatefulWidget {
   final bool isNeedCount;
   final bool isUpdate;
 
-
   const InstructorDataWidget(
     this.instructor, {
     Key? key,
     required this.selectedDate,
-    required this.isNeedCount, required this.isUpdate,
+    required this.isNeedCount,
+    required this.isUpdate,
   }) : super(key: key);
 
   @override
@@ -39,6 +38,8 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   int fourPrice = 0;
   final ExpandableController _expandableController = ExpandableController();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
+  // List<Workout> filteredDayWorkOut = [];
+  bool showISInstructor = true;
 
   @override
   void initState() {
@@ -63,12 +64,17 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   }
 
   Widget _instructorWidget() {
-    return ExpandablePanel(
-      header: _header(),
-      expanded: _body(),
-      controller: _expandableController,
-      collapsed: Container(),
-    );
+    final filteredDayWorkOut =
+        _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
+    log("filteredDayWorkOut ${filteredDayWorkOut.length}");
+    return filteredDayWorkOut.length!=0
+        ? ExpandablePanel(
+            header: _header(),
+            expanded: _body(),
+            controller: _expandableController,
+            collapsed: Container(),
+          )
+        : Container();
   }
 
   Widget _header() {
@@ -102,9 +108,8 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
                   widget.instructor.phone ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style:
-                      const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -122,33 +127,35 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   }
 
   Widget _body() {
-    return widget.isUpdate? Container(
-      margin: const EdgeInsets.only(bottom: 5),
-      width: screenWidth * 0.9,
-      decoration: const BoxDecoration(color: Colors.white70),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          buildWorkoutTable(),
-          widget.isNeedCount
-              ? Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 16, left: 16, top: 8, bottom: 8),
-                      child: Text(
-                        "Итог дня: $sum",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                )
-              : Container(),
-        ],
-      ),
-    ):Container();
+    return widget.isUpdate
+        ? Container(
+            margin: const EdgeInsets.only(bottom: 5),
+            width: screenWidth * 0.9,
+            decoration: const BoxDecoration(color: Colors.white70),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                buildWorkoutTable(),
+                widget.isNeedCount
+                    ? Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: 16, left: 16, top: 8, bottom: 8),
+                            child: Text(
+                              "Итог дня: $sum",
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
+              ],
+            ),
+          )
+        : Container();
   }
 
   int getWorkoutPrice(int? number) {
@@ -156,11 +163,9 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
       return onePrice;
     }
     if (number == 2) {
-
       return twoPrice;
     }
     if (number == 3) {
-
       return threePrice;
     }
     if (number == 4) {
@@ -181,9 +186,10 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   }
 
   Widget buildWorkoutTable() {
+    ///Count workouts price
+    log("here eee");
     final filteredDayWorkOut =
         _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
-    ///Count workouts price
     countWorkoutsPrice(filteredDayWorkOut);
     return filteredDayWorkOut.isNotEmpty
         ? Container(
@@ -209,7 +215,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
             height: 10,
           );
   }
-
 
   TableRow _tableRow(Workout workout,
       {Color color = Colors.transparent, double leftPadding = 0}) {

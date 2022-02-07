@@ -10,10 +10,8 @@ import 'package:academ_gora_release/features/main_screen/main_screen/domain/ente
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:academ_gora_release/core/style/color.dart';
-
 import '../../../../../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class CountScreen extends StatefulWidget {
   final DateTime choosedDateTime;
@@ -25,6 +23,28 @@ class CountScreen extends StatefulWidget {
 }
 
 class CountScreenState extends State<CountScreen> {
+  final FirebaseRequestsController _firebaseController =
+      FirebaseRequestsController();
+  final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
+  final PriceKeeper _priceDataKeeper = PriceKeeper();
+  int sumOneDay = 0;
+  int sumAllDay = 0;
+  int onePrice = 0;
+  int twoPrice = 0;
+  int threePrice = 0;
+  int fourPrice = 0;
+  TextEditingController onePeopleController = TextEditingController();
+  TextEditingController twoPeopleController = TextEditingController();
+  TextEditingController threePeopleController = TextEditingController();
+  TextEditingController fourPeopleController = TextEditingController();
+  List<Instructor> instructorlist = [];
+  List<Instructor> filteredInstructorList = [];
+  List<String> priceList = [];
+  List<DateTime> listOfDates = [];
+  DateTime firstDate = DateTime.now();
+  DateTime secondDate = DateTime.now();
+  bool isUpdate = true;
+
   @override
   void initState() {
     _getInstructors();
@@ -51,7 +71,9 @@ class CountScreenState extends State<CountScreen> {
       fourPrice = int.parse(priceList[3]);
     }
 
-    setState(() {});
+    setState(
+      () {},
+    );
   }
 
   void setPricec() async {
@@ -63,35 +85,13 @@ class CountScreenState extends State<CountScreen> {
     priceList.add(fourPeopleController.text);
     prefs.setStringList('price', priceList);
 
-    setState(() {
-      _priceDataKeeper.updateWorkouts(priceList);
-      _getAllPrices();
-    });
+    setState(
+      () {
+        _priceDataKeeper.updateWorkouts(priceList);
+        _getAllPrices();
+      },
+    );
   }
-
-  int sumOneDay = 0;
-  int sumAllDay = 0;
-  int onePrice = 0;
-  int twoPrice = 0;
-  int threePrice = 0;
-  int fourPrice = 0;
-
-  TextEditingController onePeopleController = TextEditingController();
-  TextEditingController twoPeopleController = TextEditingController();
-  TextEditingController threePeopleController = TextEditingController();
-  TextEditingController fourPeopleController = TextEditingController();
-  List<Instructor> instructorlist = [];
-  List<String> priceList = [];
-  List<DateTime> listOfDates = [];
-
-  final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
-  final FirebaseRequestsController _firebaseController =
-      FirebaseRequestsController();
-  DateTime firstDate = DateTime.now();
-  DateTime secondDate = DateTime.now();
-  bool isUpdate = true;
-
-  final PriceKeeper _priceDataKeeper = PriceKeeper();
 
   Future<void> update() async {
     await _firebaseController.get('Инструкторы').then(

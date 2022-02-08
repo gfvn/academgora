@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/core/data_keepers/filter_datakeeper.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class InstructorsKeeper {
 
   List<Instructor> instructorsList = [];
   List<State> _listeners = [];
+  final FilterKeeper _filterKeeper = FilterKeeper();
 
   InstructorsKeeper._internal();
 
@@ -42,6 +44,8 @@ class InstructorsKeeper {
     instructors.forEach((key, value) {
       instructorsList.add(Instructor.fromJson(key, value));
     });
+
+    _filterKeeper.saveInstructorList(instructorsList);
     _updateListeners();
   }
 

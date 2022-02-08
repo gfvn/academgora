@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/components/date_widget/date_widget.dart';
+import 'package:academ_gora_release/core/data_keepers/filter_datakeeper.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
@@ -30,6 +33,7 @@ class CountScreenState extends State<CountScreen> {
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
   final ExpandableController _expandableController = ExpandableController();
+  final FilterKeeper _filterKeeper = FilterKeeper();
 
   int sumOneDay = 0;
   int sumAllDay = 0;
@@ -57,6 +61,12 @@ class CountScreenState extends State<CountScreen> {
     firstDate = widget.choosedDateTime;
     secondDate = widget.choosedDateTime;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _filterKeeper.clearfilter();
+    super.dispose();
   }
 
   void _getInstructors() {
@@ -263,7 +273,6 @@ class CountScreenState extends State<CountScreen> {
                             )
                           ],
                         ),
-                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

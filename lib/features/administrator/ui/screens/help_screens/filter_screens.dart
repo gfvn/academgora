@@ -1,8 +1,7 @@
 import 'dart:developer';
-
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/date_widget/date_widget.dart';
-import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/filter_datakeeper.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/all_instructors/all_instructors_screen.dart';
 import 'package:academ_gora_release/main.dart';
@@ -18,38 +17,42 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
+  final FilterKeeper _filterKeeper = FilterKeeper();
   bool isSkiesSelected = true;
   bool isSnowBoardSelected = true;
   bool isCompleteSelected = true;
   bool isCanceledSelected = true;
-  final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   List<Instructor> instructorlist = [];
   List<Instructor> filteredList = [];
   List<Instructor> removeList = [];
   DateTime firstDate = DateTime.now();
   DateTime secondDate = DateTime.now();
   List<CheckBoxState> instructorCheckBoxList = [];
-  final allInstructorsChecBox = CheckBoxStateAll(tittle: "Все");
+  CheckBoxStateAll allInstructorsChecBox = CheckBoxStateAll(tittle: "Все");
 
   @override
   void initState() {
-    _getInstructors();
-    createChecBoxList();
+    getdateFromdateKeeper();
     super.initState();
   }
 
-  void createChecBoxList() {
-    instructorCheckBoxList = List.generate(
-      filteredList.length,
-      (index) {
-        return CheckBoxState(instructor: filteredList[index]);
+  void getdateFromdateKeeper() {
+    setState(
+      () {
+        log("_filterKeeper.instructorCheckBoxList ${_filterKeeper.instructorCheckBoxList.length}");
+        isSkiesSelected = _filterKeeper.isSkiesSelected;
+        isSnowBoardSelected = _filterKeeper.isSnowBoardSelected;
+        isCompleteSelected = _filterKeeper.isCompleteSelected;
+        isCanceledSelected = _filterKeeper.isCompleteSelected;
+        firstDate = _filterKeeper.firstDate;
+        allInstructorsChecBox = _filterKeeper.allInstructorChecBoxState;
+        secondDate = _filterKeeper.secondDate;
+        instructorCheckBoxList =
+            List.from(_filterKeeper.instructorCheckBoxList);
+        filteredList = List.from(_filterKeeper.filteredInstructorList);
+        instructorlist = List.from(_filterKeeper.instuctorList);
       },
     );
-  }
-
-  void _getInstructors() {
-    filteredList = List.from(_instructorsKeeper.instructorsList);
-    instructorlist = List.from(_instructorsKeeper.instructorsList);
   }
 
   @override
@@ -88,7 +91,6 @@ class _FilterScreenState extends State<FilterScreen> {
             Positioned(
               bottom: 0,
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [buildDowntButtons()],
               ),
@@ -110,7 +112,7 @@ class _FilterScreenState extends State<FilterScreen> {
             (index) {
               return Padding(
                 padding: index == instructorCheckBoxList.length - 1
-                    ? const EdgeInsets.only(bottom: 30)
+                    ? const EdgeInsets.only(bottom: 40)
                     : const EdgeInsets.only(bottom: 1),
                 child: buildListViewItem(
                   instructorCheckBoxList[index],
@@ -154,6 +156,15 @@ class _FilterScreenState extends State<FilterScreen> {
                 isSkiesSelected = false;
               } else {
                 isSnowBoardSelected = false;
+              }
+              if (filteredList.contains(instructorCheckBox.instructor)) {
+                filteredList.remove(
+                  instructorCheckBox.instructor,
+                );
+              }
+            } else {
+              if (!filteredList.contains(instructorCheckBox.instructor)) {
+                filteredList.add(instructorCheckBox.instructor);
               }
             }
           },
@@ -319,12 +330,18 @@ class _FilterScreenState extends State<FilterScreen> {
   void filterSnowBoardPress() {
     isSnowBoardSelected = !isSnowBoardSelected;
     if (isSnowBoardSelected == false) {
-      for (Instructor element in instructorlist) {
+      for (var element in instructorlist) {
         if (element.kindOfSport == KindsOfSport.SNOWBOARD) {
+          removeList.add(element);
+        }
+      }
+      for (var element in removeList) {
+        if (filteredList.contains(element)) {
           filteredList.remove(element);
         }
       }
       allInstructorsChecBox.value = isSnowBoardSelected;
+      removeList = [];
     } else {
       if (isSkiesSelected == true) {
         allInstructorsChecBox.value = true;
@@ -359,24 +376,6 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  Widget snowBoardButton() {
-    return AcademButton(
-      onTap: () async {
-        setState(
-          () {
-            filterSnowBoardPress();
-          },
-        );
-      },
-      tittle: "Сноуборд",
-      width: screenWidth * 0.4,
-      fontSize: 14,
-      borderColor: kMainColor,
-      colorText: isSnowBoardSelected ? kWhite : kMainColor,
-      colorButton: isSnowBoardSelected ? kMainColor : Colors.transparent,
-    );
-  }
-
   Widget buildDateButtons() {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -404,6 +403,28 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
+  void confirmFilters() {
+    _filterKeeper.updateFilterL(
+      fisSkiesSelected: isSkiesSelected,
+      fisSnowBoardSelected: isSnowBoardSelected,
+      fisCompleteSelected: isCanceledSelected,
+      fisCanceledSelected: isCanceledSelected,
+      ffilterList: filteredList,
+      ffirstTime: firstDate,
+      fsecondTime: secondDate,
+      fallInctructorCheck: allInstructorsChecBox,
+      finstructorCheckBoxList: instructorCheckBoxList,
+    );
+        Navigator.pop(context);
+
+  }
+
+  void resetFilter() {
+    _filterKeeper.clearfilter();
+    getdateFromdateKeeper();
+    Navigator.pop(context);
+  }
+
   Widget buildDowntButtons() {
     return Container(
       padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -413,7 +434,9 @@ class _FilterScreenState extends State<FilterScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AcademButton(
-            onTap: () async {},
+            onTap: () async {
+              resetFilter();
+            },
             tittle: "Отменить",
             width: screenWidth * 0.4,
             fontSize: 14,
@@ -426,9 +449,7 @@ class _FilterScreenState extends State<FilterScreen> {
           ),
           AcademButton(
             onTap: () {
-              log("instructorbnblist ${instructorlist.length}");
-              log("llllllll  ${_instructorsKeeper.instructorsList.length}");
-              log("filter  ${filteredList.length}");
+              confirmFilters();
             },
             tittle: "Применить",
             width: screenWidth * 0.4,

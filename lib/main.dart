@@ -59,6 +59,7 @@ class MyAppState extends State<MyApp> {
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final CancelKeeper _cancelKeeper = CancelKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
+
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
   @override
@@ -142,7 +143,6 @@ class MyAppState extends State<MyApp> {
       },
     );
   }
-
 
   void _saveAdminsIntoKeeper(Event? event) async {
     await _firebaseController.get("Администраторы").then((value) {

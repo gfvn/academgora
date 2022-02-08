@@ -219,7 +219,7 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
                               );
                               setState(
                                 () {
-                                  if (link != null && link.isNotEmpty) {
+                                  if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     textConytroller.text = '';
                                   }

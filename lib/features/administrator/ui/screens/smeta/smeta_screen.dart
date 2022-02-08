@@ -25,7 +25,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
   final List<Workout> _allWorkouts = [];
   List<Instructor> instructorlist = [];
   bool isUpdate = true;
-  bool showAllInstructors = false;
+  bool showAllInstructors = true;
 
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
@@ -119,10 +119,12 @@ class _SmetaScreenState extends State<SmetaScreen> {
                             right: 10,
                             bottom: 0,
                             child: InkWell(
-                              onTap: () => setState(() {
-                                showAllInstructors = !showAllInstructors;
-                                _expandableController.toggle();
-                              }),
+                              onTap: () => setState(
+                                () {
+                                  showAllInstructors = !showAllInstructors;
+                                  _expandableController.toggle();
+                                },
+                              ),
                               child: Container(
                                 decoration: const BoxDecoration(),
                                 height: 40,
@@ -158,15 +160,18 @@ class _SmetaScreenState extends State<SmetaScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 50, right: 8, left: 8),
       child: Column(
-        children: List.generate(instructorlist.length, (index) {
-          return InstructorDataWidget(
-            instructorlist[index],
-            isNeedCount: false,
-            isUpdate: isUpdate,
-            selectedDate: _selectedDate,
-            expandedController: _expandableController,
-          );
-        }),
+        children: List.generate(
+          instructorlist.length,
+          (index) {
+            return InstructorDataWidget(
+              instructorlist[index],
+              isNeedCount: false,
+              isUpdate: isUpdate,
+              selectedDate: _selectedDate,
+              expandedController: _expandableController,
+            );
+          },
+        ),
       ),
     );
   }

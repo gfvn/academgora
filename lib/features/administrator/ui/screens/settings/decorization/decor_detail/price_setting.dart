@@ -68,7 +68,7 @@ class _PriceSettingState extends State<PriceSetting> {
                         );
                         setState(
                           () {
-                            if (link != null && link.isNotEmpty) {
+                            if (link.isNotEmpty) {
                               listofStrings.add(link);
                               textConytroller.text = '';
                             }

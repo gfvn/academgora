@@ -216,7 +216,7 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                               );
                               setState(
                                 () {
-                                  if (link != null && link.isNotEmpty) {
+                                  if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     textConytroller.text = '';
                                   }

@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
@@ -21,6 +22,19 @@ class _CurrentScreenState extends State<CurrentScreen> {
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,
+           actions: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const FfilterScreen()));
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: Icon(Icons.filter_alt_rounded),
+            ),
+          )
+        ],
+      
       ),
       body: Container(
         decoration: screenDecoration("assets/all_instructors/bg.png"),

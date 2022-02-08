@@ -219,7 +219,7 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                               );
                               setState(
                                 () {
-                                  if (link != null && link.isNotEmpty) {
+                                  if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     textConytroller.text = '';
                                   }

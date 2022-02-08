@@ -66,7 +66,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
   Widget _instructorWidget() {
     final filteredDayWorkOut =
         _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
-    log("filteredDayWorkOut ${filteredDayWorkOut.length}");
     return filteredDayWorkOut.length != 0
         ? ExpandablePanel(
             header: _header(),
@@ -187,7 +186,6 @@ class _InstructorDataWidgetState extends State<InstructorDataWidget> {
 
   Widget buildWorkoutTable() {
     ///Count workouts price
-    log("here eee");
     final filteredDayWorkOut =
         _sortWorkoutsBySelectedDate(widget.instructor.workouts!);
     countWorkoutsPrice(filteredDayWorkOut);

@@ -2,6 +2,7 @@ import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/widgets/count_data_widget.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/widgets/smeta_instructord.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
@@ -47,6 +48,7 @@ class CountScreenState extends State<CountScreen> {
   DateTime firstDate = DateTime.now();
   DateTime secondDate = DateTime.now();
   bool isUpdate = true;
+  bool showAllInstructors = true;
 
   @override
   void initState() {
@@ -194,6 +196,25 @@ class CountScreenState extends State<CountScreen> {
     _getInstructors();
     // _getAllPrices();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Подсчёт",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const FfilterScreen()));
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: Icon(Icons.filter_alt_rounded),
+            ),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: RefreshIndicator(
           onRefresh: update,
@@ -211,7 +232,37 @@ class CountScreenState extends State<CountScreen> {
                     padding: const EdgeInsets.only(bottom: 150),
                     child: ListView(
                       children: [
-                        _myRegistrationsTitle(text: 'Подсчёт'),
+                        Stack(
+                          children: [
+                            _myRegistrationsTitle(text: "Инструкторы"),
+                            Positioned(
+                              right: 10,
+                              bottom: 5,
+                              child: InkWell(
+                                onTap: () => setState(
+                                  () {
+                                    showAllInstructors = !showAllInstructors;
+                                    _expandableController.toggle();
+                                  },
+                                ),
+                                child: Container(
+                                  decoration: const BoxDecoration(),
+                                  height: 40,
+                                  width: 40,
+                                  child: showAllInstructors
+                                      ? const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 32,
+                                        )
+                                      : const Icon(
+                                          Icons.arrow_drop_up,
+                                          size: 32,
+                                        ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -235,7 +286,7 @@ class CountScreenState extends State<CountScreen> {
                       ],
                     ),
                   ),
-                  Positioned(bottom: 5, child: buildButtons()),
+                  Positioned(bottom: 50, child: buildButtons()),
                 ],
               ),
             ),

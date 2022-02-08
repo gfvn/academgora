@@ -143,12 +143,6 @@ class MyAppState extends State<MyApp> {
     );
   }
 
-  void _saveUsersIntoKeeper(Event? event) async {
-    await _firebaseController.get("Пользователи").then((value) {
-      usersKeepers.updateInstructors(value);
-      setState(() {});
-    });
-  }
 
   void _saveAdminsIntoKeeper(Event? event) async {
     await _firebaseController.get("Администраторы").then((value) {

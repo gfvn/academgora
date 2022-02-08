@@ -26,7 +26,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
           InkWell(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const FfilterScreen()));
+                  MaterialPageRoute(builder: (c) => const FilterScreen()));
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),

@@ -18,7 +18,7 @@ class _ArchieveScreenState extends State<ArchieveScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Архив'",
+          "Архив",
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,
@@ -26,7 +26,7 @@ class _ArchieveScreenState extends State<ArchieveScreen> {
           InkWell(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const FfilterScreen()));
+                  MaterialPageRoute(builder: (c) => const FilterScreen(fromArchive: true,)));
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),

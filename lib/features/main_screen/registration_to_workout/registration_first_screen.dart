@@ -12,8 +12,9 @@ import 'instructors_list_screen.dart';
 import 'package:intl/intl.dart';
 
 class RegistrationFirstScreen extends StatefulWidget {
- final bool isAdmin;
-  const RegistrationFirstScreen({Key? key,  this.isAdmin=false}) : super(key: key);
+  final bool isAdmin;
+  const RegistrationFirstScreen({Key? key, this.isAdmin = false})
+      : super(key: key);
 
   @override
   RegistrationFirstScreenState createState() => RegistrationFirstScreenState();
@@ -53,12 +54,9 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
               children: [
                 SelectKindOfSportWidget(this, kindOfSport),
                 horizontalDivider(20, 20, 20, 20),
-                DateWidget(this, selectedDate),
-                // horizontalDivider(20, 20, 20, 20),
+                RegistrationDateWidget(this, selectedDate),
               ],
             ),
-            // TimeWidget(this),
-            // _warningText(),
             Column(
               children: [
                 _buttons(),
@@ -141,8 +139,10 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     workoutDataKeeper.to = toTime;
     workoutDataKeeper.sportType =
         kindOfSport == 0 ? SportType.skiing : SportType.snowboard;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (c) =>  InstructorsListScreen(isAdmin: widget.isAdmin,)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (c) => InstructorsListScreen(
+              isAdmin: widget.isAdmin,
+            )));
   }
 
   Color _continueButtonBackgroundColor() {
@@ -197,7 +197,9 @@ class RegistrationFirstScreenState extends State<RegistrationFirstScreen> {
     workoutDataKeeper.to = toTime;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (c) =>  InstructorsListScreen(isAdmin: widget.isAdmin,),
+        builder: (c) => InstructorsListScreen(
+          isAdmin: widget.isAdmin,
+        ),
       ),
     );
   }

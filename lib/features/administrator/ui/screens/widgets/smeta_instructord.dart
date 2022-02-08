@@ -1,7 +1,5 @@
 // ignore_for_file: unused_element
 
-import 'dart:developer';
-
 import 'package:academ_gora_release/core/common/times_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';

@@ -1,9 +1,9 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/common/times_controller.dart';
+import 'package:academ_gora_release/core/components/date_widget/date_widget.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
-import 'package:academ_gora_release/features/administrator/ui/screens/widgets/count_data_widget.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/widgets/smeta_instructord.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
@@ -206,7 +206,7 @@ class CountScreenState extends State<CountScreen> {
           InkWell(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => const FfilterScreen()));
+                  MaterialPageRoute(builder: (c) => const FilterScreen()));
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),
@@ -263,6 +263,7 @@ class CountScreenState extends State<CountScreen> {
                             )
                           ],
                         ),
+                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

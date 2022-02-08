@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
+import 'package:academ_gora_release/core/components/date_widget/date_widget.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/all_instructors/all_instructors_screen.dart';
@@ -8,21 +9,25 @@ import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
 
-class FfilterScreen extends StatefulWidget {
-  const FfilterScreen({Key? key}) : super(key: key);
+class FilterScreen extends StatefulWidget {
+  final bool fromArchive;
+  const FilterScreen({Key? key, this.fromArchive = false}) : super(key: key);
 
   @override
-  _FfilterScreenState createState() => _FfilterScreenState();
+  _FilterScreenState createState() => _FilterScreenState();
 }
 
-class _FfilterScreenState extends State<FfilterScreen> {
+class _FilterScreenState extends State<FilterScreen> {
   bool isSkiesSelected = true;
   bool isSnowBoardSelected = true;
+  bool isCompleteSelected = true;
+  bool isCanceledSelected = true;
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   List<Instructor> instructorlist = [];
   List<Instructor> filteredList = [];
   List<Instructor> removeList = [];
-
+  DateTime firstDate = DateTime.now();
+  DateTime secondDate = DateTime.now();
   List<CheckBoxState> instructorCheckBoxList = [];
   final allInstructorsChecBox = CheckBoxStateAll(tittle: "Все");
 
@@ -45,7 +50,6 @@ class _FfilterScreenState extends State<FfilterScreen> {
   void _getInstructors() {
     filteredList = List.from(_instructorsKeeper.instructorsList);
     instructorlist = List.from(_instructorsKeeper.instructorsList);
-    
   }
 
   @override
@@ -67,8 +71,11 @@ class _FfilterScreenState extends State<FfilterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  _myRegistrationsTitle(text: "Выберите число"),
+                  buildDateButtons(),
                   _myRegistrationsTitle(text: "Вид спорта"),
                   buildSportButtons(),
+                  buildrelevanceButtons(),
                   _myRegistrationsTitle(text: "Инструкторы"),
                   buildGroupCheckBox(allInstructorsChecBox),
                   Divider(
@@ -120,7 +127,8 @@ class _FfilterScreenState extends State<FfilterScreen> {
     return CheckboxListTile(
       title: Text(
         instructorCheckBox.instructor.name!,
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,64 +209,153 @@ class _FfilterScreenState extends State<FfilterScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          skiingButton(),
+          filterSelectionButton(
+            tittle: "Сноуборд",
+            selections: isSkiesSelected,
+            onTap: () {
+              setState(() {
+                filterSkiiButtonPress();
+              });
+            },
+          ),
           const SizedBox(
             width: 10,
           ),
-          snowBoardButton()
+          filterSelectionButton(
+            tittle: "Горные лыжи",
+            selections: isSnowBoardSelected,
+            onTap: () {
+              setState(() {
+                filterSnowBoardPress();
+              });
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget skiingButton() {
+  Widget buildrelevanceButtons() {
+    return widget.fromArchive
+        ? Column(
+            children: [
+              _myRegistrationsTitle(text: "Актуальность"),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    filterSelectionButton(
+                      tittle: "Проведено",
+                      selections: isCompleteSelected,
+                      onTap: () {
+                        setState(() {
+                          filterCompletePress();
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    filterSelectionButton(
+                      tittle: "Отменено",
+                      selections: isCanceledSelected,
+                      onTap: () {
+                        setState(() {
+                          filterCanceledSelect();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        : Container();
+  }
+
+  void filterCompletePress() {
+    isCompleteSelected = !isCompleteSelected;
+  }
+
+  void filterCanceledSelect() {
+    isCanceledSelected = !isCanceledSelected;
+  }
+
+  void filterSkiiButtonPress() {
+    isSkiesSelected = !isSkiesSelected;
+    if (isSkiesSelected == false) {
+      for (var element in instructorlist) {
+        if (element.kindOfSport == KindsOfSport.SKIES) {
+          removeList.add(element);
+        }
+      }
+      for (var element in removeList) {
+        if (filteredList.contains(element)) {
+          filteredList.remove(element);
+        }
+      }
+      allInstructorsChecBox.value = isSkiesSelected;
+      removeList = [];
+    } else {
+      if (isSnowBoardSelected == true) {
+        allInstructorsChecBox.value = true;
+      }
+      for (var element in instructorlist) {
+        if (element.kindOfSport == KindsOfSport.SKIES) {
+          if (!filteredList.contains(element)) {
+            filteredList.add(element);
+          }
+        }
+      }
+    }
+    for (var element in instructorCheckBoxList) {
+      if (element.instructor.kindOfSport == KindsOfSport.SKIES) {
+        element.value = isSkiesSelected;
+      }
+    }
+  }
+
+  void filterSnowBoardPress() {
+    isSnowBoardSelected = !isSnowBoardSelected;
+    if (isSnowBoardSelected == false) {
+      for (Instructor element in instructorlist) {
+        if (element.kindOfSport == KindsOfSport.SNOWBOARD) {
+          filteredList.remove(element);
+        }
+      }
+      allInstructorsChecBox.value = isSnowBoardSelected;
+    } else {
+      if (isSkiesSelected == true) {
+        allInstructorsChecBox.value = true;
+      }
+      for (var element in instructorlist) {
+        if (element.kindOfSport == KindsOfSport.SNOWBOARD) {
+          if (!filteredList.contains(element)) {
+            filteredList.add(element);
+          }
+        }
+      }
+    }
+    for (var element in instructorCheckBoxList) {
+      if (element.instructor.kindOfSport == KindsOfSport.SNOWBOARD) {
+        element.value = isSnowBoardSelected;
+      }
+    }
+  }
+
+  Widget filterSelectionButton(
+      {required String tittle,
+      required bool selections,
+      required Function onTap}) {
     return AcademButton(
-      onTap: () async {
-        setState(
-          () {
-            isSkiesSelected = !isSkiesSelected;
-            if (isSkiesSelected == false) {
-              for (var element in instructorlist) {
-                if (element.kindOfSport == KindsOfSport.SKIES) {
-                  removeList.add(element);
-                }
-              }
-              for (var element in removeList) {
-                if (filteredList.contains(element)) {
-                  filteredList.remove(element);
-                }
-              }
-              // filteredList.removeWhere((element) {
-              //   return removeList.contains(element);
-              // });
-              allInstructorsChecBox.value = isSkiesSelected;
-              removeList = [];
-            } else {
-              if (isSnowBoardSelected == true) {
-                allInstructorsChecBox.value = true;
-              }
-              for (var element in instructorlist) {
-                if (element.kindOfSport == KindsOfSport.SKIES) {
-                  if (!filteredList.contains(element)) {
-                    filteredList.add(element);
-                  }
-                }
-              }
-            }
-            for (var element in instructorCheckBoxList) {
-              if (element.instructor.kindOfSport == KindsOfSport.SKIES) {
-                element.value = isSkiesSelected;
-              }
-            }
-          },
-        );
-      },
-      tittle: "Горные лыжи",
+      onTap: onTap,
+      tittle: tittle,
       width: screenWidth * 0.4,
       fontSize: 14,
       borderColor: kMainColor,
-      colorText: isSkiesSelected ? kWhite : kMainColor,
-      colorButton: isSkiesSelected ? kMainColor : Colors.transparent,
+      colorText: selections ? kWhite : kMainColor,
+      colorButton: selections ? kMainColor : Colors.transparent,
     );
   }
 
@@ -267,31 +364,7 @@ class _FfilterScreenState extends State<FfilterScreen> {
       onTap: () async {
         setState(
           () {
-            isSnowBoardSelected = !isSnowBoardSelected;
-            if (isSnowBoardSelected == false) {
-              for (Instructor element in instructorlist) {
-                if (element.kindOfSport == KindsOfSport.SNOWBOARD) {
-                  filteredList.remove(element);
-                }
-              }
-              allInstructorsChecBox.value = isSnowBoardSelected;
-            } else {
-              if (isSkiesSelected == true) {
-                allInstructorsChecBox.value = true;
-              }
-              for (var element in instructorlist) {
-                if (element.kindOfSport == KindsOfSport.SNOWBOARD) {
-                  if (!filteredList.contains(element)) {
-                    filteredList.add(element);
-                  }
-                }
-              }
-            }
-            for (var element in instructorCheckBoxList) {
-              if (element.instructor.kindOfSport == KindsOfSport.SNOWBOARD) {
-                element.value = isSnowBoardSelected;
-              }
-            }
+            filterSnowBoardPress();
           },
         );
       },
@@ -301,6 +374,33 @@ class _FfilterScreenState extends State<FfilterScreen> {
       borderColor: kMainColor,
       colorText: isSnowBoardSelected ? kWhite : kMainColor,
       colorButton: isSnowBoardSelected ? kMainColor : Colors.transparent,
+    );
+  }
+
+  Widget buildDateButtons() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DateWidget(
+                this,
+                firstDate,
+                text: "C",
+                isFirstdate: true,
+              ),
+              DateWidget(
+                this,
+                secondDate,
+                text: "До",
+                isFirstdate: false,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

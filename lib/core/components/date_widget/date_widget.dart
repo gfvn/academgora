@@ -1,5 +1,3 @@
-import 'package:academ_gora_release/core/consants/extension.dart';
-import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -7,51 +5,41 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:academ_gora_release/core/style/color.dart';
 
-import '../../registration_first_screen.dart';
 
-class RegistrationDateWidget extends StatefulWidget {
+class DateWidget extends StatefulWidget {
   final DateTime? _selectedDate;
-  final RegistrationFirstScreenState registrationToInstructorScreenState;
+  final dynamic registrationToInstructorfilteredList;
+  final String text;
+  final bool isFirstdate;
 
-  const RegistrationDateWidget(
-      this.registrationToInstructorScreenState, this._selectedDate,
-      {Key? key})
+  const DateWidget(this.registrationToInstructorfilteredList, this._selectedDate,
+      {Key? key, required this.text, required this.isFirstdate})
       : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  _RegistrationDateWidgetState createState() =>
-      // ignore: no_logic_in_create_state
-      _RegistrationDateWidgetState(_selectedDate);
+  _DateWidgetState createState() => _DateWidgetState(_selectedDate);
 }
 
-class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
+class _DateWidgetState extends State<DateWidget> {
   DateTime? _selectedDate;
 
-  _RegistrationDateWidgetState(this._selectedDate);
+  _DateWidgetState(this._selectedDate);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _dateNameWidget(),
-        _dateFieldWidget(),
-      ],
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [_dateNameWidget(), _dateFieldWidget()],
     );
   }
 
   Widget _dateNameWidget() {
     return Row(
       children: [
-        Container(
-            width: 20,
-            height: 20,
-            margin: const EdgeInsets.only(right: 10, left: 10),
-            child: Image.asset("assets/registration_to_instructor/4_e3.png")),
-        const Text(
-          "ДАТА",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          widget.text.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         )
       ],
     );
@@ -59,39 +47,41 @@ class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
 
   Widget _dateFieldWidget() {
     return Container(
-      width: screenWidth * 0.5,
+      width: 130,
       height: 30,
-      margin: EdgeInsets.only(left: screenWidth * 0.18),
+      margin: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [_dateTextWidget(), _clearRegistrationDateWidget()]),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [_dateTextWidget(), _clearDateWidget()]),
     );
   }
 
   Widget _dateTextWidget() {
     return GestureDetector(
       child: Center(
-          child: Container(
-              width: screenWidth * 0.4,
-              alignment: Alignment.center,
-              color: Colors.white,
-              height: 30,
-              child: Text(
-                _selectedDate == null
-                    ? ""
-                    : DateFormat("dd.MM.yyyy").format(_selectedDate!),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ))),
+        child: Container(
+          width: 100,
+          alignment: Alignment.center,
+          color: Colors.white,
+          height: 30,
+          child: Text(
+            _selectedDate == null
+                ? ""
+                : DateFormat("dd.MM.yyyy").format(_selectedDate!),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
       onTap: _showDateDialog,
     );
   }
 
-  Widget _clearRegistrationDateWidget() {
+  Widget _clearDateWidget() {
     return GestureDetector(
       child: Container(
           height: 13,
@@ -103,12 +93,30 @@ class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
   }
 
   void _clearDateFieldButton() {
-    _selectedDate = null;
-    WorkoutDataKeeper().date = null;
-    widget.registrationToInstructorScreenState.setState(() {
-      widget.registrationToInstructorScreenState.selectedDate = _selectedDate;
-    });
-    setState(() {});
+    _selectedDate =
+        widget.registrationToInstructorfilteredList.widget.choosedDateTime;
+    if (widget.isFirstdate) {
+      widget.registrationToInstructorfilteredList.setState(
+        () {
+          widget.registrationToInstructorfilteredList.firstDate = _selectedDate!;
+        },
+      );
+    } else {
+      widget.registrationToInstructorfilteredList.setState(
+        () {
+          widget.registrationToInstructorfilteredList.secondDate =
+              _selectedDate!;
+        },
+      );
+    }
+    widget.registrationToInstructorfilteredList.setState(
+      () {
+        widget.registrationToInstructorfilteredList.firstDate = _selectedDate!;
+      },
+    );
+    setState(
+      () {},
+    );
   }
 
   Future<void> _showDateDialog() async {
@@ -123,16 +131,17 @@ class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
                   child: const Text('OK'), onPressed: _applyAndCloseDialog),
             ],
             content: CalendarCarousel<Event>(
-              headerTextStyle: const TextStyle(fontSize: 20, color: kMainColor),
+              headerTextStyle: TextStyle(
+                  fontSize: screenHeight * 0.028, color: kMainColor),
               locale: "ru",
               width: 300,
-              height: 250,
+              height: 270,
               todayBorderColor: Colors.transparent,
               todayButtonColor: Colors.transparent,
               todayTextStyle: const TextStyle(color: kMainColor),
               onDayPressed: (DateTime date, List<Event> events) {
                 DateTime now = DateTime.now();
-                if (date.isAfter(now) || date.isSameDate(now)) {
+                if (true) {
                   setState(
                     () {
                       {
@@ -144,8 +153,7 @@ class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
                             now.minute,
                             now.second,
                             now.millisecond);
-                        _selectedDate = newDateTime
-                        ;
+                        _selectedDate = newDateTime;
                       }
                     },
                   );
@@ -163,8 +171,12 @@ class _RegistrationDateWidgetState extends State<RegistrationDateWidget> {
 
   void _applyAndCloseDialog() {
     Navigator.of(context).pop();
-    widget.registrationToInstructorScreenState.setState(() {
-      widget.registrationToInstructorScreenState.selectedDate = _selectedDate!;
+    widget.registrationToInstructorfilteredList.setState(() {
+      if (widget.isFirstdate) {
+        widget.registrationToInstructorfilteredList.firstDate = _selectedDate!;
+      } else {
+        widget.registrationToInstructorfilteredList.secondDate = _selectedDate!;
+      }
     });
     setState(() {});
   }

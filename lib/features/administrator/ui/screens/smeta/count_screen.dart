@@ -58,8 +58,8 @@ class CountScreenState extends State<CountScreen> {
   void initState() {
     _getInstructors();
     _getAllPrices();
-    firstDate = widget.choosedDateTime;
-    secondDate = widget.choosedDateTime;
+    firstDate = _filterKeeper.firstDate;
+    secondDate = _filterKeeper.secondDate;
     super.initState();
   }
 
@@ -70,7 +70,7 @@ class CountScreenState extends State<CountScreen> {
   }
 
   void _getInstructors() {
-    instructorlist = _instructorsKeeper.instructorsList;
+    instructorlist = _filterKeeper.filteredInstructorList;
   }
 
   void _getAllPrices() {

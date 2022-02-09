@@ -1,3 +1,4 @@
+import 'package:academ_gora_release/core/data_keepers/filter_datakeeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -5,14 +6,14 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:academ_gora_release/core/style/color.dart';
 
-
 class DateWidget extends StatefulWidget {
   final DateTime? _selectedDate;
   final dynamic registrationToInstructorfilteredList;
   final String text;
   final bool isFirstdate;
 
-  const DateWidget(this.registrationToInstructorfilteredList, this._selectedDate,
+  const DateWidget(
+      this.registrationToInstructorfilteredList, this._selectedDate,
       {Key? key, required this.text, required this.isFirstdate})
       : super(key: key);
 
@@ -23,6 +24,7 @@ class DateWidget extends StatefulWidget {
 
 class _DateWidgetState extends State<DateWidget> {
   DateTime? _selectedDate;
+  final FilterKeeper _filterKeeper = FilterKeeper();
 
   _DateWidgetState(this._selectedDate);
 
@@ -98,12 +100,16 @@ class _DateWidgetState extends State<DateWidget> {
     if (widget.isFirstdate) {
       widget.registrationToInstructorfilteredList.setState(
         () {
-          widget.registrationToInstructorfilteredList.firstDate = _selectedDate!;
+          _filterKeeper.firstDate = _selectedDate!;
+
+          widget.registrationToInstructorfilteredList.firstDate =
+              _selectedDate!;
         },
       );
     } else {
       widget.registrationToInstructorfilteredList.setState(
         () {
+          _filterKeeper.secondDate = _selectedDate!;
           widget.registrationToInstructorfilteredList.secondDate =
               _selectedDate!;
         },
@@ -131,8 +137,8 @@ class _DateWidgetState extends State<DateWidget> {
                   child: const Text('OK'), onPressed: _applyAndCloseDialog),
             ],
             content: CalendarCarousel<Event>(
-              headerTextStyle: TextStyle(
-                  fontSize: screenHeight * 0.028, color: kMainColor),
+              headerTextStyle:
+                  TextStyle(fontSize: screenHeight * 0.028, color: kMainColor),
               locale: "ru",
               width: 300,
               height: 270,
@@ -174,8 +180,10 @@ class _DateWidgetState extends State<DateWidget> {
     widget.registrationToInstructorfilteredList.setState(() {
       if (widget.isFirstdate) {
         widget.registrationToInstructorfilteredList.firstDate = _selectedDate!;
+        _filterKeeper.firstDate = _selectedDate!;
       } else {
         widget.registrationToInstructorfilteredList.secondDate = _selectedDate!;
+        _filterKeeper.secondDate = _selectedDate!;
       }
     });
     setState(() {});

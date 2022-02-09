@@ -56,10 +56,7 @@ class CountScreenState extends State<CountScreen> {
 
   @override
   void initState() {
-    _getInstructors();
-    _getAllPrices();
-    firstDate = _filterKeeper.firstDate;
-    secondDate = _filterKeeper.secondDate;
+    updateDatas();
     super.initState();
   }
 
@@ -67,6 +64,16 @@ class CountScreenState extends State<CountScreen> {
   void dispose() {
     _filterKeeper.clearfilter();
     super.dispose();
+  }
+
+  void updateDatas() {
+    log("im updates");
+    setState(() {
+      _getInstructors();
+      _getAllPrices();
+      firstDate = _filterKeeper.firstDate;
+      secondDate = _filterKeeper.secondDate;
+    });
   }
 
   void _getInstructors() {
@@ -214,9 +221,10 @@ class CountScreenState extends State<CountScreen> {
         centerTitle: true,
         actions: [
           InkWell(
-            onTap: () {
-              Navigator.of(context).push(
+            onTap: () async {
+              await Navigator.of(context).push(
                   MaterialPageRoute(builder: (c) => const FilterScreen()));
+              updateDatas();
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),
@@ -273,23 +281,7 @@ class CountScreenState extends State<CountScreen> {
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            DateWidget(
-                              this,
-                              firstDate,
-                              text: "C",
-                              isFirstdate: true,
-                            ),
-                            DateWidget(
-                              this,
-                              secondDate,
-                              text: "До",
-                              isFirstdate: false,
-                            ),
-                          ],
-                        ),
+                      
                         isOneDay()
                             ? oneDayIsntructor(firstDate)
                             : manyDaysInstructor()

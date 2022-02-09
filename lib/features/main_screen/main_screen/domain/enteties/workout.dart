@@ -30,6 +30,7 @@ class Workout {
   String? instructorFcmToken;
   List<Visitor> visitors = [];
 
+
   static Workout fromJson(String id, workoutData) {
     Workout workout = Workout();
     workout.id = id;

@@ -1,7 +1,7 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/smeta/count_screen.dart';
-import 'package:academ_gora_release/features/administrator/ui/screens/widgets/smeta_instructord.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/smeta/widgets/smeta_instructord.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:academ_gora_release/core/style/color.dart';
@@ -163,7 +163,7 @@ class _SmetaScreenState extends State<SmetaScreen> {
         children: List.generate(
           instructorlist.length,
           (index) {
-            return InstructorDataWidget(
+            return SmetaInstructorDataWidget(
               instructorlist[index],
               isNeedCount: false,
               isUpdate: isUpdate,

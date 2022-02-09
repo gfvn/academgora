@@ -6,7 +6,7 @@ import 'package:academ_gora_release/core/data_keepers/filter_datakeeper.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
-import 'package:academ_gora_release/features/administrator/ui/screens/widgets/smeta_instructord.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/smeta/widgets/smeta_instructord.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
@@ -389,7 +389,7 @@ class CountScreenState extends State<CountScreen> {
       padding: const EdgeInsets.only(top: 20, bottom: 20, right: 8, left: 8),
       child: Column(
         children: List.generate(instructorlist.length, (index) {
-          return InstructorDataWidget(
+          return SmetaInstructorDataWidget(
             instructorlist[index],
             selectedDate: selectedDate,
             isNeedCount: true,

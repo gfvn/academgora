@@ -3,7 +3,7 @@ import 'package:academ_gora_release/core/components/dialogs/cancel_dialog.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/data_keepers/instructors_keeper.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
-import 'package:academ_gora_release/features/administrator/ui/screens/widgets/workout_widget/workout_widget.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/smeta/widgets/workout_widget/workout_widget.dart';
 import 'package:academ_gora_release/features/auth/ui/screens/auth_screen.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/workout.dart';
 import 'package:academ_gora_release/features/user/user_profile/presentation/widgets/workout_view/workouts_view_model.dart';

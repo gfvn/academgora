@@ -10,7 +10,10 @@ import 'package:academ_gora_release/core/style/color.dart';
 
 class FilterScreen extends StatefulWidget {
   final bool fromArchive;
-  const FilterScreen({Key? key, this.fromArchive = false}) : super(key: key);
+  final bool fromCurrent;
+  const FilterScreen(
+      {Key? key, this.fromArchive = false, this.fromCurrent = false})
+      : super(key: key);
 
   @override
   _FilterScreenState createState() => _FilterScreenState();
@@ -74,8 +77,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _myRegistrationsTitle(text: "Выберите число"),
-                  buildDateButtons(),
+                  buildCalendar(),
                   _myRegistrationsTitle(text: "Вид спорта"),
                   buildSportButtons(),
                   buildrelevanceButtons(),
@@ -99,6 +101,17 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
       ),
     );
+  }
+
+  Widget buildCalendar() {
+    return !widget.fromCurrent
+        ? Column(
+            children: [
+              _myRegistrationsTitle(text: "Выберите число"),
+              buildDateButtons(),
+            ],
+          )
+        : Container();
   }
 
   Widget buildListOfInstructors() {
@@ -415,8 +428,7 @@ class _FilterScreenState extends State<FilterScreen> {
       fallInctructorCheck: allInstructorsChecBox,
       finstructorCheckBoxList: instructorCheckBoxList,
     );
-        Navigator.pop(context);
-
+    Navigator.pop(context);
   }
 
   void resetFilter() {

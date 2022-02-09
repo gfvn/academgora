@@ -20,6 +20,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'core/data_keepers/control_keeper.dart';
 import 'core/user_role.dart';
 
 //screenSizedApp
@@ -59,7 +60,7 @@ class MyAppState extends State<MyApp> {
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final CancelKeeper _cancelKeeper = CancelKeeper();
   final PriceKeeper _priceDataKeeper = PriceKeeper();
-
+  final ContactKeeper _contactKeeper = ContactKeeper();
   bool? _isUserAuthorized;
   bool? _dataisloded = false;
   @override
@@ -114,6 +115,8 @@ class MyAppState extends State<MyApp> {
     _saveCancelsIntoDataKeeper(null);
     // _firebaseController.addListener("Отмена", _saveCancelsIntoDataKeeper);
 
+    _saveContactInfoDataKeeper(null);
+
     _savePriceInDataKeeper(null);
   }
 
@@ -142,6 +145,11 @@ class MyAppState extends State<MyApp> {
         setState(() {});
       },
     );
+  }
+  void _saveContactInfoDataKeeper(Event? event) async {
+    await _firebaseController.get('Info/contact').then((value) {
+      _contactKeeper.getInfo(value);
+    });
   }
 
   void _saveAdminsIntoKeeper(Event? event) async {

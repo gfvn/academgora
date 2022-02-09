@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/core/data_keepers/control_keeper.dart';
 import 'package:academ_gora_release/core/functions/functions.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,13 @@ import 'package:flutter/material.dart';
 class CallUsScreen extends StatefulWidget {
   const CallUsScreen({Key? key}) : super(key: key);
 
+
   @override
   _CallUsScreenState createState() => _CallUsScreenState();
 }
 
 class _CallUsScreenState extends State<CallUsScreen> {
+  final ContactKeeper _contactKeeper = ContactKeeper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +34,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
             children: [
               Column(
                 children: [
+                  // Text('${_container.email}'),
                   _callNumberButton(),
                   _whatsAppButton(),
                   _mailButton(),
@@ -53,7 +57,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   Widget _callNumberButton() {
     return GestureDetector(
       onTap: () {
-        callNumber("89025101513");
+        callNumber("${_contactKeeper.contact.phone}");
       },
       child: Container(
         height: screenHeight * 0.07,
@@ -69,7 +73,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
           ),
         ),
         child: Text(
-          "+89025101513",
+          "${_contactKeeper.contact.phone}",
           style: TextStyle(
               fontSize: screenHeight * 0.04,
               color: Colors.white,
@@ -82,7 +86,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   Widget _whatsAppButton() {
     return GestureDetector(
       onTap: () {
-        launchURL(whatsAppUrl("+79025101513"));
+        launchURL(whatsAppUrl("${_contactKeeper.contact.whats}"));
       },
       child: Container(
         height: screenHeight * 0.07,
@@ -111,7 +115,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   Widget _mailButton() {
     return GestureDetector(
       onTap: () {
-        writeEmail("Progress077@yandex.ru");
+        writeEmail("${_contactKeeper.contact.email}");
       },
       child: Container(
         height: screenHeight * 0.07,
@@ -127,7 +131,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
           ),
         ),
         child: Text(
-          "Progress077@yandex.ru",
+          "${_contactKeeper.contact.email}",
           style: TextStyle(
               fontSize: screenHeight * 0.025,
               color: Colors.white,

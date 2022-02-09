@@ -1,9 +1,9 @@
-import 'dart:developer';
 
 import 'package:academ_gora_release/features/administrator/ui/screens/help_screens/filter_screens.dart';
 import 'package:academ_gora_release/features/instructor/domain/enteties/instructor.dart';
 
 class FilterKeeper {
+  // ignore: non_constant_identifier_names
   static final FilterKeeper _FilterKeeper = FilterKeeper._internal();
   FilterKeeper._internal();
 
@@ -57,13 +57,7 @@ class FilterKeeper {
     allInstructorChecBoxState = fallInctructorCheck;
   }
 
-  void prindst() {
-    log(filteredInstructorList.length.toString());
-    log(instuctorList.length.toString());
-    instructorCheckBoxList.forEach((element) {
-      log(element.value.toString());
-    });
-  }
+
 
   void clearfilter() {
     isSkiesSelected = true;

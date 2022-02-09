@@ -1,5 +1,8 @@
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/inputs/main_input.dart';
+import 'package:academ_gora_release/core/data_keepers/control_keeper.dart';
+import 'package:academ_gora_release/features/administrator/ui/screens/settings/decorization/firebase/contact_firebase.dart';
 import 'package:academ_gora_release/main.dart';
 
 import 'package:flutter/material.dart';
@@ -15,6 +18,20 @@ class _ContactUsSettingsState extends State<ContactUsSettings> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController whatsappController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  final ContactKeeper _contactKeeper = ContactKeeper();
+  final FirebaseRequestsController _firebaseController =
+      FirebaseRequestsController();
+
+
+@override
+  void initState() {
+   phoneController = TextEditingController(text:_contactKeeper.contact.phone );
+   whatsappController = TextEditingController(text:_contactKeeper.contact.whats );
+   emailController = TextEditingController(text:_contactKeeper.contact.email );
+    super.initState();
+
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +58,7 @@ class _ContactUsSettingsState extends State<ContactUsSettings> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AcademButton(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                      onTap: update,
                       tittle: "Сохранить",
                       width: screenWidth * 0.8,
                       fontSize: 14)
@@ -54,6 +69,18 @@ class _ContactUsSettingsState extends State<ContactUsSettings> {
         ),
       ),
     );
+  }
+
+  Future<void> update() async {
+    ContactFirebase().createInstructor(
+      phoneController.text,
+      whatsappController.text,
+      emailController.text,
+    );
+    await _firebaseController.get('Info/contact').then((value) {
+      _contactKeeper.getInfo(value);
+    });
+    Navigator.pop(context);
   }
 
   Widget buildTextInput(

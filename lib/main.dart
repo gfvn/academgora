@@ -20,6 +20,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'core/data_keepers/chill_zone_keeper.dart';
 import 'core/data_keepers/control_keeper.dart';
 import 'core/user_role.dart';
 
@@ -56,6 +57,7 @@ class MyAppState extends State<MyApp> {
   final UsersKeeper usersKeepers = UsersKeeper();
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
+  final ChillZoneKeeper _chillZoneKeeper = ChillZoneKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final CancelKeeper _cancelKeeper = CancelKeeper();
@@ -104,6 +106,9 @@ class MyAppState extends State<MyApp> {
     // _firebaseController.addListener("Пользователи", _saveUsersIntoKeeper);
 
     _saveAdminsIntoKeeper(null);
+
+
+    _saveChillZoneKeeper(null);
     // _firebaseController.addListener("Администраторы", _saveAdminsIntoKeeper);
 
     _saveInstructorsIntoKeeper(null);
@@ -155,6 +160,12 @@ class MyAppState extends State<MyApp> {
   void _saveAdminsIntoKeeper(Event? event) async {
     await _firebaseController.get("Администраторы").then((value) {
       _adminDataKeeper.updateInstructors(value);
+      setState(() {});
+    });
+  }
+  void _saveChillZoneKeeper(Event? event) async {
+    await _firebaseController.getAsList("Зона отдыха").then((value) {
+      _chillZoneKeeper.updateInstructors(value);
       setState(() {});
     });
   }

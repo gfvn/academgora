@@ -3,12 +3,21 @@ class News {
   String? id;
   String? photo;
 
+  News({this.id,this.photo});
 
   static News fromJson(map) {
+    print('map $map');
     News news = News();
     news.id = map['Место']??"";
     news.photo = map["Фото"] ?? "";
     return news;
+  }
+
+  static Map<String, dynamic> toJson(String id, String photo){
+    return {
+      'Место':id,
+      'Фото':photo
+    };
   }
 
   // static Map<dynamic, dynamic> _parseDates(

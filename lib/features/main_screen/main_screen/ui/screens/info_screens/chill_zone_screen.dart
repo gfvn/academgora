@@ -1,6 +1,10 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/core/data_keepers/chill_zone_keeper.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/chill_zone.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/news.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/widgets/image_view_widget.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +24,32 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
   int _current = 0;
 
   final String _phoneNumber = "89646546227";
+  final ChillZoneKeeper _chillZoneKeeper = ChillZoneKeeper();
+  List<String> imageUrls = [];
+  bool isLoading = false;
+  List<Widget> imageSliders = [];
+  List  newsList = [];
+
+
+  void _getNews() async {
+    setState(
+          () {
+        isLoading = true;
+      },
+    );
+    newsList = _chillZoneKeeper.zone;
+    imageUrls = _chillZoneKeeper.zoneUrl;
+    createSliderWidget();
+    setState(
+          () {
+        isLoading = false;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    _getNews();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -57,7 +84,7 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
       child: Column(
         children: [
           CarouselSlider(
-            items: _getImagesForSlider(),
+            items: imageSliders,
             options: CarouselOptions(
               enlargeCenterPage: true,
               aspectRatio: 2.0,
@@ -72,9 +99,9 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.map(
-              (url) {
-                int index = imgList.indexOf(url);
+            children: newsList.map(
+                  (url) {
+                int index = int.parse(url.id.toString());
                 return Container(
                   width: 8.0,
                   height: 8.0,
@@ -94,19 +121,19 @@ class _ChillZoneScreenState extends State<ChillZoneScreen> {
       ),
     );
   }
-
-  List<Widget> _getImagesForSlider() {
-    return imgList
-        .map(
-          (item) => Container(
-            margin: const EdgeInsets.all(5.0),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Image.asset(item),
-          ),
-        )
-        .toList();
+  void createSliderWidget() async {
+    print(imageUrls);
+    for (String news in imageUrls) {
+      String url = news;
+      imageSliders.add(
+        ImageViewWidget(
+          imageUrl: url.toString(),
+          assetPath: "assets/main/10_pic${imageUrls.indexOf(news) + 1}.png",
+        ),
+      );
+    }
   }
+
 
   Widget _description() {
     return Container(

@@ -4,6 +4,7 @@ import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/components/dialogs/text_add_dialog.dart';
+import 'package:academ_gora_release/core/consants/constants.dart';
 import 'package:academ_gora_release/core/data_keepers/chill_zone_keeper.dart';
 import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/chill_zone.dart';
@@ -36,10 +37,10 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
   File image = File("");
   List<String> numberList = ["1", "2", "3", "4"];
   String choosedNumber = "1";
-
   List<String> listofStrings = ["Здесь Будут список обзацов и ссылок"];
   TextEditingController linkController = TextEditingController();
   TextEditingController textConytroller = TextEditingController();
+
   //functions
   void _makePhoto(ImageSource imageSource) async {
     final pickedFile = await picker.pickImage(source: imageSource);
@@ -60,33 +61,39 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
       },
     );
     String fileName = basename(photo.path);
-    await _firebaseRequestsController
+    _firebaseRequestsController
         .uploadFileToFirebaseStorage('rest_zone/$fileName', photo)
         .then(
-      (value) async{
-        await _firebaseRequestsController
-            .update("Зона отдыха/Фото/$id", News.toJson(id, fileName)).then(
-          (value) async {
-            setState(
-              () {
-                isLoading = false;
-              },
-            );
-          },
-        );
+      (value) async {
+        _firebaseRequestsController
+            .update("Зона отдыха/Фото/$id", News.toJson(id, fileName))
+            .then((value) async {
+          await _firebaseRequestsController
+              .getAsList("Зона отдыха")
+              .then((value) {
+            _chillZoneKeeper.updateInstructors(value);
+            setState(() {});
+          });
+        });
       },
     );
   }
 
-  void _addRestZone(bool isLink,int id, String text) async {
+  void _addRestZone(bool isLink, String id, String text) async {
     setState(
       () {
         isDeleteLoading = true;
       },
     );
-    await _firebaseRequestsController
-        .update("Зона отдыха/обзац/$id", {"обзац" : text, "isLink" : isLink}).then(
+    await _firebaseRequestsController.update(
+        "Зона отдыха/обзац/$id", {"обзац": text, "isLink": isLink}).then(
       (value) async {
+        await _firebaseRequestsController
+            .getAsList("Зона отдыха")
+            .then((value) {
+          _chillZoneKeeper.updateInstructors(value);
+          setState(() {});
+        });
         setState(
           () {
             isDeleteLoading = false;
@@ -173,9 +180,7 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
                             width: 10,
                           ),
                           AcademButton(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             tittle: "Удалить фото",
                             width: screenWidth * 0.4,
                             fontSize: 14,
@@ -204,7 +209,10 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
                                   title: "Обзац",
                                   text: "Введите текст обзаца",
                                   onAcept: () {
-                                    _addRestZone(false,DateTime.now().millisecondsSinceEpoch, textConytroller.text);
+                                    _addRestZone(
+                                        false,
+                                        sorting(),
+                                        textConytroller.text);
                                   },
                                   textController: textConytroller,
                                 ),
@@ -237,7 +245,10 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
                                   text: "Введите ссылку",
                                   textController: linkController,
                                   onAcept: () {
-                                    _addRestZone(true,DateTime.now().millisecondsSinceEpoch,linkController.text);
+                                    _addRestZone(
+                                        true,
+                                        sorting(),
+                                        linkController.text);
                                   },
                                 ),
                               );
@@ -271,6 +282,9 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
   }
 
   Widget biuilListOfLinks() {
+    _chillZoneKeeper.listZone.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
     return Column(
       children: List.generate(
         _chillZoneKeeper.listZone.length,
@@ -316,12 +330,12 @@ class _ChillZoneSettingsState extends State<ChillZoneSettings> {
                 ),
               ),
               child: SizedBox(
-                width: screenWidth,
-                child: Column(
-                  children: [
-                    buildRoleText("${_chillZoneKeeper.listZone[index].text}"),
-                  ],
-                )));
+                  width: screenWidth,
+                  child: Column(
+                    children: [
+                      buildRoleText("${_chillZoneKeeper.listZone[index].text}"),
+                    ],
+                  )));
         },
       ),
     );

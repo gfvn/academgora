@@ -1,11 +1,11 @@
 
-class RestZone {
+class WorkTime {
   List<dynamic>? photo = [];
   Map<String, dynamic>? rest_text;
 
-  RestZone({required this.photo,this.rest_text});
+  WorkTime({required this.photo,this.rest_text});
 
-  RestZone.fromJson(Map json) {
+  WorkTime.fromJson(Map json) {
 
     rest_text = Map<String, dynamic>.from(json['обзац']);
     if (json['Фото'] != null) {
@@ -17,26 +17,26 @@ class RestZone {
   }
 }
 
-class RestText {
+class WorkText {
   String? id;
   String? text;
   bool? isLink;
 
 
-  RestText({this.id, this.text, this.isLink});
+  WorkText({this.id, this.text, this.isLink});
 
-  RestText.fromJson(String idS, Map json) {
+  WorkText.fromJson(String idS, Map json) {
     id = idS;
     text = json['обзац'];
     isLink = json['isLink'];
   }
 }
 
-class NewsZone {
+class WorkZone {
   String? id;
   String? photo;
 
-  NewsZone.fromJson(Map json){
+  WorkZone.fromJson(Map json){
     id = json['Место'];
     photo = json['Фото'];
   }

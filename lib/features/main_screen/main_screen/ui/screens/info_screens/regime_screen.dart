@@ -1,12 +1,15 @@
+
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/core/data_keepers/work_time_keeper.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/widgets/image_view_widget.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 final List<String> imgList = [
-  "assets/info_screens/about_us/0.jpg",
+  "assets/info_screens/chill_zone/chill_zone.jpg",
 ];
 
 class RegimeScreen extends StatefulWidget {
@@ -19,35 +22,64 @@ class RegimeScreen extends StatefulWidget {
 class _RegimeScreenState extends State<RegimeScreen> {
   int _current = 0;
 
+  final WorkTimeKeeper _workTimeKeeper = WorkTimeKeeper();
+  List<String> imageUrls = [];
+  bool isLoading = false;
+  List<Widget> imageSliders = [];
+  List newsList = [];
+  List<String> links = [];
+  List<String> text = [];
+
+  _RegimeScreenState(){
+    linkAndText();
+  }
+
+
+  void _getNews() async {
+    setState(
+          () {
+        isLoading = true;
+      },
+    );
+    newsList = _workTimeKeeper.work;
+    imageUrls = _workTimeKeeper.workUrl;
+    createSliderWidget();
+    setState(
+          () {
+        isLoading = false;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
+    _getNews();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "РЕЖИМ РАБОТЫ И СХЕМА ПРОЕЗДА",
-            style: TextStyle(fontSize: 14),
-          ),
-          centerTitle: true,
+      appBar: AppBar(
+        title: const Text(
+          "Режим работы",
+          style: TextStyle(fontSize: 14),
         ),
-        body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          decoration: screenDecoration("assets/info_screens/about_us/bg.png"),
-          child: Column(
-            children: [
-              _slider(),
-              _description(),
-              AcademButton(
-                tittle: 'НА ГЛАВНУЮ',
-                onTap: _openMainScreen,
-                width: screenWidth * 0.9,
-                fontSize: 18,
-              ),
-            ],
-          ),
-        ));
+        centerTitle: true,
+      ),
+      body: Container(
+        height: screenHeight,
+        width: screenWidth,
+        decoration: screenDecoration("assets/info_screens/chill_zone/bg.png"),
+        child: Column(
+          children: [
+            _slider(),
+            _description(),
+            AcademButton(
+              tittle: 'НА ГЛАВНУЮ',
+              onTap: _openMainScreen,
+              width: screenWidth * 0.9,
+              fontSize: 18,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _slider() {
@@ -56,13 +88,13 @@ class _RegimeScreenState extends State<RegimeScreen> {
       child: Column(
         children: [
           CarouselSlider(
-            items: _getImagesForSlider(),
+            items: imageSliders,
             options: CarouselOptions(
               enlargeCenterPage: true,
               aspectRatio: 2.0,
               onPageChanged: (index, reason) {
                 setState(
-                  () {
+                      () {
                     _current = index;
                   },
                 );
@@ -71,21 +103,26 @@ class _RegimeScreenState extends State<RegimeScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.map(
-              (url) {
-                int index = imgList.indexOf(url);
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _current == index
-                        ? const Color.fromRGBO(0, 0, 0, 0.9)
-                        : const Color.fromRGBO(0, 0, 0, 0.4),
-                  ),
-                );
+            children: newsList.map(
+                  (url) {
+                int index;
+                if (url != null) {
+                  index = int.parse(url['Место'].toString());
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? const Color.fromRGBO(0, 0, 0, 0.9)
+                          : const Color.fromRGBO(0, 0, 0, 0.4),
+                    ),
+                  );
+                }
+
+                return const SizedBox();
               },
             ).toList(),
           ),
@@ -94,78 +131,46 @@ class _RegimeScreenState extends State<RegimeScreen> {
     );
   }
 
-  List<Widget> _getImagesForSlider() {
-    return imgList
-        .map(
-          (item) => Container(
-            margin: const EdgeInsets.all(5.0),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Image.asset(
-              item,
-            ),
-          ),
-        )
-        .toList();
+
+
+
+  void createSliderWidget() async {
+    for (String news in imageUrls) {
+      String url = news;
+      imageSliders.add(
+        ImageViewWidget(
+          imageUrl: url.toString(),
+          assetPath: "assets/main/10_pic${imageUrls.indexOf(news) + 1}.png",
+        ),
+      );
+    }
   }
 
+
   Widget _description() {
+    _workTimeKeeper.listWork.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
     return Container(
-      padding: const EdgeInsets.only(top: 0, left: 16, right: 16, bottom: 16),
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 16, right: 16),
       height: screenHeight * 0.5,
       child: SingleChildScrollView(
         child: Flex(
-          crossAxisAlignment: CrossAxisAlignment.start,
           direction: Axis.vertical,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Мы находимся по адресу – ул. Фаворского 1 Б, остановка общественного транспорта «Госуниверситет» или «Мегаполис», 100 м от улицы Улан-Баторская. В 2гис нас можно найти как «спортивный комплекс Академический» - \n",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context,index) => buildText(text[index]),
+              separatorBuilder: (context,index) => const SizedBox(height: 10,),
+              itemCount: text.length,
             ),
-            GestureDetector(
-              onTap: () {
-                launchURL("https://go.2gis.com/junny");
-              },
-              child: const Text(
-                "https://go.2gis.com/junny.\n",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Text(
-              "Мы в социальных сетях инстаграмм и вконтакте – горнолыжка в академе! \n",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            ),
-            GestureDetector(
-              onTap: () {
-                launchURL("https://vk.com/akademgora");
-              },
-              child: const Text(
-                "https://vk.com/akademgora\n",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                launchURL("https://www.instagram.com/akademgora/");
-              },
-              child: const Text(
-                "https://www.instagram.com/akademgora/\n\n",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Text(
-              "Понедельник – выходной\n"
-              "Со вторника по пятницу работаем с 10:00 до 21:00\n"
-              "В выходные, а также праздничные дни работаем с 10:00 до 21:00, обратите внимание, что с 14:00 до 15:00 прокат закрывается на санитарную обработку, получить или сдать арендованный инвентарь в этот период не получится. "
-              "Для приобретения билетов на подъемник есть отдельное окно со стороны улицы.\n"
-              "\n\n"
-              "* в будни с 19:00 до 21:00 - время проведения занятий спортивных школ: на склоне будут установлены вешки, большая очередь на подъемник. НЕРЕКОМЕНДОВАННОЕ ВРЕМЯ ДЛЯ ПОСЕЩЕНИЯ. \n\n"
-              "Работа кресельного подъемника ограничена понижением температуры ниже -23 гр. Цельсия и скоростью ветра более 15 м/с. "
-              "Актуальную информацию при таких погодных условиях вы можете уточнить в инстаграмме «горнолыжка в академе»\n",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            const SizedBox(height: 10,),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context,index) => buildLink(links[index]),
+              separatorBuilder: (context,index) => const SizedBox(height: 10,),
+              itemCount: links.length,
             ),
           ],
         ),
@@ -173,9 +178,37 @@ class _RegimeScreenState extends State<RegimeScreen> {
     );
   }
 
+
+
+  void linkAndText(){
+
+    for(int i=0;i<_workTimeKeeper.listWork.length;i++){
+      if(_workTimeKeeper.listWork[i].isLink == true){
+        links.add(_workTimeKeeper.listWork[i].text!);
+      }else{
+        text.add(_workTimeKeeper.listWork[i].text!);
+      }
+    }
+  }
+
+  Widget buildText(String text) =>Text(
+    text,
+    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+  );
+  Widget buildLink(String link) => GestureDetector(
+    onTap: () {
+      launchURL(link);
+    },
+    child: Text(
+      "$link \n",
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    ),
+  );
+
   void _openMainScreen() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => const MainScreen()),
-        (route) => false);
+            (route) => false);
   }
+
 }

@@ -1,43 +1,44 @@
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/chill_zone.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/work_time.dart';
 
 
-class ChillZoneKeeper {
-  static final ChillZoneKeeper _cancelKeeper = ChillZoneKeeper._();
+class WorkTimeKeeper {
+  static final WorkTimeKeeper _workTimeKeeper = WorkTimeKeeper._();
 
-  ChillZoneKeeper._();
+  WorkTimeKeeper._();
 
-  factory ChillZoneKeeper() {
-    return _cancelKeeper;
+  factory WorkTimeKeeper() {
+    return _workTimeKeeper;
   }
 
-  RestZone? restZone;
-  List<RestText> listZone = [];
-  List<String> zoneUrl = [];
-  List<dynamic> zone = [];
+  WorkTime? workTime;
+  List<WorkText> listWork = [];
+  List<String> workUrl = [];
+  List<dynamic> work = [];
   final FirebaseRequestsController _firebaseRequestsController =
       FirebaseRequestsController();
 
   void updateInstructors(Map instructors) {
-    listZone = [];
-    zone = [];
-    restZone = RestZone.fromJson(instructors);
-    restZone?.rest_text?.forEach((key, value) {
-      listZone.add(RestText.fromJson(key, value));
+    listWork = [];
+    work = [];
+    workTime = WorkTime.fromJson(instructors);
+    workTime?.rest_text?.forEach((key, value) {
+      listWork.add(WorkText.fromJson(key, value));
     });
-    restZone?.photo?.forEach((element) {
-      zone.add(element);
+    workTime?.photo?.forEach((element) {
+      work.add(element);
     });
     updateNewsUrls();
   }
 
   void updateNewsUrls() async {
-    zoneUrl = [];
-    zone.forEach((element)async{
+    workUrl = [];
+    work.forEach((element)async{
       if (element != null)
         {
           final String url = await saveImageUrl(imageName: element['Фото'].toString());
-          zoneUrl.add(url);
+          workUrl.add(url);
         }
     });
   }
@@ -48,7 +49,7 @@ class ChillZoneKeeper {
       return url;
     }
     await _firebaseRequestsController
-        .getDownloadUrlFromFirebaseStorage("rest_zone/$imageName")
+        .getDownloadUrlFromFirebaseStorage("work_time/$imageName")
         .then(
       (downloadUrl) {
         url = downloadUrl.toString();

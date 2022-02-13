@@ -1,62 +1,83 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
-import 'package:academ_gora_release/core/functions/functions.dart';
-import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/all_instructors/all_instructors_screen.dart';
+import 'package:academ_gora_release/core/data_keepers/about_us_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/chill_zone_keeper.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/chill_zone.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/news.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/main_screen.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/ui/screens/main_screen/widgets/image_view_widget.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 final List<String> imgList = [
-  "assets/info_screens/about_us/0.jpg",
-  "assets/info_screens/about_us/1.jpg",
-  "assets/info_screens/about_us/2.jpg",
-  "assets/info_screens/about_us/3.jpg",
-  "assets/info_screens/about_us/4.jpg",
+  "assets/info_screens/chill_zone/chill_zone.jpg",
 ];
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({Key? key}) : super(key: key);
 
   @override
-  _AboutUsScreenState createState() => _AboutUsScreenState();
+  _AboutUsState createState() => _AboutUsState();
 }
 
-class _AboutUsScreenState extends State<AboutUsScreen> {
+class _AboutUsState extends State<AboutUsScreen> {
   int _current = 0;
+  final AboutUsKeeper _aboutUsKeeper = AboutUsKeeper();
+  List<String> imageUrls = [];
+  bool isLoading = false;
+  List<Widget> imageSliders = [];
+  List newsList = [];
+  List<String> links = [];
+  List<String> text = [];
+
+  _AboutUsState(){
+    linkAndText();
+  }
+
+
+  void _getNews() async {
+    setState(
+          () {
+        isLoading = true;
+      },
+    );
+    newsList = _aboutUsKeeper.about;
+    imageUrls = _aboutUsKeeper.aboutUsUrl;
+    createSliderWidget();
+    setState(
+          () {
+        isLoading = false;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    _getNews();
     return Scaffold(
-      // ignore: prefer_const_literals_to_create_immutables
       appBar: AppBar(
-        title: const Text("СК \"АКАДЕМИЧЕСКИЙ\""),
+        title: const Text(
+          "СК \"АКАДЕМИЧЕСКИЙ\"",
+          style: TextStyle(fontSize: 14),
+        ),
         centerTitle: true,
       ),
       body: Container(
-        decoration: screenDecoration("assets/info_screens/about_us/bg.png"),
-        child: Container(
-          margin: const EdgeInsets.all(15),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Column(
-              children: [
-                _slider(),
-                _description(),
-                AcademButton(
-                  tittle: 'НАШИ ИНСТРУКТОРЫ',
-                  onTap: () {
-                    FunctionsConsts.openPushScreen(
-                      context,
-                      const AllInstructorsScreen(),
-                    );
-                    
-                  },
-                  width: screenWidth * 0.9,
-                  fontSize: 18,
-                ),
-              ],
+        height: screenHeight,
+        width: screenWidth,
+        decoration: screenDecoration("assets/info_screens/chill_zone/bg.png"),
+        child: Column(
+          children: [
+            _slider(),
+            _description(),
+            AcademButton(
+              tittle: 'НА ГЛАВНУЮ',
+              onTap: _openMainScreen,
+              width: screenWidth * 0.9,
+              fontSize: 18,
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -68,13 +89,13 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       child: Column(
         children: [
           CarouselSlider(
-            items: _getImagesForSlider(),
+            items: imageSliders,
             options: CarouselOptions(
               enlargeCenterPage: true,
               aspectRatio: 2.0,
               onPageChanged: (index, reason) {
                 setState(
-                  () {
+                      () {
                     _current = index;
                   },
                 );
@@ -83,21 +104,27 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.map(
-              (url) {
-                int index = imgList.indexOf(url);
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _current == index
-                        ? const Color.fromRGBO(0, 0, 0, 0.9)
-                        : const Color.fromRGBO(0, 0, 0, 0.4),
-                  ),
-                );
+            children: newsList.map(
+                  (url) {
+                int index;
+                if (url != null) {
+                  index = int.parse(url['Место'].toString());
+                  print(index);
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? const Color.fromRGBO(0, 0, 0, 0.9)
+                          : const Color.fromRGBO(0, 0, 0, 0.4),
+                    ),
+                  );
+                }
+
+                return const SizedBox();
               },
             ).toList(),
           ),
@@ -106,100 +133,83 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     );
   }
 
-  List<Widget> _getImagesForSlider() {
-    return imgList
-        .map(
-          (item) => Container(
-            margin: const EdgeInsets.all(5.0),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Image.asset(
-              item,
-            ),
-          ),
-        )
-        .toList();
+
+
+
+  void createSliderWidget() async {
+    for (String news in imageUrls) {
+      String url = news;
+      imageSliders.add(
+        ImageViewWidget(
+          imageUrl: url.toString(),
+          assetPath: "assets/main/10_pic${imageUrls.indexOf(news) + 1}.png",
+        ),
+      );
+    }
   }
 
+
   Widget _description() {
-    return Expanded(
+    _aboutUsKeeper.listAboutUs.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
+    return Container(
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 16, right: 16),
+      height: screenHeight * 0.5,
       child: SingleChildScrollView(
         child: Flex(
           direction: Axis.vertical,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "На базе работает три подъемника – кресельный и два веревочных. Четыре трассы для катания. \n\n"
-              "Лесная трасса для беговых лыж, ближайшее место проката беговых лыж находится в ледовом дворце «Айсберг» - спортивно-экипировочный центр «ЮниорСпорт».\n\n"
-              "На нашей горнолыжной базе вы можете взять в аренду горные лыжи от 24 до 46 размера ноги, сноуборды от 30 до 46 размера ноги\n\n"
-              "Имеются квалифицированные инструкторы для индивидуальных и групповых занятий по горным лыжам и сноуборду для детей и взрослых.\n\n"
-              "На втором этаже здания проката есть буфет, комфортабельная комната отдыха и ожидания для взрослых и зона детского досуга; по выходным и праздникам Колян готовит вкусные шашлыки;\n\n"
-              "Также есть детская школа горных лыж «Вершина» от 3,5 до 8 лет – информацию и контакты вы можете найти в инстаграмме \n\n«Вершина горнолыжный клуб» -",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context,index) => buildText(text[index]),
+              separatorBuilder: (context,index) => const SizedBox(height: 10,),
+              itemCount: text.length,
             ),
-            GestureDetector(
-                onTap: () {
-                  launchURL(
-                      "https://instagram.com/vershina_skiclub?igshid=10c5vgh9rlsew");
-                },
-                child: const Text(
-                  "https://instagram.com/vershina_skiclub?igshid=10c5vgh9rlsew\n",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                )),
-            Row(
-              children: [
-                const Text(
-                  "или по телефону ",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                ),
-                phoneNumberForCallWidget(
-                  "89025664248 ",
-                  textStyle: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  "Наталья",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                )
-              ],
+            const SizedBox(height: 10,),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context,index) => buildLink(links[index]),
+              separatorBuilder: (context,index) => const SizedBox(height: 10,),
+              itemCount: links.length,
             ),
-            const Text(
-              "\nШкола сноуборда для детей и взрослых «Байкальское солнце» - информация в инстаграмме «ирк сноуборд» или «сноуборд иркутск» - \n",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            ),
-            GestureDetector(
-                onTap: () {
-                  launchURL(
-                      "https://instagram.com/irk.board?utm_medium=copy_link");
-                },
-                child: const Text(
-                  "https://instagram.com/irk.board?utm_medium=copy_link\n",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                )),
-            Row(
-              children: [
-                const Text(
-                  "а также по телефону – ",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                ),
-                phoneNumberForCallWidget(
-                  "89041405551 ",
-                  textStyle: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  "Екатерина",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                )
-              ],
-            ),
-            const Text(
-              "\nВъезд на парковку платный – 100 рублей. ",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            )
           ],
         ),
       ),
     );
   }
+
+
+
+  void linkAndText(){
+    for(int i=0;i<_aboutUsKeeper.listAboutUs.length;i++){
+      if(_aboutUsKeeper.listAboutUs[i].isLink == true){
+        links.add(_aboutUsKeeper.listAboutUs[i].text!);
+      }else{
+        text.add(_aboutUsKeeper.listAboutUs[i].text!);
+      }
+    }
+  }
+
+  Widget buildText(String text) =>Text(
+    text,
+    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+  );
+  Widget buildLink(String link) => GestureDetector(
+    onTap: () {
+      launchURL(link);
+    },
+    child: Text(
+      "$link \n",
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    ),
+  );
+
+  void _openMainScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => const MainScreen()),
+            (route) => false);
+  }
+
 }

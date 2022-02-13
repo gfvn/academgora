@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/components/dialogs/text_add_dialog.dart';
-import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/core/consants/constants.dart';
+import 'package:academ_gora_release/core/data_keepers/work_time_keeper.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/news.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +24,8 @@ class WorkTimeSetting extends StatefulWidget {
 class _WorkTimeSettingState extends State<WorkTimeSetting> {
   final picker = ImagePicker();
   final FirebaseRequestsController _firebaseRequestsController =
-      FirebaseRequestsController();
-  final NewsKeeper _newsDataKeeper = NewsKeeper();
+  FirebaseRequestsController();
+  final WorkTimeKeeper _workTimeKeeper = WorkTimeKeeper();
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
   bool isDeleteLoading = false;
@@ -33,16 +34,16 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
   File image = File("");
   List<String> numberList = ["1", "2", "3", "4"];
   String choosedNumber = "1";
-
   List<String> listofStrings = ["Здесь Будут список обзацов и ссылок"];
   TextEditingController linkController = TextEditingController();
   TextEditingController textConytroller = TextEditingController();
+
   //functions
   void _makePhoto(ImageSource imageSource) async {
     final pickedFile = await picker.pickImage(source: imageSource);
     File photo = File(pickedFile!.path);
     setState(
-      () {
+          () {
         image = photo;
         _uploadingPhotoToDatabase = true;
       },
@@ -52,52 +53,46 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
 
   void _updateDatabase(File photo, String id) async {
     setState(
-      () {
+          () {
         isLoading = true;
       },
     );
     String fileName = basename(photo.path);
     _firebaseRequestsController
-        .uploadFileToFirebaseStorage('news_photos/$fileName', photo)
+        .uploadFileToFirebaseStorage('work_time/$fileName', photo)
         .then(
-      (value) {
-        _firebaseRequestsController
-            .update("Новости/$id", {"Фото": fileName, "Место": id}).then(
           (value) async {
-            await _firebaseRequestsController.getAsList('Новости').then(
-              (value) {
-                _newsDataKeeper.updateInstructors(value);
-              },
-            );
-            setState(
-              () {
-                isLoading = false;
-              },
-            );
-          },
-        );
+        _firebaseRequestsController
+            .update("Режим работы/Фото/$id", News.toJson(id, fileName))
+            .then((value) async {
+          await _firebaseRequestsController
+              .getAsList("Режим работы")
+              .then((value) {
+            _workTimeKeeper.updateInstructors(value);
+            setState(() {});
+          });
+        });
       },
     );
   }
 
-  void _deleteNews(String id) async {
+  void _addRestZone(bool isLink, String id, String text) async {
     setState(
-      () {
+          () {
         isDeleteLoading = true;
       },
     );
-
-    await _firebaseRequestsController
-        .update("Новости/$id", {"Фото": "", "Место": id}).then(
-      (value) async {
-        await Future.delayed(const Duration(milliseconds: 1000));
-        await _firebaseRequestsController.getAsList('Новости').then(
-          (value) {
-            _newsDataKeeper.updateInstructors(value);
-          },
-        );
+    await _firebaseRequestsController.update(
+        "Режим работы/обзац/$id", {"обзац": text, "isLink": isLink}).then(
+          (value) async {
+        await _firebaseRequestsController
+            .getAsList("Режим работы")
+            .then((value) {
+          _workTimeKeeper.updateInstructors(value);
+          setState(() {});
+        });
         setState(
-          () {
+              () {
             isDeleteLoading = false;
           },
         );
@@ -110,7 +105,7 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Изменить режим работы",
+          "Изменить зона отдыха",
           style: TextStyle(fontSize: 14),
         ),
         centerTitle: true,
@@ -122,7 +117,7 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
+            const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +156,7 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                       ),
                       buildInstructionText(
                         text:
-                            "Данное число обозначает позицию новости на главном экране приложения.",
+                        "Данное число обозначает позицию новости на главном экране приложения.",
                       ),
                     ],
                   ),
@@ -182,9 +177,7 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                             width: 10,
                           ),
                           AcademButton(
-                            onTap: () {
-                              _deleteNews(choosedNumber);
-                            },
+                            onTap: () {},
                             tittle: "Удалить фото",
                             width: screenWidth * 0.4,
                             fontSize: 14,
@@ -198,8 +191,9 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                       buildRoleText("Обзаци и ссылка"),
                       buildInstructionText(
                         text:
-                            "Чтобы удалить обзац или ссылку, свайпайте влево или вправо нужного текста",
+                        "Чтобы удалить обзац или ссылку, свайпайте влево или вправо нужного текста",
                       ),
+                      buildRoleText('Здесь Будут список обзацов и ссылок'),
                       biuilListOfLinks(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -212,13 +206,16 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                                   title: "Обзац",
                                   text: "Введите текст обзаца",
                                   onAcept: () {
-                                    // _logout();
+                                    _addRestZone(
+                                        false,
+                                        sorting(),
+                                        textConytroller.text);
                                   },
                                   textController: textConytroller,
                                 ),
                               );
                               setState(
-                                () {
+                                    () {
                                   if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     textConytroller.text = '';
@@ -245,12 +242,15 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                                   text: "Введите ссылку",
                                   textController: linkController,
                                   onAcept: () {
-                                    // _logout();
+                                    _addRestZone(
+                                        true,
+                                        sorting(),
+                                        linkController.text);
                                   },
                                 ),
                               );
                               setState(
-                                () {
+                                    () {
                                   if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     linkController.text = '';
@@ -279,10 +279,13 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
   }
 
   Widget biuilListOfLinks() {
+    _workTimeKeeper.listWork.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
     return Column(
       children: List.generate(
-        listofStrings.length,
-        (index) {
+        _workTimeKeeper.listWork.length,
+            (index) {
           return Dismissible(
               key: ValueKey<String>(
                   DateTime.now().microsecondsSinceEpoch.toString()),
@@ -324,21 +327,15 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
                 ),
               ),
               child: SizedBox(
-                width: screenWidth,
-                child: buildRoleText(listofStrings[index])));
+                  width: screenWidth,
+                  child: Column(
+                    children: [
+                      buildRoleText("${_workTimeKeeper.listWork[index].text}"),
+                    ],
+                  )));
         },
       ),
     );
-
-    // return SizedBox(
-    //   height: 100,
-    //   child: ListView.builder(
-    //     itemCount: listofStrings.length,
-    //     itemBuilder: (context, index) {
-    //       return buildRoleText(listofStrings[index]);
-    //     },
-    //   ),
-    // );
   }
 
   void _selectOption(BuildContext context) {
@@ -422,13 +419,13 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
           focusColor: Colors.white,
           onChanged: (value) {
             setState(
-              () {
+                  () {
                 choosedNumber = value.toString();
               },
             );
           },
           items: numberList.map(
-            (e) {
+                (e) {
               return DropdownMenuItem(value: e, child: Text(e));
             },
           ).toList(),
@@ -437,3 +434,4 @@ class _WorkTimeSettingState extends State<WorkTimeSetting> {
     );
   }
 }
+

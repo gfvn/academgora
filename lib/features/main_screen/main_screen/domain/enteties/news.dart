@@ -6,7 +6,6 @@ class News {
   News({this.id,this.photo});
 
   static News fromJson(map) {
-    print('map $map');
     News news = News();
     news.id = map['Место']??"";
     news.photo = map["Фото"] ?? "";

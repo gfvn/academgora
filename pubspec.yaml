@@ -38,6 +38,7 @@ dev_dependencies:
   timezone: ^0.8.0
   firebase_messaging: ^11.2.3
   dio: ^4.0.4
+  date_format: ^2.0.5
 # script for uploading app icon: flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: "launcher_icon"

@@ -20,8 +20,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'core/data_keepers/about_us_keeper.dart';
 import 'core/data_keepers/chill_zone_keeper.dart';
 import 'core/data_keepers/control_keeper.dart';
+import 'core/data_keepers/work_time_keeper.dart';
 import 'core/user_role.dart';
 
 //screenSizedApp
@@ -58,6 +60,8 @@ class MyAppState extends State<MyApp> {
   final InstructorsKeeper _instructorsKeeper = InstructorsKeeper();
   final UserWorkoutsKeeper _userDataKeeper = UserWorkoutsKeeper();
   final ChillZoneKeeper _chillZoneKeeper = ChillZoneKeeper();
+  final WorkTimeKeeper _workTimeKeeper = WorkTimeKeeper();
+  final AboutUsKeeper _aboutUsKeeper = AboutUsKeeper();
   final AdminKeeper _adminDataKeeper = AdminKeeper();
   final NewsKeeper _newsDataKeeper = NewsKeeper();
   final CancelKeeper _cancelKeeper = CancelKeeper();
@@ -123,6 +127,9 @@ class MyAppState extends State<MyApp> {
     _saveContactInfoDataKeeper(null);
 
     _savePriceInDataKeeper(null);
+    _savePriceKeeper(null);
+    _saveWorkTimeKeeper(null);
+    _saveAboutUsKeeper(null);
   }
 
 //Functions anm methods
@@ -170,6 +177,19 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void _saveWorkTimeKeeper(Event? event) async {
+    await _firebaseController.getAsList("Режим работы").then((value) {
+      _workTimeKeeper.updateInstructors(value);
+      setState(() {});
+    });
+  }
+  void _saveAboutUsKeeper(Event? event) async {
+    await _firebaseController.getAsList("О нас").then((value) {
+      _aboutUsKeeper.updateInstructors(value);
+      setState(() {});
+    });
+  }
+
   void _saveWorkoutsIntoUserDataKeeper(Event? event) async {
     await _firebaseController
         .get("Пользователи/${FirebaseAuth.instance.currentUser!.uid}/Занятия")
@@ -193,6 +213,13 @@ class MyAppState extends State<MyApp> {
     final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('price') ?? ['0', '0', '0', '0'];
     _priceDataKeeper.updateWorkouts(list);
+  }
+
+  void _savePriceKeeper(Event? event) async {
+    await _firebaseController.getAsList("Прайс").then((value) {
+      _priceDataKeeper.updateInstructors(value);
+      setState(() {});
+    });
   }
 
   @override

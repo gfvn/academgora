@@ -1,5 +1,6 @@
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
+import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,16 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+
+  final PriceKeeper _priceKeeper = PriceKeeper();
+  List<String> links = [];
+  List<String> text = [];
+
+  _PriceScreenState(){
+    linkAndText();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,125 +91,171 @@ class _PriceScreenState extends State<PriceScreen> {
   Widget _table() {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      child: Table(
-        border: TableBorder.all(color: Colors.white, width: 2),
-        columnWidths: const <int, TableColumnWidth>{
-          0: FlexColumnWidth(2),
-          1: FlexColumnWidth(),
-          2: FlexColumnWidth(),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: <TableRow>[
-          _tableRow(
-            "Наименование услуги",
-            "1-й час",
-            "Целый день",
-            "",
-            "",
-            color: Colors.white,
-          ),
-          // _tableMainRow("Будни / ", "Выходные и праздничные дни"),
-          _tableRow(
-              "Горные лыжи или\nсноуборд", "400 / ", "1100 / ", '400', '1100'),
-          _tableRow("Беговые лыжи", "300 / ", "750 / ", "300", "750"),
-          _tableRow("Детские горные лыжи\nили сноуборд", "300 / ", "750 / ",
-              "300", "750"),
-          _tableRow("Разовый подъем", "50 / ", "50 / ", "60", "60"),
-          _tableRow("Абонемент на кресельный \nподъемник", "400 / ", "1100 / ",
-              "500", "1400"),
-          _tableRow("Абонемент на детский \nподъемник BabyLift", "200 / ",
-              "600 / ", "250", "750"),
-          _tableRow("Лыжи или сноуборд\nбез ботинок, ботинки\nотдельно",
-              "300 / ", "950 / ", "300", "950"),
-          _tableRow("Въезд на территорию\n(1 въезд)", "100 / ", "100 / ", "100",
-              "100"),
-        ],
-      ),
-    );
-  }
-
-  TableRow _tableRow(String text1, String text2, String text3,
-      String holidayOnePrice, String holidayAllPrice,
-      {Color color = Colors.transparent, double leftPadding = 10}) {
-    return TableRow(
-      children: <Widget>[
-        _textInTable(
-          text1,
-          Alignment.centerLeft,
-          '',
-          MainAxisAlignment.start,
-          color: color,
-          leftPadding: leftPadding,
-        ),
-        _textInTable(
-            text2, Alignment.center, holidayOnePrice, MainAxisAlignment.center,
-            color: color),
-        _textInTable(
-            text3, Alignment.center, holidayAllPrice, MainAxisAlignment.center,
-            color: color),
-      ],
-    );
-  }
-
-
-  Widget _textInTable(String text, Alignment alignment, String holidayPrice,
-      MainAxisAlignment alighment,
-      {Color color = Colors.transparent, double leftPadding = 0}) {
-    return Container(
-      alignment: alignment,
-      color: color,
-      padding: EdgeInsets.only(left: leftPadding, top: 5, bottom: 5),
-      child: Row(
-        mainAxisAlignment: alighment,
+      child: Column(
         children: [
-          Text(
-            text,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          ),
-          Text(
-            holidayPrice,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 12, color: Colors.red),
+          buildTittle(),
+          Table(
+            border: TableBorder.all(color: Colors.white, width: 2),
+            columnWidths: const <int, TableColumnWidth>{
+              0: FlexColumnWidth(2),
+              1: FlexColumnWidth(),
+              2: FlexColumnWidth(),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: List.generate(
+              _priceKeeper.listKeyPrice.length,
+                  (index) => TableRow(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0,top: 5.0,bottom: 5.0),
+                    child: _customText(_priceKeeper.listKeyPrice[index].key),
+                  ),
+                  Table(
+                    children: [
+                      TableRow(
+                        children: <Widget>[
+                          _customTextTable(
+                              _priceKeeper.listKeyPrice[index].price1,
+                              _priceKeeper.listKeyPrice[index].price2),
+                        ],
+                      )
+                    ],
+                  ),
+                  Table(
+                    children: [
+                      TableRow(
+                        children: <Widget>[
+                          _customTextTable(
+                            _priceKeeper.listKeyPrice[index].price3,
+                            _priceKeeper.listKeyPrice[index].price4,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+
+  Widget buildTittle() {
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _customText('Наименование услуги'),
+            _customText('1-й час'),
+            _customText('Целый день'),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _customText(String text) => Padding(
+    padding: const EdgeInsets.only(left: 20.0),
+    child: Text(
+      text,
+      style: const TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w800,
+        fontSize: 13.5,
+      ),
+    ),
+  );
+
+  Widget _customTextTable(String text1, String text2) => Padding(
+    padding: const EdgeInsets.only(left: 20.0),
+    child: Row(
+      children: [
+        Text(
+          text1,
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 13.5,
+          ),
+        ),
+        const SizedBox(width: 5,),
+        const Text(
+          '/',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 13.5,
+          ),
+        ),
+        const SizedBox(width: 5,),
+        Text(
+          text2,
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 13.5,
+          ),
+        ),
+      ],
+    ),
+  );
+
 
   Widget _info() {
+    _priceKeeper.listParagraph.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
     return Expanded(
       child: SingleChildScrollView(
           child: Flex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-            const Text(
-              "1.Инвентарь выдается только при наличии паспорта или водительского удостоверения (один комплект – на один документ или денежный залог в размере 10 000 р.)\n"
-              "2.После 20:00 инвентарь не выдается\n"
-              "3.Работник проката вправе отказать в выдаче инвентаря без объяснения причин.\n"
-              "Подробный прайс и другая полезная информация -  в нашей группе,\n",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-            ),
-            GestureDetector(
-                onTap: () {
-                  launchURL("https://vk.com/akademgora");
-                },
-                child: Row(
-                  children: const [
-                     Text(
-                      "https://vk.com/akademgora\n",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ],
-                )),
-            const Text(
-              "Уважаемые гости. В нашем комплексе вы можете приобрести подарочные сертификаты на любую сумму и услуги комплекса. А также, есть возможность приобрести депозитный сертификат на любую сумму с возможностью частичного (не разового) использования на протяжении всего сезона.\n"
-              "Сертификаты не обналичиваются. На оплату услуг парковки и буфета не распространяются.",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-            ),
-          ])),
+            direction: Axis.vertical,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context,index) => buildText(text[index]),
+                separatorBuilder: (context,index) => const SizedBox(height: 10,),
+                itemCount: text.length,
+              ),
+              const SizedBox(height: 10,),
+              ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context,index) => buildLink(links[index]),
+                separatorBuilder: (context,index) => const SizedBox(height: 10,),
+                itemCount: links.length,
+              ),
+            ],
+          )),
     );
   }
+
+  void linkAndText(){
+    for(int i=0;i<_priceKeeper.listParagraph.length;i++){
+      if(_priceKeeper.listParagraph[i].isLink == true){
+        links.add(_priceKeeper.listParagraph[i].text!);
+      }else{
+        text.add(_priceKeeper.listParagraph[i].text!);
+      }
+    }
+  }
+  Widget buildLink(String link) => GestureDetector(
+    onTap: () {
+      launchURL(link);
+    },
+    child: Text(
+      "$link \n",
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    ),
+  );
+
+  Widget buildText(String text) =>Text(
+    text,
+    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+  );
 
   void _openMainScreen() {
     Navigator.of(context).pushAndRemoveUntil(

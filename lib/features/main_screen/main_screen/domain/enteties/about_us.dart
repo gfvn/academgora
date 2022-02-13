@@ -1,12 +1,11 @@
 
-class RestZone {
+class AboutUs {
   List<dynamic>? photo = [];
   Map<String, dynamic>? rest_text;
 
-  RestZone({required this.photo,this.rest_text});
+  AboutUs({required this.photo,this.rest_text});
 
-  RestZone.fromJson(Map json) {
-
+  AboutUs.fromJson(Map json) {
     rest_text = Map<String, dynamic>.from(json['обзац']);
     if (json['Фото'] != null) {
       json['Фото'].forEach((element){
@@ -17,26 +16,26 @@ class RestZone {
   }
 }
 
-class RestText {
+class AboutUsText {
   String? id;
   String? text;
   bool? isLink;
 
 
-  RestText({this.id, this.text, this.isLink});
+  AboutUsText({this.id, this.text, this.isLink});
 
-  RestText.fromJson(String idS, Map json) {
+  AboutUsText.fromJson(String idS, Map json) {
     id = idS;
     text = json['обзац'];
     isLink = json['isLink'];
   }
 }
 
-class NewsZone {
+class NewsAboutUs {
   String? id;
   String? photo;
 
-  NewsZone.fromJson(Map json){
+  NewsAboutUs.fromJson(Map json){
     id = json['Место'];
     photo = json['Фото'];
   }

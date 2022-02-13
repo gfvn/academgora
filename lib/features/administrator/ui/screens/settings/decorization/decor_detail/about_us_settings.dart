@@ -1,10 +1,15 @@
+
+
 import 'dart:io';
 
 import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
 import 'package:academ_gora_release/core/components/dialogs/text_add_dialog.dart';
-import 'package:academ_gora_release/core/data_keepers/news_keeper.dart';
+import 'package:academ_gora_release/core/consants/constants.dart';
+import 'package:academ_gora_release/core/data_keepers/about_us_keeper.dart';
+import 'package:academ_gora_release/core/data_keepers/chill_zone_keeper.dart';
+import 'package:academ_gora_release/features/main_screen/main_screen/domain/enteties/news.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,14 +20,16 @@ import 'package:academ_gora_release/core/style/color.dart';
 
 class AboutUsSettings extends StatefulWidget {
   const AboutUsSettings({Key? key}) : super(key: key);
+
   @override
-  _AboutUsSettingsState createState() => _AboutUsSettingsState();
+  _AboutUsSettings createState() => _AboutUsSettings();
 }
-class _AboutUsSettingsState extends State<AboutUsSettings> {
+
+class _AboutUsSettings extends State<AboutUsSettings> {
   final picker = ImagePicker();
   final FirebaseRequestsController _firebaseRequestsController =
-      FirebaseRequestsController();
-  final NewsKeeper _newsDataKeeper = NewsKeeper();
+  FirebaseRequestsController();
+  final AboutUsKeeper _aboutUsKeeper = AboutUsKeeper();
   bool _uploadingPhotoToDatabase = false;
   bool isLoading = false;
   bool isDeleteLoading = false;
@@ -34,12 +41,13 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
   List<String> listofStrings = ["Здесь Будут список обзацов и ссылок"];
   TextEditingController linkController = TextEditingController();
   TextEditingController textConytroller = TextEditingController();
+
   //functions
   void _makePhoto(ImageSource imageSource) async {
     final pickedFile = await picker.pickImage(source: imageSource);
     File photo = File(pickedFile!.path);
     setState(
-      () {
+          () {
         image = photo;
         _uploadingPhotoToDatabase = true;
       },
@@ -49,52 +57,46 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
 
   void _updateDatabase(File photo, String id) async {
     setState(
-      () {
+          () {
         isLoading = true;
       },
     );
     String fileName = basename(photo.path);
     _firebaseRequestsController
-        .uploadFileToFirebaseStorage('news_photos/$fileName', photo)
+        .uploadFileToFirebaseStorage('about_us/$fileName', photo)
         .then(
-      (value) {
-        _firebaseRequestsController
-            .update("Новости/$id", {"Фото": fileName, "Место": id}).then(
           (value) async {
-            await _firebaseRequestsController.getAsList('Новости').then(
-              (value) {
-                _newsDataKeeper.updateInstructors(value);
-              },
-            );
-            setState(
-              () {
-                isLoading = false;
-              },
-            );
-          },
-        );
+        _firebaseRequestsController
+            .update("О нас/Фото/$id", News.toJson(id, fileName))
+            .then((value) async {
+          await _firebaseRequestsController
+              .getAsList("О нас")
+              .then((value) {
+            _aboutUsKeeper.updateInstructors(value);
+            setState(() {});
+          });
+        });
       },
     );
   }
 
-  void _deleteNews(String id) async {
+  void _addRestZone(bool isLink, String id, String text) async {
     setState(
-      () {
+          () {
         isDeleteLoading = true;
       },
     );
-
-    await _firebaseRequestsController
-        .update("Новости/$id", {"Фото": "", "Место": id}).then(
-      (value) async {
-        await Future.delayed(const Duration(milliseconds: 1000));
-        await _firebaseRequestsController.getAsList('Новости').then(
-          (value) {
-            _newsDataKeeper.updateInstructors(value);
-          },
-        );
+    await _firebaseRequestsController.update(
+        "О нас/обзац/$id", {"обзац": text, "isLink": isLink}).then(
+          (value) async {
+        await _firebaseRequestsController
+            .getAsList("О нас")
+            .then((value) {
+          _aboutUsKeeper.updateInstructors(value);
+          setState(() {});
+        });
         setState(
-          () {
+              () {
             isDeleteLoading = false;
           },
         );
@@ -119,7 +121,7 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
+            const EdgeInsets.only(bottom: 30, top: 20, right: 16, left: 16),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,7 +160,7 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                       ),
                       buildInstructionText(
                         text:
-                            "Данное число обозначает позицию новости на главном экране приложения.",
+                        "Данное число обозначает позицию новости на главном экране приложения.",
                       ),
                     ],
                   ),
@@ -179,9 +181,7 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                             width: 10,
                           ),
                           AcademButton(
-                            onTap: () {
-                              _deleteNews(choosedNumber);
-                            },
+                            onTap: () {},
                             tittle: "Удалить фото",
                             width: screenWidth * 0.4,
                             fontSize: 14,
@@ -195,8 +195,9 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                       buildRoleText("Обзаци и ссылка"),
                       buildInstructionText(
                         text:
-                            "Чтобы удалить обзац или ссылку, свайпайте влево или вправо нужного текста",
+                        "Чтобы удалить обзац или ссылку, свайпайте влево или вправо нужного текста",
                       ),
+                      buildRoleText('Здесь Будут список обзацов и ссылок'),
                       biuilListOfLinks(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -209,13 +210,16 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                                   title: "Обзац",
                                   text: "Введите текст обзаца",
                                   onAcept: () {
-                                    // _logout();
+                                    _addRestZone(
+                                        false,
+                                        sorting(),
+                                        textConytroller.text);
                                   },
                                   textController: textConytroller,
                                 ),
                               );
                               setState(
-                                () {
+                                    () {
                                   if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     textConytroller.text = '';
@@ -242,12 +246,15 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                                   text: "Введите ссылку",
                                   textController: linkController,
                                   onAcept: () {
-                                    // _logout();
+                                    _addRestZone(
+                                        true,
+                                        sorting(),
+                                        linkController.text);
                                   },
                                 ),
                               );
                               setState(
-                                () {
+                                    () {
                                   if (link.isNotEmpty) {
                                     listofStrings.add(link);
                                     linkController.text = '';
@@ -276,10 +283,13 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
   }
 
   Widget biuilListOfLinks() {
+    _aboutUsKeeper.listAboutUs.sort((a, b) {
+      return (b.id?.toLowerCase().compareTo((a.id?.toLowerCase())!))!;
+    });
     return Column(
       children: List.generate(
-        listofStrings.length,
-        (index) {
+        _aboutUsKeeper.listAboutUs.length,
+            (index) {
           return Dismissible(
               key: ValueKey<String>(
                   DateTime.now().microsecondsSinceEpoch.toString()),
@@ -321,21 +331,15 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
                 ),
               ),
               child: SizedBox(
-                width: screenWidth,
-                child: buildRoleText(listofStrings[index])));
+                  width: screenWidth,
+                  child: Column(
+                    children: [
+                      buildRoleText("${_aboutUsKeeper.listAboutUs[index].text}"),
+                    ],
+                  )));
         },
       ),
     );
-
-    // return SizedBox(
-    //   height: 100,
-    //   child: ListView.builder(
-    //     itemCount: listofStrings.length,
-    //     itemBuilder: (context, index) {
-    //       return buildRoleText(listofStrings[index]);
-    //     },
-    //   ),
-    // );
   }
 
   void _selectOption(BuildContext context) {
@@ -419,13 +423,13 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
           focusColor: Colors.white,
           onChanged: (value) {
             setState(
-              () {
+                  () {
                 choosedNumber = value.toString();
               },
             );
           },
           items: numberList.map(
-            (e) {
+                (e) {
               return DropdownMenuItem(value: e, child: Text(e));
             },
           ).toList(),
@@ -434,3 +438,4 @@ class _AboutUsSettingsState extends State<AboutUsSettings> {
     );
   }
 }
+

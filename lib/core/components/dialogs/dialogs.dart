@@ -20,7 +20,7 @@ class Dialogs {
     }
   }
 
-  static Future showUnmodal(BuildContext context, Widget dialog) async {
+  static Future showUnmodal(BuildContext context, Widget dialog,) async {
     return show(context, dialog);
   }
 

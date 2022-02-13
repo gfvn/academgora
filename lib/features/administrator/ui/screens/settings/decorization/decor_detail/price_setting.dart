@@ -1,7 +1,10 @@
+import 'package:academ_gora_release/core/api/firebase_requests_controller.dart';
 import 'package:academ_gora_release/core/components/buttons/academ_button.dart';
-import 'package:academ_gora_release/core/components/buttons/custom_text_form_failed.dart';
 import 'package:academ_gora_release/core/components/dialogs/dialogs.dart';
+import 'package:academ_gora_release/core/components/dialogs/price_dialod.dart';
 import 'package:academ_gora_release/core/components/dialogs/text_add_dialog.dart';
+import 'package:academ_gora_release/core/consants/constants.dart';
+import 'package:academ_gora_release/core/data_keepers/price_keeper.dart';
 import 'package:academ_gora_release/main.dart';
 import 'package:academ_gora_release/core/consants/extension.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +20,44 @@ class PriceSetting extends StatefulWidget {
 class _PriceSettingState extends State<PriceSetting> {
   int counterNumber = 0;
   TextEditingController linkController = TextEditingController();
-  TextEditingController textConytroller = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController price1Controller = TextEditingController();
+  TextEditingController price2Controller = TextEditingController();
+  TextEditingController price3Controller = TextEditingController();
+  TextEditingController price4Controller = TextEditingController();
   List<String> listofStrings = ["Здесь Будут список обзацов и ссылок"];
+
+  final PriceKeeper _priceKeeper = PriceKeeper();
+
+  final FirebaseRequestsController _firebaseRequestsController =
+      FirebaseRequestsController();
+
+  void setDataFirebase(String name, String price1, String price2, String price3,
+      String price4) async {
+    await _firebaseRequestsController
+        .update("Прайс/table/$name",
+        {"price1": price1, "price2": price2, "price3": price3, "price4": price4})
+        .then((value) async {
+      await _firebaseRequestsController.getAsList("Прайс").then((value) {
+        _priceKeeper.updateInstructors(value);
+        setState(() {});
+      });
+    });
+  }
+
+  void _addRestZone(bool isLink, String id, String text) async {
+    await _firebaseRequestsController.update(
+        "Прайс/обзац/$id", {"обзац": text, "isLink": isLink}).then(
+          (value)async {
+            await _firebaseRequestsController
+            .getAsList("Прайс")
+            .then((value) {
+          _priceKeeper.updateInstructors(value);
+          setState(() {});
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +100,20 @@ class _PriceSettingState extends State<PriceSetting> {
                             title: "Обзац",
                             text: "Введите текст обзаца",
                             onAcept: () {
-                              // _logout();
+                              _addRestZone(
+                                false,
+                                sorting(),
+                                nameController.text,
+                              );
                             },
-                            textController: textConytroller,
+                            textController: nameController,
                           ),
                         );
                         setState(
                           () {
                             if (link.isNotEmpty) {
                               listofStrings.add(link);
-                              textConytroller.text = '';
+                              nameController.text = '';
                             }
                           },
                         );
@@ -94,7 +137,11 @@ class _PriceSettingState extends State<PriceSetting> {
                             text: "Введите ссылку",
                             textController: linkController,
                             onAcept: () {
-                              // _logout();
+                          _addRestZone(
+                              true,
+                              sorting(),
+                              linkController.text,
+                          );
                             },
                           ),
                         );
@@ -128,16 +175,16 @@ class _PriceSettingState extends State<PriceSetting> {
   Widget biuilListOfLinks() {
     return Column(
       children: List.generate(
-        listofStrings.length,
+        _priceKeeper.listParagraph.length,
         (index) {
           return Dismissible(
             key: ValueKey<String>(
                 DateTime.now().microsecondsSinceEpoch.toString()),
             onDismissed: (DismissDirection direction) async {
               if (direction == DismissDirection.startToEnd) {
-                listofStrings.remove(listofStrings[index]);
+                _priceKeeper.listParagraph.remove(_priceKeeper.listParagraph[index]);
               } else {
-                listofStrings.remove(listofStrings[index]);
+                _priceKeeper.listParagraph.remove(_priceKeeper.listParagraph[index]);
               }
             },
             background: Container(
@@ -173,7 +220,7 @@ class _PriceSettingState extends State<PriceSetting> {
             child: SizedBox(
               width: screenWidth,
               child: buildRoleText(
-                listofStrings[index],
+                "${_priceKeeper.listParagraph[index].text}",
               ),
             ),
           );
@@ -254,26 +301,32 @@ class _PriceSettingState extends State<PriceSetting> {
             },
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: List.generate(
-              counterNumber,
-              (index) => TableRow(
+              _priceKeeper.listKeyPrice.length,
+                  (index) => TableRow(
                 children: <Widget>[
-                  const CustomTextFormFailed(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0,top: 5.0,bottom: 5.0),
+                    child: _customText(_priceKeeper.listKeyPrice[index].key),
+                  ),
                   Table(
-                    children: const [
+                    children: [
                       TableRow(
                         children: <Widget>[
-                          CustomTextFormFailed(),
-                          CustomTextFormFailed(),
+                          _customTextTable(
+                              _priceKeeper.listKeyPrice[index].price1,
+                              _priceKeeper.listKeyPrice[index].price2),
                         ],
                       )
                     ],
                   ),
                   Table(
-                    children: const [
+                    children: [
                       TableRow(
                         children: <Widget>[
-                          CustomTextFormFailed(),
-                          CustomTextFormFailed(),
+                          _customTextTable(
+                            _priceKeeper.listKeyPrice[index].price3,
+                            _priceKeeper.listKeyPrice[index].price4,
+                          ),
                         ],
                       )
                     ],
@@ -316,6 +369,40 @@ class _PriceSettingState extends State<PriceSetting> {
         ),
       );
 
+  Widget _customTextTable(String text1, String text2) => Padding(
+    padding: const EdgeInsets.only(left: 20.0),
+    child: Row(
+          children: [
+            Text(
+              text1,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w800,
+                fontSize: 13.5,
+              ),
+            ),
+            const SizedBox(width: 5,),
+            const Text(
+              '/',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w800,
+                fontSize: 13.5,
+              ),
+            ),
+            const SizedBox(width: 5,),
+            Text(
+              text2,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w800,
+                fontSize: 13.5,
+              ),
+            ),
+          ],
+        ),
+  );
+
   Widget _backToMainScreenButton() {
     return AcademButton(
       onTap: () {
@@ -326,18 +413,36 @@ class _PriceSettingState extends State<PriceSetting> {
       tittle: "Сохранить",
       width: screenWidth * 0.9,
       fontSize: 16,
-      // colorButton: Colors.transparent,
-      // colorText: kMainColor,
-      // borderColor: kMainColor,
     );
   }
 
   Widget _customButtonAdd() {
     return AcademButton(
-      onTap: () {
+      onTap: () async {
+        await Dialogs.showUnmodal(
+          context,
+          PriceDialog(
+            title: "ПРАЙС",
+            text: "Наименование услуги",
+            onAcept: () {},
+            nameController: nameController,
+            price1Controller: price1Controller,
+            price2Controller: price2Controller,
+            price3Controller: price3Controller,
+            price4Controller: price4Controller,
+          ),
+        );
         setState(() {
-          counterNumber++;
+          setDataFirebase(
+            nameController.text,
+            price1Controller.text,
+            price2Controller.text,
+            price3Controller.text,
+            price4Controller.text,
+          );
+          cleanController();
         });
+
       },
       tittle: "Добавить",
       width: screenWidth * 0.9,
@@ -347,4 +452,15 @@ class _PriceSettingState extends State<PriceSetting> {
       borderColor: kMainColor,
     );
   }
+
+  void cleanController() {
+    nameController.clear();
+    price1Controller.clear();
+    price2Controller.clear();
+    price3Controller.clear();
+    price4Controller.clear();
+  }
+
 }
+
+
